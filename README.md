@@ -1,4 +1,4 @@
-# artcraft-nix
+<img src="docs/header.svg" width="100%" alt="artcraft-nix: All ArtCraft applications, packaged for Nix within minutes">
 
 <p align="center">
   <a href="https://boltflake.github.io/artcraft-nix/"><img src="docs/live-status.svg" width="272" alt="Live: package status"></a>
