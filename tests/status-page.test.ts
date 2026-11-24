@@ -97,7 +97,7 @@ test("page: a section per category in order, companions under their apps, new pa
   const page = html(names.map((n) => row(n)), "o/r", live({}), "x", stableOk);
   const at = (n: string) => page.indexOf(`id="pkg-${n}"`);
   const head = (id: string) => page.indexOf(`<h2 id="${id}">`);
-  const order = [head("photos"), at("photocraft"), head("design"), at("vectorcraft"), at("figcraft"), at("figcraft-server"), head("documents"), at("pdfcraft"), at("pdfcraft-cli"),
+  const order = [head("photos"), at("photocraft"), head("design"), at("figcraft"), at("figcraft-server"), at("vectorcraft"), head("documents"), at("pdfcraft"), at("pdfcraft-cli"),
     head("ai"), at("artcraft-studio"), head("other"), at("newcomer"), page.indexOf('id="nixos-stable"')];
   assert.ok(order.every((x, i) => x >= 0 && (i === 0 || order[i - 1] < x)), JSON.stringify(order));
   for (const empty of ["video", "3d"]) assert.equal(head(empty), -1, `no ${empty} section without its packages`);

@@ -34,19 +34,20 @@ export const TITLES: Record<string, Title> = {
 };
 
 /** The categories the README's package tables and the status page's
- * sections use, in their order, each with its apps (companions excluded:
- * they're listed under their app). A test holds the README to this list. */
+ * sections use, in their order, each with its apps in alphabetical order
+ * (companions excluded: they're listed under their app). A test holds the
+ * README to this list. */
 export interface Category {
   id: string;
   title: string;
   apps: string[];
 }
 export const CATEGORIES: Category[] = [
-  { id: "photos", title: "Photos and images", apps: ["photocraft", "lightcraft"] },
-  { id: "video", title: "Video, animation and sound", apps: ["filmcraft", "effectcraft", "anicraft", "soundcraft"] },
-  { id: "3d", title: "3D textures and materials", apps: ["texturecraft", "materialcraft"] },
-  { id: "design", title: "Design and drawing", apps: ["vectorcraft", "designcraft", "figcraft", "cadcraft"] },
-  { id: "documents", title: "Documents and office", apps: ["wordcraft", "deckcraft", "gridcraft", "pdfcraft"] },
+  { id: "photos", title: "Photos and images", apps: ["lightcraft", "photocraft"] },
+  { id: "video", title: "Video, animation and sound", apps: ["anicraft", "effectcraft", "filmcraft", "soundcraft"] },
+  { id: "3d", title: "3D textures and materials", apps: ["materialcraft", "texturecraft"] },
+  { id: "design", title: "Design and drawing", apps: ["cadcraft", "designcraft", "figcraft", "vectorcraft"] },
+  { id: "documents", title: "Documents and office", apps: ["deckcraft", "gridcraft", "pdfcraft", "wordcraft"] },
   { id: "ai", title: "AI", apps: ["artcraft-studio", "craft-anything"] },
 ];
 

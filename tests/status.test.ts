@@ -33,11 +33,12 @@ test("titles: every package of every repository once, by category, companions af
   const all = SOURCES.flatMap((s) => Object.keys(s.packages));
   assert.deepEqual(Object.keys(TITLES).sort(), all.slice().sort());
   assert.deepEqual(PACKAGE_ORDER.slice().sort(), all.slice().sort(), "each package exactly once");
-  assert.deepEqual(PACKAGE_ORDER.slice(16, 18), ["pdfcraft", "pdfcraft-cli"]);
+  assert.deepEqual(PACKAGE_ORDER.slice(15, 17), ["pdfcraft", "pdfcraft-cli"]);
   assert.deepEqual(PACKAGE_ORDER.slice(10, 12), ["figcraft", "figcraft-server"]);
   for (const [pkg, t] of Object.entries(TITLES)) if (t.companionOf) assert.ok(SOURCES.find((s) => s.repo === t.companionOf)!.packages[pkg], pkg);
   const apps = CATEGORIES.flatMap((c) => c.apps);
   assert.deepEqual(apps.slice().sort(), all.filter((n) => !TITLES[n].companionOf).sort(), "every app in one category; no companion in any");
+  for (const c of CATEGORIES) assert.deepEqual(c.apps, c.apps.slice().sort(), `${c.title}: apps in alphabetical order`);
 });
 
 test("titles: the README's package tables are the categories, in order", () => {
@@ -49,6 +50,7 @@ test("titles: the README's package tables are the categories, in order", () => {
   }));
   const apps = tables.filter((t) => !["Companion tools (headless)", "Bundles and helpers"].includes(t.title));
   assert.deepEqual(apps, CATEGORIES.map((c) => ({ title: c.title, names: c.apps })));
+  for (const t of tables) assert.deepEqual(t.names, t.names.slice().sort(), `${t.title}: packages in alphabetical order`);
   assert.equal(tables.length, CATEGORIES.length + 2, "the companions' and helpers' tables too, nothing else");
 });
 

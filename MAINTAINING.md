@@ -171,8 +171,9 @@ A new version needs no code: the updater writes the pin. A new Craft App
    the real archives on both systems, and `docs/acceptance-matrix.md`.
 3. `scripts/lib/parts.ts` (`SIZE_MB`), `lib/overlay.nix` if nixpkgs has a
    package by that name, `scripts/lib/titles.ts` for the status page (its
-   title, and the app in one of `CATEGORIES`), and the README's table for
-   that category (a test holds the two to the same list).
+   title, and the app in one of `CATEGORIES`, in alphabetical order), and
+   the README's table for that category (a test holds the two to the same
+   list, alphabetical).
 
 The checks fail until the entry matches the package: `<app>-files` (exactly
 the declared files), `<app>-libs` (every `dlopen` library resolves),

@@ -203,42 +203,42 @@ by your package manager, which can shadow Nix's.
 
 | Package | What it is |
 | --- | --- |
-| `photocraft` | Edit photos and layered PSD documents |
 | `lightcraft` | Organise photos and develop raw files, non-destructively |
+| `photocraft` | Edit photos and layered PSD documents |
 
 ### Video, animation and sound
 
 | Package | What it is |
 | --- | --- |
-| `filmcraft` | Edit video, color and sound |
-| `effectcraft` | Motion graphics and visual effects compositor |
 | `anicraft` | Draw and animate 2D vector art on a timeline |
+| `effectcraft` | Motion graphics and visual effects compositor |
+| `filmcraft` | Edit video, color and sound |
 | `soundcraft` | Record, edit and mix audio and MIDI |
 
 ### 3D textures and materials
 
 | Package | What it is |
 | --- | --- |
-| `texturecraft` | Paint PBR textures directly on 3D meshes |
 | `materialcraft` | Design procedural PBR materials with node graphs |
+| `texturecraft` | Paint PBR textures directly on 3D meshes |
 
 ### Design and drawing
 
 | Package | What it is |
 | --- | --- |
-| `vectorcraft` | Draw and edit vector illustrations, SVG and PDF |
+| `cadcraft` | Draft, dimension and plot 2D drawings |
 | `designcraft` | Lay out magazines, books and print documents |
 | `figcraft` | Design and prototype user interfaces |
-| `cadcraft` | Draft, dimension and plot 2D drawings |
+| `vectorcraft` | Draw and edit vector illustrations, SVG and PDF |
 
 ### Documents and office
 
 | Package | What it is |
 | --- | --- |
-| `wordcraft` | Write and design documents; open and save Word files |
 | `deckcraft` | Create and present slide decks |
 | `gridcraft` | Calculate, analyse and chart data in workbooks |
 | `pdfcraft` | Read, organize, combine, split and secure PDFs |
+| `wordcraft` | Write and design documents; open and save Word files |
 
 ### AI
 
@@ -251,8 +251,8 @@ by your package manager, which can shadow Nix's.
 
 | Package | What it is |
 | --- | --- |
-| `pdfcraft-cli` | PdfCraft's headless command-line tool (from PdfCraft's release) |
 | `figcraft-server` | FigCraft's collaboration server, headless (from FigCraft's release) |
+| `pdfcraft-cli` | PdfCraft's headless command-line tool (from PdfCraft's release) |
 
 ### Bundles and helpers
 
