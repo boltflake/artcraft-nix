@@ -28,7 +28,7 @@ runs:
       # Only a Nix store path that nix build gave for the pinned nixpkgs is
       # written to GITHUB_PATH, never text from a run's inputs.
       run: | # zizmor: ignore[github-env]
-        node=$(nix build --inputs-from . nixpkgs#nodejs_26 --no-link --print-out-paths)
+        node=$(nix build --inputs-from . "nixpkgs#nodejs_26^out" --no-link --print-out-paths)
         [ -x "$node/bin/node" ] || { echo "no node in $node"; exit 1; }
         echo "$node/bin" >> "$GITHUB_PATH"
     # The major version only: nixpkgs' nodejs_26 moves with each bump.

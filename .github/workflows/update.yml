@@ -103,7 +103,7 @@ jobs:
         run: |
           echo "seen-at=$(date -u +%Y-%m-%dT%H:%M:%S.%3NZ)" >> "$GITHUB_OUTPUT"
           mkdir -p "$RUNNER_TEMP/obs"
-          gpg=$(nix build --inputs-from . nixpkgs#gnupg --no-link --print-out-paths)
+          gpg=$(nix build --inputs-from . "nixpkgs#gnupg^out" --no-link --print-out-paths)
           GPG="$gpg/bin/gpg" node scripts/update.ts --write --out "$RUNNER_TEMP/obs/observations-resolve.json"
           jq -r '.observations[] | select(.kind == "waiting" or .kind == "incomplete-release" or .kind == "unavailable") | "\(.repo): \(.detail)"' \
             "$RUNNER_TEMP/obs/observations-resolve.json" >> "$GITHUB_STEP_SUMMARY"

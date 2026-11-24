@@ -55,7 +55,7 @@ jobs:
       - name: Test
         run: node --test tests/watcher.test.ts
       - name: Wrangler from the pinned nixpkgs
-        run: echo "$(nix build --inputs-from . nixpkgs#wrangler --no-link --print-out-paths)/bin" >> "$GITHUB_PATH"
+        run: echo "$(nix build --inputs-from . "nixpkgs#wrangler^out" --no-link --print-out-paths)/bin" >> "$GITHUB_PATH"
       - name: Deploy
         id: deploy
         env:

@@ -1,7 +1,7 @@
 // tooling.ts: the weekly check of the project's own CI tooling.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { actionlintLabels, NODE_RELEASES, nodeMajors, nodejs, offeredUbuntu, RUNNER_IMAGES, runnerImage, tooling, usedUbuntu } from "../scripts/ci/tooling.ts";
@@ -148,4 +148,30 @@ test("issues: tooling-outdated opens one per item, and tooling-ok closes that it
   assert.deepEqual(gh.issueList.map((i) => [i.title, i.state]), [["tooling-outdated: runner-image", "open"], ["tooling-outdated: nodejs", "open"]]);
   await issues.apply([obs("tooling-ok", "runner-image")], gh, new Date(t0 + week));
   assert.deepEqual(gh.issueList.map((i) => i.state), ["closed", "open"]);
+});
+
+// A path taken from `nix build --print-out-paths` is one path only if the
+// installable names exactly one output: gnupg has four, and its `man` output
+// came first, so `$gpg/bin/gpg` didn't exist.
+test("workflows: each captured nixpkgs build names exactly one output", () => {
+  const root = join(import.meta.dirname, "..");
+  const files = readdirSync(join(root, ".github", "workflows")).map((f) => join(".github", "workflows", f));
+  for (const a of readdirSync(join(root, ".github", "actions"))) {
+    for (const f of readdirSync(join(root, ".github", "actions", a))) files.push(join(".github", "actions", a, f));
+  }
+  const bad: string[] = [];
+  for (const f of files) {
+    // Shell continuations joined, so a command split over lines is one.
+    const text = readFileSync(join(root, f), "utf8").replace(/\\\n\s*/g, " ");
+    for (const line of text.split("\n")) {
+      if (!/\bnix\s+build\b.*--print-out-paths/.test(line)) continue;
+      const found = [...line.matchAll(/nixpkgs#[\w.-]+(\^[\w,*]+)?/g)];
+      // One installable, one output: two installables are two paths too.
+      if (found.length > 1) bad.push(`${f}: ${found.map((m) => m[0]).join(" ")}`);
+      for (const m of found) {
+        if (!m[1] || !/^\^\w+$/.test(m[1])) bad.push(`${f}: ${m[0]}`);
+      }
+    }
+  }
+  assert.deepEqual(bad, []);
 });
