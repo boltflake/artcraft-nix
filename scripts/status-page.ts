@@ -13,7 +13,7 @@
 //
 // builds the site from fixtures, offline (the same as status.ts's).
 import { createHash } from "node:crypto";
-import { PACKAGE_ORDER, TITLES, titleOf } from "./lib/titles.ts";
+import { CATEGORIES, companionsOf, PACKAGE_ORDER, TITLES, titleOf } from "./lib/titles.ts";
 import type { Delivery, DeliveryFigure, Released, Row, StableView } from "./status.ts";
 import type { Live, PinState, StateName } from "./status-live.ts";
 
@@ -407,11 +407,14 @@ ${details(r, repo, s, stable)}
 
 const COLS = (live: boolean) => `<div class="cols${live ? "" : " no-state"}" aria-hidden="true"><span>Package</span>${live ? "<span>State</span>" : ""}<span class="col-ver">On <code>main</code></span><span>Delivery</span><span>Recent deliveries</span><span></span></div>`;
 
-/** The page's order: SOURCES' (each app with its companion right after it),
- * then any package the page doesn't know, by name. */
-function pageOrder(list: Row[]): string[] {
+/** The page's sections: one per category with any of its packages listed,
+ * each app followed by its companions, then any package no category names
+ * (a new one, until it's given a category). */
+function pageSections(list: Row[]): { id: string; title: string; names: string[] }[] {
   const has = new Set(list.map((r) => r.name));
-  return [...PACKAGE_ORDER.filter((n) => has.has(n)), ...list.map((r) => r.name).filter((n) => !PACKAGE_ORDER.includes(n)).sort()];
+  const sections = CATEGORIES.map((c) => ({ id: c.id, title: c.title, names: c.apps.flatMap((a) => [a, ...companionsOf(a)]).filter((n) => has.has(n)) }));
+  const other = list.map((r) => r.name).filter((n) => !PACKAGE_ORDER.includes(n)).sort();
+  return [...sections, { id: "other", title: "Other", names: other }].filter((s) => s.names.length);
 }
 
 /** The NixOS stable lines, two separate facts: whether the snapshot has
@@ -458,13 +461,9 @@ export function html(list: Row[], repo: string, live: Live | null = null, id = "
   const by = new Map(list.map((r) => [r.name, r]));
   const repoUrl = `https://github.com/${escape(repo)}`;
   const sample = new Set(demo?.sample ?? []);
-  const order = pageOrder(list);
-  const studio = order.filter((n) => n === "artcraft-studio");
-  const apps = order.filter((n) => n !== "artcraft-studio");
   const ul = (names: string[]) => `<ul class="pkgs" role="list">\n${names.map((n) => row(by.get(n)!, repo, live, stable, sample)).join("\n")}\n</ul>`;
   const sections = [
-    apps.length ? section("apps", "Craft Apps", apps.filter((n) => !TITLES[n]?.companionOf).length, ul(apps), !!live) : "",
-    studio.length ? section("studio", "ArtCraft Studio", null, ul(studio), !!live) : "",
+    ...pageSections(list).map((c) => section(c.id, c.title, c.names.filter((n) => !TITLES[n]?.companionOf).length, ul(c.names), !!live)),
     stable ? section("nixos-stable", "NixOS stable", null, "", !!live, stableLine(stable, repo)) : "",
   ].filter(Boolean).join("\n");
   const legend = (["good", "fair", "slow"] as const).map((t) => `<li><svg class="band-mark" viewBox="0 0 6 16" aria-hidden="true">${bar({ gap: { good: 60, fair: 3600, slow: 6 * 3600 }[t], released: { at: "", kind: "published" } }, 0)}</svg>${BAND[t]}</li>`).join("")

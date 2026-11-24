@@ -92,16 +92,17 @@ test("page: every title's text is also on the page, and each strip bar is in its
   assert.equal(tips, 5);
 });
 
-test("page: groups in SOURCES' order, companions under their apps, Studio on its own, NixOS stable last", () => {
-  const names = ["artcraft-studio", "figcraft-server", "pdfcraft-cli", "figcraft", "photocraft", "pdfcraft", "newcomer"];
+test("page: a section per category in order, companions under their apps, new packages under Other, NixOS stable last", () => {
+  const names = ["artcraft-studio", "figcraft-server", "pdfcraft-cli", "figcraft", "photocraft", "pdfcraft", "vectorcraft", "newcomer"];
   const page = html(names.map((n) => row(n)), "o/r", live({}), "x", stableOk);
   const at = (n: string) => page.indexOf(`id="pkg-${n}"`);
-  for (const [a, b] of [["photocraft", "pdfcraft"], ["pdfcraft", "pdfcraft-cli"], ["pdfcraft-cli", "figcraft"], ["figcraft", "figcraft-server"], ["figcraft-server", "newcomer"]]) {
-    assert.ok(at(a) < at(b), `${a} before ${b}`);
-  }
-  assert.ok(page.indexOf('id="apps"') < at("photocraft") && at("newcomer") < page.indexOf('id="studio"') && page.indexOf('id="studio"') < at("artcraft-studio"));
-  assert.ok(at("artcraft-studio") < page.indexOf('id="nixos-stable"'));
-  assert.match(page, /<h2 id="apps">Craft Apps <span class="count">4<\/span><\/h2>/, "companions aren't counted as apps");
+  const head = (id: string) => page.indexOf(`<h2 id="${id}">`);
+  const order = [head("photos"), at("photocraft"), head("design"), at("vectorcraft"), at("figcraft"), at("figcraft-server"), head("documents"), at("pdfcraft"), at("pdfcraft-cli"),
+    head("ai"), at("artcraft-studio"), head("other"), at("newcomer"), page.indexOf('id="nixos-stable"')];
+  assert.ok(order.every((x, i) => x >= 0 && (i === 0 || order[i - 1] < x)), JSON.stringify(order));
+  for (const empty of ["video", "3d"]) assert.equal(head(empty), -1, `no ${empty} section without its packages`);
+  assert.match(page, /<h2 id="design">Design and drawing <span class="count">2<\/span><\/h2>/, "companions aren't counted as apps");
+  assert.match(page, /<h2 id="ai">AI <span class="count">1<\/span><\/h2>/);
   assert.ok(page.includes('<li class="pkg sub-pkg" id="pkg-pdfcraft-cli"') && page.includes('<li class="pkg" id="pkg-pdfcraft"'));
   assert.ok(rowOf(page, "pdfcraft-cli").includes('<h3 class="pkg-name">PdfCraft CLI</h3> <code class="attr">pdfcraft-cli</code>'));
   assert.ok(rowOf(page, "photocraft").includes('<p class="desc">Edit photos and layered PSD documents</p>'));

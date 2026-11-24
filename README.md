@@ -205,7 +205,6 @@ by your package manager, which can shadow Nix's.
 | --- | --- |
 | `photocraft` | Edit photos and layered PSD documents |
 | `lightcraft` | Organise photos and develop raw files, non-destructively |
-| `vectorcraft` | Draw and edit vector illustrations, SVG and PDF |
 
 ### Video, animation and sound
 
@@ -227,6 +226,7 @@ by your package manager, which can shadow Nix's.
 
 | Package | What it is |
 | --- | --- |
+| `vectorcraft` | Draw and edit vector illustrations, SVG and PDF |
 | `designcraft` | Lay out magazines, books and print documents |
 | `figcraft` | Design and prototype user interfaces |
 | `cadcraft` | Draft, dimension and plot 2D drawings |

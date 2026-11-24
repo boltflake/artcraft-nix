@@ -10,7 +10,7 @@ import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { badge, build, dataId, decide, fixtureHistory, gitHistory, medianDelivery, readFixtures, rows, stableView, stays, TARGET_S, trailersOf, type History } from "../scripts/status.ts";
 import type { Pin } from "../scripts/lib/util.ts";
-import { PACKAGE_ORDER, TITLES } from "../scripts/lib/titles.ts";
+import { CATEGORIES, PACKAGE_ORDER, TITLES } from "../scripts/lib/titles.ts";
 import { SOURCES } from "../shared/sources.ts";
 
 const ROOT = join(import.meta.dirname, "..");
@@ -29,11 +29,27 @@ let n = 0;
 const hist = (commits: C[]): History => fixtureHistory({ commits: commits.map((c) => ({ commit: (++n).toString(16).padStart(40, "0"), message: "m", ...c })) });
 const trailer = (release: string, queue = 30, waited = 0) => `Update\n\nArtcraft-Release: ${release}\nArtcraft-Queue: ${queue}\nArtcraft-Waited: ${waited}\n`;
 
-test("titles: every package of every repository, in SOURCES' order", () => {
-  assert.deepEqual(Object.keys(TITLES).sort(), PACKAGE_ORDER.slice().sort());
-  assert.equal(PACKAGE_ORDER.length, 20);
-  assert.deepEqual(PACKAGE_ORDER.slice(4, 6), ["pdfcraft", "pdfcraft-cli"]);
+test("titles: every package of every repository once, by category, companions after their app", () => {
+  const all = SOURCES.flatMap((s) => Object.keys(s.packages));
+  assert.deepEqual(Object.keys(TITLES).sort(), all.slice().sort());
+  assert.deepEqual(PACKAGE_ORDER.slice().sort(), all.slice().sort(), "each package exactly once");
+  assert.deepEqual(PACKAGE_ORDER.slice(16, 18), ["pdfcraft", "pdfcraft-cli"]);
+  assert.deepEqual(PACKAGE_ORDER.slice(10, 12), ["figcraft", "figcraft-server"]);
   for (const [pkg, t] of Object.entries(TITLES)) if (t.companionOf) assert.ok(SOURCES.find((s) => s.repo === t.companionOf)!.packages[pkg], pkg);
+  const apps = CATEGORIES.flatMap((c) => c.apps);
+  assert.deepEqual(apps.slice().sort(), all.filter((n) => !TITLES[n].companionOf).sort(), "every app in one category; no companion in any");
+});
+
+test("titles: the README's package tables are the categories, in order", () => {
+  const readme = readFileSync(join(ROOT, "README.md"), "utf8");
+  const part = readme.slice(readme.indexOf("\n## Packages\n"), readme.indexOf("\n## ", readme.indexOf("\n## Packages\n") + 1));
+  const tables = part.split(/\n### /).slice(1).map((s) => ({
+    title: s.slice(0, s.indexOf("\n")),
+    names: [...s.matchAll(/^\| `([^`]+)` \|/gm)].map((m) => m[1]),
+  }));
+  const apps = tables.filter((t) => !["Companion tools (headless)", "Bundles and helpers"].includes(t.title));
+  assert.deepEqual(apps, CATEGORIES.map((c) => ({ title: c.title, names: c.apps })));
+  assert.equal(tables.length, CATEGORIES.length + 2, "the companions' and helpers' tables too, nothing else");
 });
 
 test("trailers: the release name, queue and wait, from the last paragraph only", () => {

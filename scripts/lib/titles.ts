@@ -33,8 +33,29 @@ export const TITLES: Record<string, Title> = {
   "artcraft-studio": { title: "ArtCraft Studio", description: "The ArtCraft desktop studio" },
 };
 
-/** Every package, in SOURCES' order (the README's and the page's), each
- * app followed by its companion. */
-export const PACKAGE_ORDER: string[] = SOURCES.flatMap((s) => Object.keys(s.packages));
+/** The categories the README's package tables and the status page's
+ * sections use, in their order, each with its apps (companions excluded:
+ * they're listed under their app). A test holds the README to this list. */
+export interface Category {
+  id: string;
+  title: string;
+  apps: string[];
+}
+export const CATEGORIES: Category[] = [
+  { id: "photos", title: "Photos and images", apps: ["photocraft", "lightcraft"] },
+  { id: "video", title: "Video, animation and sound", apps: ["filmcraft", "effectcraft", "anicraft", "soundcraft"] },
+  { id: "3d", title: "3D textures and materials", apps: ["texturecraft", "materialcraft"] },
+  { id: "design", title: "Design and drawing", apps: ["vectorcraft", "designcraft", "figcraft", "cadcraft"] },
+  { id: "documents", title: "Documents and office", apps: ["wordcraft", "deckcraft", "gridcraft", "pdfcraft"] },
+  { id: "ai", title: "AI", apps: ["artcraft-studio", "craft-anything"] },
+];
+
+/** The companions of an app, in SOURCES' order. */
+export const companionsOf = (app: string): string[] =>
+  SOURCES.flatMap((s) => Object.keys(s.packages)).filter((n) => TITLES[n]?.companionOf === app);
+
+/** Every package in the README's and the page's order: by category, each
+ * app followed by its companions. */
+export const PACKAGE_ORDER: string[] = CATEGORIES.flatMap((c) => c.apps.flatMap((a) => [a, ...companionsOf(a)]));
 
 export const titleOf = (pkg: string) => TITLES[pkg]?.title ?? pkg;
