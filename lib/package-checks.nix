@@ -427,7 +427,7 @@ let
                 ''
                   case $rel in
                     ${n}) o=${p}/bin/.${n}-wrapped ;;
-                    LICENSE-*|NOTICE|OFL-*) o=${p}/share/licenses/${n}/$rel ;;
+                    LICENSE-*|NOTICE|OFL-*|ATTRIBUTION.md|licenses/*) o=${p}/share/licenses/${n}/$rel ;;
                     *) echo "${n}: its archive's $rel isn't in the package or said to be left out"; exit 1 ;;
                   esac
                 ''

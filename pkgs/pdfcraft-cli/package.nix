@@ -8,7 +8,9 @@
 #      that unsets APPIMAGE and sets CRAFT_UPDATE_MANAGED_BY=Nix and
 #      CRAFT_UPDATE_MANAGED_HINT, as every wrapper here does.
 #   3. The archive is flat: its licence files go to
-#      share/licenses/pdfcraft-cli/, and its README.md is left out.
+#      share/licenses/pdfcraft-cli/ (from 0.22.0 with ATTRIBUTION.md and the
+#      licenses/ folder of third-party licences), and its README.md is left
+#      out.
 {
   lib,
   stdenv,
@@ -53,6 +55,9 @@ else
         runHook preInstall
         install -Dm755 -t $out/bin pdfcraft-cli
         install -Dm644 -t $out/share/licenses/${pname} LICENSE-APACHE LICENSE-MIT NOTICE OFL-*.txt
+        # Since 0.22.0.
+        [ ! -e ATTRIBUTION.md ] || install -Dm644 -t $out/share/licenses/${pname} ATTRIBUTION.md
+        [ ! -d licenses ] || cp -r licenses $out/share/licenses/${pname}/licenses
         runHook postInstall
       '';
 
@@ -67,7 +72,7 @@ else
         files = [
           "bin/pdfcraft-cli"
           "bin/.pdfcraft-cli-wrapped"
-          "share/licenses/pdfcraft-cli/*"
+          "share/licenses/pdfcraft-cli/**"
         ];
         bins = [ "pdfcraft-cli" ];
         dropped = [ "README.md" ];
