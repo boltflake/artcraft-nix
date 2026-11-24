@@ -51,12 +51,16 @@ any long random string. Then set, in the repository:
 - the variables `CLOUDFLARE_ACCOUNT_ID` and `WATCHER_KV_ID`, and the secret
   `CLOUDFLARE_API_TOKEN`.
 
-The deploy token should be able to edit only this Worker. Check whether
-Cloudflare can scope a token that narrowly; if it can't, record here that
-each repository's token can edit both Workers, or move this watcher to an
-account of its own. GitHub's 5,000 GraphQL points an hour are per user, and
-are shared with t3code-nix's watcher; measure this watcher's cost per sweep
-once it runs.
+`CLOUDFLARE_API_TOKEN` is a user token with only "Workers Scripts: Edit".
+The user token editor grants that for the whole account, not one Worker
+(checked 2026-11-24), so this token can also edit t3code-nix's Worker.
+Cloudflare documents a per-Worker role for account-owned API tokens, which
+would limit it to this Worker; an account of its own would too. GitHub's
+5,000 GraphQL points an hour are per user, shared with t3code-nix's watcher
+when both tokens belong to the same user. A query covering all 18
+repositories and their pins cost 1 point (measured 2026-11-24); a sweep
+makes one such request a minute, plus follow-ups when releases or pins
+change, so about 60 points an hour when quiet.
 
 Check it with
 `curl -H "Authorization: Bearer <HEALTH_TOKEN>" <WATCHER_URL>/health`.
