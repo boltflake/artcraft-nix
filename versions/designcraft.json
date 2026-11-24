@@ -1,34 +1,34 @@
 {
   "repo": "designcraft",
-  "version": "0.20.1",
-  "tag": "v0.20.1",
-  "releaseId": 442150501,
+  "version": "0.21.1",
+  "tag": "v0.21.1",
+  "releaseId": 455918836,
   "manifest": {
-    "assetId": 737382273,
-    "digest": "sha256:e99174326d2e492311d8d784936f7fe6847f6cb609d00421e93c29c3a667558b"
+    "assetId": 784330703,
+    "digest": "sha256:a493f8622ce422d48970c31aae30db580646d5d308824d0c0a70177490c5fd01"
   },
   "signature": {
-    "assetId": 737382279,
-    "digest": "sha256:093ef35b73e50f2034d0053e598f67e3caf1859bc8267e86617a3eef4e703563"
+    "assetId": 784330705,
+    "digest": "sha256:eaa1a1878b864ada7ea145a487bdd8da954be1e8f11fc29d233ab9f1bcfd348c"
   },
   "packages": {
     "designcraft": {
       "x86_64-linux": {
-        "url": "https://github.com/storytold/designcraft/releases/download/v0.20.1/designcraft-0.20.1-linux-x86_64.tar.gz",
-        "hash": "sha256-6RYw1M31eMyx4vOfiOJOhSDxSC1RrkcUZX7kceIjf0Q=",
-        "assetId": 737383033,
-        "digest": "sha256:e91630d4cdf578ccb1e2f39f88e24e8520f1482d51ae4714657ee471e2237f44"
+        "url": "https://github.com/storytold/designcraft/releases/download/v0.21.1/designcraft-0.21.1-linux-x86_64.tar.gz",
+        "hash": "sha256-IR50ufXO5b/DzbRpg9C9sf29CRZL/YB/T/cHBpNdQK4=",
+        "assetId": 784331689,
+        "digest": "sha256:211e74b9f5cee5bfc3cdb46983d0bdb1fdbd09164bfd807f4ff70706935d40ae"
       },
       "aarch64-linux": {
-        "url": "https://github.com/storytold/designcraft/releases/download/v0.20.1/designcraft-0.20.1-linux-aarch64.tar.gz",
-        "hash": "sha256-IIw89zVl+nZcR+62AflP7EJegX0VzCEx36HB6+LQZiA=",
-        "assetId": 737382616,
-        "digest": "sha256:208c3cf73565fa765c47eeb601f94fec425e817d15cc2131dfa1c1ebe2d06620"
+        "url": "https://github.com/storytold/designcraft/releases/download/v0.21.1/designcraft-0.21.1-linux-aarch64.tar.gz",
+        "hash": "sha256-CszzA9olsOGtKwCk2BLekgekX+wjbBlCHZpATJ0pHdY=",
+        "assetId": 784331007,
+        "digest": "sha256:0accf303da25b0e1ad2b00a4d812de9207a45fec236c19421d9a404c9d291dd6"
       }
     }
   },
   "released": {
-    "at": "2026-11-12T00:16:10.000Z",
+    "at": "2026-11-23T20:22:22.000Z",
     "kind": "published"
   }
 }
