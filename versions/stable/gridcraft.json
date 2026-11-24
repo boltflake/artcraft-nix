@@ -1,0 +1,34 @@
+{
+  "repo": "gridcraft",
+  "version": "0.19.1",
+  "tag": "v0.19.1",
+  "releaseId": 442141790,
+  "manifest": {
+    "assetId": 737372922,
+    "digest": "sha256:c932e2d2df29a2b182e90b373ef25dd70436ffe22d0b39ebb432fc3fbb565ff6"
+  },
+  "signature": {
+    "assetId": 737372921,
+    "digest": "sha256:39c9e25bd35ff4a95b4ec35e947c6d1f9121465ed5b426d3f8f99c06c9310701"
+  },
+  "packages": {
+    "gridcraft": {
+      "x86_64-linux": {
+        "url": "https://github.com/storytold/gridcraft/releases/download/v0.19.1/gridcraft-0.19.1-linux-x86_64.tar.gz",
+        "hash": "sha256-jZe7otW7AP1p7VUGSFLB/ZFN5A1ezVXKAcjfgbgolG0=",
+        "assetId": 737373349,
+        "digest": "sha256:8d97bba2d5bb00fd69ed55064852c1fd914de40d5ecd55ca01c8df81b828946d"
+      },
+      "aarch64-linux": {
+        "url": "https://github.com/storytold/gridcraft/releases/download/v0.19.1/gridcraft-0.19.1-linux-aarch64.tar.gz",
+        "hash": "sha256-wFNzo2bm3e0yATgMuCs6ChN1aaGxItN8Gw7PAcvUa3U=",
+        "assetId": 737373096,
+        "digest": "sha256:c05373a366e6dded3201380cb82b3a0a137569a1b122d37c1b0ecf01cbd46b75"
+      }
+    }
+  },
+  "released": {
+    "at": "2026-11-12T00:06:29.000Z",
+    "kind": "published"
+  }
+}

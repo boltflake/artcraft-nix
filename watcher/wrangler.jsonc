@@ -1,0 +1,18 @@
+// The release watcher (see src/watcher.ts). Deployed by
+// .github/workflows/deploy-watcher.yml, which fills in the KV namespace ID
+// from the WATCHER_KV_ID repository variable (and the account from
+// CLOUDFLARE_ACCOUNT_ID). Secrets (set with `wrangler secret put`):
+// GITHUB_TOKEN, HEALTH_TOKEN.
+{
+  "name": "artcraft-nix-watcher",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-01",
+  "triggers": { "crons": ["* * * * *"] },
+  // PLACEHOLDER: KV_NAMESPACE_ID is replaced at deploy time with this
+  // Worker's own namespace (never t3code-nix's). Don't commit a real ID.
+  "kv_namespaces": [{ "binding": "STATE", "id": "KV_NAMESPACE_ID" }],
+  "version_metadata": { "binding": "CF_VERSION" },
+  "vars": { "REPO": "boltflake/artcraft-nix" },
+  "workers_dev": true,
+  "observability": { "enabled": true }
+}

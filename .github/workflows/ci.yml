@@ -1,0 +1,166 @@
+# Branch CI for human changes (packaging, workflows, the watcher, hand
+# re-pins), as in t3code-nix. main's ruleset requires the `tested` status, so
+# a change reaches main like this:
+#   1. push one commit on a branch, on top of main
+#   2. this workflow runs the full suite on both systems and posts `tested`
+#   3. fast-forward main to that commit
+# A branch more than one commit ahead of main is refused, so no untested
+# commit in the middle reaches main. The default suite runs in parts
+# (scripts/lib/parts.ts) and NixOS stable in its two groups, each on a runner
+# of its own; a job sampler records where the time goes.
+# The update bot publishes through update.yml instead (its pushes start no
+# workflows).
+name: ci
+
+on:
+  push:
+    branches-ignore: [main, "bot/**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  one-commit:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Exactly one commit on top of main
+        run: |
+          ahead=$(git rev-list --count origin/main..HEAD)
+          base=$(git merge-base origin/main HEAD)
+          [ "$base" = "$(git rev-parse origin/main)" ] || { echo "rebase onto main first"; exit 1; }
+          [ "$ahead" = 1 ] || { echo "squash to one commit (found $ahead)"; exit 1; }
+
+  test:
+    needs: one-commit
+    strategy:
+      fail-fast: false
+      matrix:
+        system: [x86_64-linux, aarch64-linux]
+        part: [apps1, apps2, apps3, studio, flake, default-build]
+    runs-on: ${{ matrix.system == 'aarch64-linux' && 'ubuntu-26.04-arm' || 'ubuntu-26.04' }}
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      # Where the job's time goes, into the uploaded results (nothing in CI
+      # reads it): before setup, whose own Nix build counts too.
+      - name: The runner, and a sampler for the job's length
+        run: scripts/ci/sample.sh "results/sampler-$GITHUB_JOB-${{ matrix.system }}-${{ matrix.part }}.txt"
+      - uses: ./.github/actions/setup
+      - name: The default suite
+        timeout-minutes: 80
+        run: node scripts/ci/test.ts branch ${{ matrix.system }} results --part=${{ matrix.part }}
+      # The resolver, once, through glibc and systemd-resolved (a NixOS VM
+      # test; it needs KVM, which x86_64 runners have).
+      - name: The hosts-file resolver VM test
+        if: matrix.system == 'x86_64-linux' && matrix.part == 'flake'
+        timeout-minutes: 30
+        run: |
+          sudo chmod 666 /dev/kvm
+          nix build --no-link -L .#legacyPackages.x86_64-linux.ci.vmTests.resolver
+      # A job that succeeds has written its own result, so an earlier
+      # attempt's artifact can't stand in for it.
+      - name: The result was written
+        run: test -s results/result-branch-${{ matrix.system }}-${{ matrix.part }}.json
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: ${{ !cancelled() }}
+        with:
+          # A re-run replaces its earlier attempt's artifact.
+          overwrite: true
+          name: results-${{ matrix.system }}-${{ matrix.part }}
+          path: results
+          if-no-files-found: error
+          retention-days: 7
+
+  # NixOS stable: both groups. A failure fails the branch only when the
+  # branch made it fail (the parent's tree passes it); an incomplete result
+  # fails it, and so does a step that runs out of time (no result file).
+  stable:
+    needs: one-commit
+    strategy:
+      fail-fast: false
+      matrix:
+        system: [x86_64-linux, aarch64-linux]
+        group: [stable, next]
+    runs-on: ${{ matrix.system == 'aarch64-linux' && 'ubuntu-26.04-arm' || 'ubuntu-26.04' }}
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - name: The runner, and a sampler for the job's length
+        run: scripts/ci/sample.sh "results/sampler-$GITHUB_JOB-${{ matrix.system }}-${{ matrix.group }}.txt"
+      - uses: ./.github/actions/setup
+      - name: NixOS stable
+        timeout-minutes: 80
+        run: |
+          node scripts/ci/stable.ts branch ${{ matrix.system }} results \
+            --tree="$(git rev-parse 'HEAD^{tree}')" --parent="$(git rev-parse 'HEAD~1^{tree}')" --group=${{ matrix.group }}
+      - name: The result was written
+        run: test -s results/stable-branch-${{ matrix.system }}-${{ matrix.group }}.json
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: ${{ !cancelled() }}
+        with:
+          # A re-run replaces its earlier attempt's artifact.
+          overwrite: true
+          name: results-${{ matrix.system }}-stable-${{ matrix.group }}
+          path: results
+          if-no-files-found: error
+          retention-days: 7
+
+  # Runs whatever happened before, so a failure leaves a `failure` status.
+  tested:
+    needs: [one-commit, test, stable]
+    if: always()
+    runs-on: ubuntu-26.04
+    timeout-minutes: 5
+    permissions:
+      statuses: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        id: download
+        continue-on-error: true
+        with:
+          pattern: results-*
+          path: results
+          merge-multiple: true
+      - name: Post `tested` if the suite passed on both systems
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.sha }}
+          ONE_COMMIT: ${{ needs.one-commit.result }}
+          TEST: ${{ needs.test.result }}
+          STABLE: ${{ needs.stable.result }}
+          DOWNLOAD: ${{ steps.download.outcome }}
+          URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          ok=true
+          for system in x86_64-linux aarch64-linux; do
+            for part in apps1 apps2 apps3 studio flake default-build; do
+              jq -se 'length == 1 and .[0].complete == true and .[0].failed == []' "results/result-branch-$system-$part.json" >/dev/null || ok=false
+            done
+            for group in stable next; do
+              jq -se 'length == 1 and .[0].branch == []' "results/stable-branch-$system-$group.json" >/dev/null || ok=false
+            done
+          done
+          if [ "$ok" = true ] && [ "$ONE_COMMIT" = success ] && [ "$TEST" = success ] && [ "$STABLE" = success ] && [ "$DOWNLOAD" = success ]; then
+            state=success; desc="full suite passed on x86_64-linux and aarch64-linux"
+          else
+            state=failure; desc="full suite failed (or NixOS stable broke); see the run"
+          fi
+          gh api -X POST "repos/$GITHUB_REPOSITORY/statuses/$SHA" \
+            -f state="$state" -f context=tested -f description="$desc" -f target_url="$URL"
+          [ "$state" = success ]

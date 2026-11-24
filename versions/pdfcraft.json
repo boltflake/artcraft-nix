@@ -1,0 +1,48 @@
+{
+  "repo": "pdfcraft",
+  "version": "0.21.1",
+  "tag": "v0.21.1",
+  "releaseId": 442416291,
+  "manifest": {
+    "assetId": 737718280,
+    "digest": "sha256:1d698e33bdb3b1443979e984e7a3728b0d09b11790427fcc291cb2305edca5ea"
+  },
+  "signature": {
+    "assetId": 737718279,
+    "digest": "sha256:f32ec392bcc5f59c8db4c6efc1c3f68c9cac5cd425d611cfe6b0c00b9e8b5152"
+  },
+  "packages": {
+    "pdfcraft": {
+      "x86_64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.1/pdfcraft-0.21.1-linux-x86_64.tar.gz",
+        "hash": "sha256-wpGekETv/eMY5mgHrSohu7dKlVWzwLmfmtDEDPYc4l4=",
+        "assetId": 737718881,
+        "digest": "sha256:c2919e9044effde318e66807ad2a21bbb74a9555b3c0b99f9ad0c40cf61ce25e"
+      },
+      "aarch64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.1/pdfcraft-0.21.1-linux-aarch64.tar.gz",
+        "hash": "sha256-sI7+QWwdpFCwSz5OxfA4nXHXWA9DmPntoG0z0EcTx3A=",
+        "assetId": 737718574,
+        "digest": "sha256:b08efe416c1da450b04b3e4ec5f0389d71d7580f4398f9eda06d33d04713c770"
+      }
+    },
+    "pdfcraft-cli": {
+      "x86_64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.1/pdfcraft-cli-0.21.1-linux-x86_64.tar.gz",
+        "hash": "sha256-qXsueJ0hQ2BCTxmBS8ZvPq9tBO9eQuRytG97ndzupcg=",
+        "assetId": 737719392,
+        "digest": "sha256:a97b2e789d214360424f19814bc66f3eaf6d04ef5e42e472b46f7b9ddceea5c8"
+      },
+      "aarch64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.1/pdfcraft-cli-0.21.1-linux-aarch64.tar.gz",
+        "hash": "sha256-5B/G11frbgtLb22RFaPvpTB4XAkvyaW+kUiTQW2myfM=",
+        "assetId": 737719339,
+        "digest": "sha256:e41fc6d757eb6e0b4b6f6d9115a3efa530785c092fc9a5be914893416da6c9f3"
+      }
+    }
+  },
+  "released": {
+    "at": "2026-11-12T02:18:37.000Z",
+    "kind": "published"
+  }
+}

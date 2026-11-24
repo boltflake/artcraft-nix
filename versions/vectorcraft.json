@@ -1,0 +1,34 @@
+{
+  "repo": "vectorcraft",
+  "version": "0.24.1",
+  "tag": "v0.24.1",
+  "releaseId": 442470194,
+  "manifest": {
+    "assetId": 737945100,
+    "digest": "sha256:2aff20ef0bd7290cd8f07d6e1e958de59de913afd55a747f6bfdbe874dbbd394"
+  },
+  "signature": {
+    "assetId": 737945101,
+    "digest": "sha256:e4a766e7fcbbc61d2cda06161f0f4a7c9643ac035218b1a8860001a9c52b286b"
+  },
+  "packages": {
+    "vectorcraft": {
+      "x86_64-linux": {
+        "url": "https://github.com/storytold/vectorcraft/releases/download/v0.24.1/vectorcraft-0.24.1-linux-x86_64.tar.gz",
+        "hash": "sha256-oJBRQlL94UVJWsb8Zdb/ExHWmJmOV7pDTV0IlsPR+/o=",
+        "assetId": 737945998,
+        "digest": "sha256:a090514252fde145495ac6fc65d6ff1311d698998e57ba434d5d0896c3d1fbfa"
+      },
+      "aarch64-linux": {
+        "url": "https://github.com/storytold/vectorcraft/releases/download/v0.24.1/vectorcraft-0.24.1-linux-aarch64.tar.gz",
+        "hash": "sha256-S5c1SJeJ0zbBykNEaJ60odSj8Lbo23+MBlnCTRBlNFU=",
+        "assetId": 737945409,
+        "digest": "sha256:4b9735489789d336c1ca4344689eb4a1d4a3f0b6e8db7f8c0659c24d10653455"
+      }
+    }
+  },
+  "released": {
+    "at": "2026-11-12T05:07:34.000Z",
+    "kind": "published"
+  }
+}

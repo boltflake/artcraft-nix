@@ -1,0 +1,7 @@
+{
+  "primary": "2B76741B414AAD6CD33E631213A005C0B9D7C3ED",
+  "subkeys": ["568DC1F68F8FAECC797F3C7B006DAF6BB0EF334E"],
+  "uid": "ArtCraft Linux Release Signing Key",
+  "trusted": "2026-11-22",
+  "basis": "trust on first use: the release-signing-key.asc attached to the releases, identical in all 18 repositories; no source outside GitHub publishes it"
+}

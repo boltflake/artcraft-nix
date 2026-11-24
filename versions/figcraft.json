@@ -1,0 +1,48 @@
+{
+  "repo": "figcraft",
+  "version": "0.18.1",
+  "tag": "v0.18.1",
+  "releaseId": 442367292,
+  "manifest": {
+    "assetId": 737530380,
+    "digest": "sha256:75d33f6252e6c61916223cf4ef07c4f9f5a3293a1804749590f74b74a734edb8"
+  },
+  "signature": {
+    "assetId": 737530377,
+    "digest": "sha256:f3817e3fa0738aa3dc5d44ce90aa601423b90a39f7d295aa357a0f1144cbd483"
+  },
+  "packages": {
+    "figcraft": {
+      "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.1/figcraft-0.18.1-linux-x86_64.tar.gz",
+        "hash": "sha256-gnbSrFXG939686QRqbAEFdP+sLWWB6VFIzETQOZT/Bk=",
+        "assetId": 737531213,
+        "digest": "sha256:8276d2ac55c6f77f7af3a411a9b00415d3feb0b59607a54523311340e653fc19"
+      },
+      "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.1/figcraft-0.18.1-linux-aarch64.tar.gz",
+        "hash": "sha256-sn3uEL5dtQ3vA97jvkcLwvnOUIvhaQ51tHZTVNK4nIg=",
+        "assetId": 737530703,
+        "digest": "sha256:b27dee10be5db50def03dee3be470bc2f9ce508be1690e75b4765354d2b89c88"
+      }
+    },
+    "figcraft-server": {
+      "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.1/figcraft-server-0.18.1-linux-x86_64.tar.gz",
+        "hash": "sha256-IVth5bHdW0tNGTUJt75UAQ47kp3Rm5o6hfsTV1Oc3Ng=",
+        "assetId": 737531552,
+        "digest": "sha256:215b61e5b1dd5b4b4d193509b7be54010e3b929dd19b9a3a85fb1357539cdcd8"
+      },
+      "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.1/figcraft-server-0.18.1-linux-aarch64.tar.gz",
+        "hash": "sha256-f5k5esPShFj7Wglw0113H7XDu1xB5kBVMxlmks4cvX0=",
+        "assetId": 737531526,
+        "digest": "sha256:7f99397ac3d28458fb5a0970d35d771fb5c3bb5c41e6405533196692ce1cbd7d"
+      }
+    }
+  },
+  "released": {
+    "at": "2026-11-12T01:20:50.000Z",
+    "kind": "published"
+  }
+}

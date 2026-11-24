@@ -1,0 +1,48 @@
+{
+  "repo": "artcraft",
+  "version": "0.41.1",
+  "tag": "artcraft-v0.41.1",
+  "releaseId": 437259848,
+  "manifest": {
+    "assetId": 719386062,
+    "digest": "sha256:5450801c2342f8ea05d9aa71cd31cb4b02462cebd9cab7abbe8884e17de6f075"
+  },
+  "signature": {
+    "assetId": 719386067,
+    "digest": "sha256:11d6e4c827592c407c5fb85b774fa196698e7b42e2bc791b6caa38825b13ef9f"
+  },
+  "packages": {
+    "artcraft-studio": {
+      "x86_64-linux": {
+        "url": "https://github.com/storytold/artcraft/releases/download/artcraft-v0.41.1/artcraft-0.41.1-linux-x86_64.tar.gz",
+        "hash": "sha256-FJ+XSOozVTF3wCHhreR6GV+tJbiBEp1BeP5b2SKpTrQ=",
+        "assetId": 719386442,
+        "digest": "sha256:149f9748ea33553177c021e1ade47a195fad25b881129d4178fe5bd922a94eb4"
+      },
+      "aarch64-linux": {
+        "url": "https://github.com/storytold/artcraft/releases/download/artcraft-v0.41.1/artcraft-0.41.1-linux-aarch64.tar.gz",
+        "hash": "sha256-y3gOAuhyNJJ9M5yH3uA7Ik4WQTIHWL6BPTHUQtmmka4=",
+        "assetId": 719386210,
+        "digest": "sha256:cb780e02e87234927d339c87dee03b224e1641320758be813d31d442d9a691ae"
+      }
+    }
+  },
+  "licenses": {
+    "LICENSE-APACHE": {
+      "url": "https://raw.githubusercontent.com/storytold/artcraft/07ebde1454d4bc99f0d9add90618fb4d871f6b1d/LICENSE-APACHE",
+      "hash": "sha256-DVQuDIgE45qn836wDaWnYhSdxoLXgpRRKH4RuTjpRZQ="
+    },
+    "LICENSE-MIT": {
+      "url": "https://raw.githubusercontent.com/storytold/artcraft/07ebde1454d4bc99f0d9add90618fb4d871f6b1d/LICENSE-MIT",
+      "hash": "sha256-jOYIdTWFkg7Fth6PMksLIFyjReZjqShQ9O8LQkDD9Jw="
+    },
+    "NOTICE": {
+      "url": "https://raw.githubusercontent.com/storytold/artcraft/07ebde1454d4bc99f0d9add90618fb4d871f6b1d/NOTICE",
+      "hash": "sha256-81vQXIdhH9IHRvbDVM9PKypBU4JCH44CHkOMRycH8uo="
+    }
+  },
+  "released": {
+    "at": "2026-11-07T02:49:42.000Z",
+    "kind": "published"
+  }
+}

@@ -1,0 +1,38 @@
+# Every job's setup: Node 26 on PATH (the scripts are TypeScript, run
+# directly by Node), and Nix for the jobs that build or test. With nix: true,
+# Node comes from the flake's pinned nixpkgs; jobs that only run scripts
+# (nix: false) take Node 26 from actions/setup-node, which is much quicker
+# than installing Nix. As in t3code-nix, without its desktop smoke tools:
+# every smoke here runs inside the Nix sandbox. Needs a checkout.
+name: setup
+description: Put Node 26 on PATH, and install Nix if asked
+inputs:
+  nix:
+    description: Install Nix (and take Node from the pinned nixpkgs)
+    default: "true"
+runs:
+  using: composite
+  steps:
+    # A build that hangs fails after 15 minutes (the daemon's own setting):
+    # a hung check is then a failed check, held like any other. Every
+    # package here is a download, unpack and patch, and every smoke's own
+    # deadlines are well under it.
+    - if: inputs.nix == 'true'
+      uses: cachix/install-nix-action@3dc140bfc76c49fbd4dd958429132e3746bcb086 # v31.11.5
+      with:
+        extra_nix_config: |
+          timeout = 900
+    - name: Node 26 from the pinned nixpkgs
+      if: inputs.nix == 'true'
+      shell: bash
+      # Only a Nix store path that nix build gave for the pinned nixpkgs is
+      # written to GITHUB_PATH, never text from a run's inputs.
+      run: | # zizmor: ignore[github-env]
+        node=$(nix build --inputs-from . nixpkgs#nodejs_26 --no-link --print-out-paths)
+        [ -x "$node/bin/node" ] || { echo "no node in $node"; exit 1; }
+        echo "$node/bin" >> "$GITHUB_PATH"
+    # The major version only: nixpkgs' nodejs_26 moves with each bump.
+    - if: inputs.nix != 'true'
+      uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      with:
+        node-version: 26

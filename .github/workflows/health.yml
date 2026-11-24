@@ -1,0 +1,87 @@
+# The hourly backstop, as in t3code-nix. Outside update.yml's concurrency
+# group, so a waiting dispatch can't replace it. Two independent jobs:
+#   dispatch  starts an ordinary update.yml run, whatever the watcher's
+#             health, so updates still arrive while the watcher is dead, and
+#             a quiet hour's run retries held releases (scripts/update.ts)
+#   issues    reads the watcher's /health, works out watcher-stalled,
+#             watcher-auth and update-lag (scripts/ci/health.ts) and writes
+#             them, in the shared `issues` concurrency group
+# Needs the repository variable WATCHER_URL and the secret
+# WATCHER_HEALTH_TOKEN.
+name: health
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: health
+  cancel-in-progress: false
+
+jobs:
+  # Only once updates are on (UPDATES, see update.yml's resolve job).
+  dispatch:
+    if: vars.UPDATES == 'true'
+    runs-on: ubuntu-26.04
+    timeout-minutes: 5
+    permissions:
+      actions: write
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run update.yml --repo "$GITHUB_REPOSITORY" --ref main
+
+  issues:
+    if: vars.UPDATES == 'true' && vars.WATCHER_URL != '' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    concurrency:
+      group: issues
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Main as it is now, even in a re-run of an old check: lag is
+          # judged against today's pins (as tooling.yml does).
+          ref: main
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+        with:
+          nix: false
+      - name: Read the watcher's health
+        env:
+          URL: ${{ vars.WATCHER_URL }}
+          TOKEN: ${{ secrets.WATCHER_HEALTH_TOKEN }}
+        run: |
+          out="$RUNNER_TEMP/health.json"
+          if curl -sS --fail-with-body --max-time 20 -H "Authorization: Bearer $TOKEN" "$URL/health" > "$out" 2> "$RUNNER_TEMP/curl.err"; then
+            echo "ok" > "$RUNNER_TEMP/health.status"
+          else
+            { cat "$RUNNER_TEMP/curl.err"; head -c 300 "$out"; } | tr '\n' ' ' > "$RUNNER_TEMP/health.status"
+          fi
+      - name: Held releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/ci/held.ts "$RUNNER_TEMP/held.json"
+      - name: Write issues
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HELD_JSON: ${{ runner.temp }}/held.json
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          obs="$RUNNER_TEMP/observations-health.json"
+          status=$(cat "$RUNNER_TEMP/health.status")
+          if [ "$status" = ok ]; then
+            node scripts/ci/health.ts "$RUNNER_TEMP/health.json" > "$obs"
+          else
+            node scripts/ci/health.ts - "$status" > "$obs"
+          fi
+          # As escaped text: versions and details come from upstream.
+          { echo '<pre>'; jq -r '.observations[] | "\(.kind) \(.repo // "") \(.version // "") \(.detail)" | @html' "$obs"; echo '</pre>'; } >> "$GITHUB_STEP_SUMMARY"
+          node scripts/ci/issues.ts "$obs"

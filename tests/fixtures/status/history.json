@@ -1,0 +1,1830 @@
+{
+ "commits": [
+  {
+   "commit": "f6318ab68a58d35a61f1e6ed0c16feea0eed8301",
+   "at": "2026-11-08T09:00:00.000Z",
+   "message": "Pin every repository\n\nThe first pins, through branch CI.",
+   "files": {
+    "versions/nixpkgs-stable.json": {
+     "name": "nixpkgs-stable",
+     "channel": "nixos-26.05",
+     "rev": "94c3211b0ee8ba969a3f12eb4aff8ba0f72971dd",
+     "narHash": "sha256-IEuDsf80ubivfpidbRsIm30HVo7PZIdZt1stRsbaY4Y="
+    },
+    "versions/photocraft.json": {
+     "repo": "photocraft",
+     "version": "0.21.0",
+     "tag": "v0.21.0",
+     "releaseId": 436962270,
+     "manifest": {
+      "assetId": 718431700,
+      "digest": "sha256:204e4cc035b664513963b360c1ca0f98ae29a94e45e7aafc05cc89cb6ee900e9"
+     },
+     "signature": {
+      "assetId": 718431707,
+      "digest": "sha256:c05d0285d08f3ea0961a6ac98297bb6f9d995a7aec24c3988517ab3335154294"
+     },
+     "packages": {
+      "photocraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/photocraft/releases/download/v0.21.0/photocraft-0.21.0-linux-x86_64.tar.gz",
+        "hash": "sha256-MRXlbMZG2601QeObYyO4okMY/uYZTXhN320GX3tdLTc=",
+        "assetId": 718432812,
+        "digest": "sha256:3115e56cc646dbad3541e39b6323b8a24318fee6194d784ddf6d065f7b5d2d37"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/photocraft/releases/download/v0.21.0/photocraft-0.21.0-linux-aarch64.tar.gz",
+        "hash": "sha256-dI3OAlwUsLwWLtrms4tftVL40khBdUT8w6xD1l1tXLk=",
+        "assetId": 718432056,
+        "digest": "sha256:748dce025c14b0bc162edae6b38b5fb552f8d248417544fcc3ac43d65d6d5cb9"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-06T20:22:03.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/photocraft.json": {
+     "repo": "photocraft",
+     "version": "0.21.0",
+     "tag": "v0.21.0",
+     "releaseId": 436962270,
+     "manifest": {
+      "assetId": 718431700,
+      "digest": "sha256:204e4cc035b664513963b360c1ca0f98ae29a94e45e7aafc05cc89cb6ee900e9"
+     },
+     "signature": {
+      "assetId": 718431707,
+      "digest": "sha256:c05d0285d08f3ea0961a6ac98297bb6f9d995a7aec24c3988517ab3335154294"
+     },
+     "packages": {
+      "photocraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/photocraft/releases/download/v0.21.0/photocraft-0.21.0-linux-x86_64.tar.gz",
+        "hash": "sha256-MRXlbMZG2601QeObYyO4okMY/uYZTXhN320GX3tdLTc=",
+        "assetId": 718432812,
+        "digest": "sha256:3115e56cc646dbad3541e39b6323b8a24318fee6194d784ddf6d065f7b5d2d37"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/photocraft/releases/download/v0.21.0/photocraft-0.21.0-linux-aarch64.tar.gz",
+        "hash": "sha256-dI3OAlwUsLwWLtrms4tftVL40khBdUT8w6xD1l1tXLk=",
+        "assetId": 718432056,
+        "digest": "sha256:748dce025c14b0bc162edae6b38b5fb552f8d248417544fcc3ac43d65d6d5cb9"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-06T20:22:03.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/pdfcraft.json": {
+     "repo": "pdfcraft",
+     "version": "0.19.0",
+     "tag": "v0.19.0",
+     "releaseId": 436955189,
+     "manifest": {
+      "assetId": 718410313,
+      "digest": "sha256:9eaa36d46d2d07e755b8416e12896f3e06bcf4f45c7196cc76f9506898816224"
+     },
+     "signature": {
+      "assetId": 718410308,
+      "digest": "sha256:25736b078fec15e3301647868b87ccb16ccb6ba42921c826badcc59ea2381176"
+     },
+     "packages": {
+      "pdfcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.19.0/pdfcraft-0.19.0-linux-x86_64.tar.gz",
+        "hash": "sha256-NleqQP4UbUr0D6sFB8l/buLGzlupk4VnGUQ5vjM1uos=",
+        "assetId": 718411294,
+        "digest": "sha256:3657aa40fe146d4af40fab0507c97f6ee2c6ce5ba9938567194439be3335ba8b"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.19.0/pdfcraft-0.19.0-linux-aarch64.tar.gz",
+        "hash": "sha256-u373d/PLiHT2Aoo1lCpgk64KMOsAm1xuXuEkeEY4nxE=",
+        "assetId": 718410607,
+        "digest": "sha256:bb7ef777f3cb8874f6028a35942a6093ae0a30eb009b5c6e5ee1247846389f11"
+       }
+      },
+      "pdfcraft-cli": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.19.0/pdfcraft-cli-0.19.0-linux-x86_64.tar.gz",
+        "hash": "sha256-2YGWL64QR1PrbvH4Qw57H1kjMSZRQkpSO3qkEHdmhus=",
+        "assetId": 718411762,
+        "digest": "sha256:d981962fae104753eb6ef1f8430e7b1f5923312651424a523b7aa410776686eb"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.19.0/pdfcraft-cli-0.19.0-linux-aarch64.tar.gz",
+        "hash": "sha256-3aEfmwVJgz06YYrju++PLHCDc6uhiuXZAO9u57CrBVg=",
+        "assetId": 718411737,
+        "digest": "sha256:dda11f9b0549833d3a618ae3bbef8f2c708373aba18ae5d900ef6ee7b0ab0558"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-06T20:21:58.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/pdfcraft.json": {
+     "repo": "pdfcraft",
+     "version": "0.19.0",
+     "tag": "v0.19.0",
+     "releaseId": 436955189,
+     "manifest": {
+      "assetId": 718410313,
+      "digest": "sha256:9eaa36d46d2d07e755b8416e12896f3e06bcf4f45c7196cc76f9506898816224"
+     },
+     "signature": {
+      "assetId": 718410308,
+      "digest": "sha256:25736b078fec15e3301647868b87ccb16ccb6ba42921c826badcc59ea2381176"
+     },
+     "packages": {
+      "pdfcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.19.0/pdfcraft-0.19.0-linux-x86_64.tar.gz",
+        "hash": "sha256-NleqQP4UbUr0D6sFB8l/buLGzlupk4VnGUQ5vjM1uos=",
+        "assetId": 718411294,
+        "digest": "sha256:3657aa40fe146d4af40fab0507c97f6ee2c6ce5ba9938567194439be3335ba8b"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.19.0/pdfcraft-0.19.0-linux-aarch64.tar.gz",
+        "hash": "sha256-u373d/PLiHT2Aoo1lCpgk64KMOsAm1xuXuEkeEY4nxE=",
+        "assetId": 718410607,
+        "digest": "sha256:bb7ef777f3cb8874f6028a35942a6093ae0a30eb009b5c6e5ee1247846389f11"
+       }
+      },
+      "pdfcraft-cli": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.19.0/pdfcraft-cli-0.19.0-linux-x86_64.tar.gz",
+        "hash": "sha256-2YGWL64QR1PrbvH4Qw57H1kjMSZRQkpSO3qkEHdmhus=",
+        "assetId": 718411762,
+        "digest": "sha256:d981962fae104753eb6ef1f8430e7b1f5923312651424a523b7aa410776686eb"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.19.0/pdfcraft-cli-0.19.0-linux-aarch64.tar.gz",
+        "hash": "sha256-3aEfmwVJgz06YYrju++PLHCDc6uhiuXZAO9u57CrBVg=",
+        "assetId": 718411737,
+        "digest": "sha256:dda11f9b0549833d3a618ae3bbef8f2c708373aba18ae5d900ef6ee7b0ab0558"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-06T20:21:58.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/figcraft.json": {
+     "repo": "figcraft",
+     "version": "0.16.0",
+     "tag": "v0.16.0",
+     "releaseId": 436944086,
+     "manifest": {
+      "assetId": 718375680,
+      "digest": "sha256:446f8962544a315368eface06b4361f138c3f321f3b06e0db5ed1c4d644ee7c0"
+     },
+     "signature": {
+      "assetId": 718375678,
+      "digest": "sha256:f7c5c772bdda265cad47f778546018c829c35803bcdae9cf39d1e48f5f5b04d1"
+     },
+     "packages": {
+      "figcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.16.0/figcraft-0.16.0-linux-x86_64.tar.gz",
+        "hash": "sha256-1ef5n0nTpwPX9SQYVNx1b7PVX8lNDJXSlw24SjM5H1o=",
+        "assetId": 718376792,
+        "digest": "sha256:d5e7f99f49d3a703d7f5241854dc756fb3d55fc94d0c95d2970db84a33391f5a"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.16.0/figcraft-0.16.0-linux-aarch64.tar.gz",
+        "hash": "sha256-RCOTdwvj62RY5nEqMySW/PNysQex7+Ngd7o5+juekMo=",
+        "assetId": 718376103,
+        "digest": "sha256:442393770be3eb6458e6712a332496fcf372b107b1efe36077ba39fa3b9e90ca"
+       }
+      },
+      "figcraft-server": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.16.0/figcraft-server-0.16.0-linux-x86_64.tar.gz",
+        "hash": "sha256-yucyd6oPurG5CSTVhTXcRabgREfsBnDdeIqXqsaMqf4=",
+        "assetId": 718377373,
+        "digest": "sha256:cae73277aa0fbab1b90924d58535dc45a6e04447ec0670dd788a97aac68ca9fe"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.16.0/figcraft-server-0.16.0-linux-aarch64.tar.gz",
+        "hash": "sha256-YRukMVAcV0EOJYMCo6/H9fwVhB5kacIyJYeIqZy+AKw=",
+        "assetId": 718377316,
+        "digest": "sha256:611ba431501c57410e258302a3afc7f5fc15841e6469c232258788a99cbe00ac"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-06T20:21:35.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/figcraft.json": {
+     "repo": "figcraft",
+     "version": "0.16.0",
+     "tag": "v0.16.0",
+     "releaseId": 436944086,
+     "manifest": {
+      "assetId": 718375680,
+      "digest": "sha256:446f8962544a315368eface06b4361f138c3f321f3b06e0db5ed1c4d644ee7c0"
+     },
+     "signature": {
+      "assetId": 718375678,
+      "digest": "sha256:f7c5c772bdda265cad47f778546018c829c35803bcdae9cf39d1e48f5f5b04d1"
+     },
+     "packages": {
+      "figcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.16.0/figcraft-0.16.0-linux-x86_64.tar.gz",
+        "hash": "sha256-1ef5n0nTpwPX9SQYVNx1b7PVX8lNDJXSlw24SjM5H1o=",
+        "assetId": 718376792,
+        "digest": "sha256:d5e7f99f49d3a703d7f5241854dc756fb3d55fc94d0c95d2970db84a33391f5a"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.16.0/figcraft-0.16.0-linux-aarch64.tar.gz",
+        "hash": "sha256-RCOTdwvj62RY5nEqMySW/PNysQex7+Ngd7o5+juekMo=",
+        "assetId": 718376103,
+        "digest": "sha256:442393770be3eb6458e6712a332496fcf372b107b1efe36077ba39fa3b9e90ca"
+       }
+      },
+      "figcraft-server": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.16.0/figcraft-server-0.16.0-linux-x86_64.tar.gz",
+        "hash": "sha256-yucyd6oPurG5CSTVhTXcRabgREfsBnDdeIqXqsaMqf4=",
+        "assetId": 718377373,
+        "digest": "sha256:cae73277aa0fbab1b90924d58535dc45a6e04447ec0670dd788a97aac68ca9fe"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.16.0/figcraft-server-0.16.0-linux-aarch64.tar.gz",
+        "hash": "sha256-YRukMVAcV0EOJYMCo6/H9fwVhB5kacIyJYeIqZy+AKw=",
+        "assetId": 718377316,
+        "digest": "sha256:611ba431501c57410e258302a3afc7f5fc15841e6469c232258788a99cbe00ac"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-06T20:21:35.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/lightcraft.json": {
+     "repo": "lightcraft",
+     "version": "0.19.0",
+     "tag": "v0.19.0",
+     "releaseId": 436948141,
+     "manifest": {
+      "assetId": 718387358,
+      "digest": "sha256:52a4b71656a528de32598b9984994016cdccc6fd5799a13fd5b577f951e80d59"
+     },
+     "signature": {
+      "assetId": 718387357,
+      "digest": "sha256:ff7ed6835823e744e5f7d5a365f2bfd0476c1ecaed9fcc4d8f7710316f3288a1"
+     },
+     "packages": {
+      "lightcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/lightcraft/releases/download/v0.19.0/lightcraft-0.19.0-linux-x86_64.tar.gz",
+        "hash": "sha256-lIXWS9vpjG2vutDqeqwPpJQw0KAIuaZrpD3+d7dVUok=",
+        "assetId": 718389118,
+        "digest": "sha256:9485d64bdbe98c6dafbad0ea7aac0fa49430d0a008b9a66ba43dfe77b7555289"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/lightcraft/releases/download/v0.19.0/lightcraft-0.19.0-linux-aarch64.tar.gz",
+        "hash": "sha256-UwZQK0+1g1+hZ8/EIRPdaBYUnCR6q7W8Bt+HcVuUgt8=",
+        "assetId": 718387768,
+        "digest": "sha256:5306502b4fb5835fa167cfc42113dd6816149c247aabb5bc06df87715b9482df"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-06T20:21:50.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/lightcraft.json": {
+     "repo": "lightcraft",
+     "version": "0.19.0",
+     "tag": "v0.19.0",
+     "releaseId": 436948141,
+     "manifest": {
+      "assetId": 718387358,
+      "digest": "sha256:52a4b71656a528de32598b9984994016cdccc6fd5799a13fd5b577f951e80d59"
+     },
+     "signature": {
+      "assetId": 718387357,
+      "digest": "sha256:ff7ed6835823e744e5f7d5a365f2bfd0476c1ecaed9fcc4d8f7710316f3288a1"
+     },
+     "packages": {
+      "lightcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/lightcraft/releases/download/v0.19.0/lightcraft-0.19.0-linux-x86_64.tar.gz",
+        "hash": "sha256-lIXWS9vpjG2vutDqeqwPpJQw0KAIuaZrpD3+d7dVUok=",
+        "assetId": 718389118,
+        "digest": "sha256:9485d64bdbe98c6dafbad0ea7aac0fa49430d0a008b9a66ba43dfe77b7555289"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/lightcraft/releases/download/v0.19.0/lightcraft-0.19.0-linux-aarch64.tar.gz",
+        "hash": "sha256-UwZQK0+1g1+hZ8/EIRPdaBYUnCR6q7W8Bt+HcVuUgt8=",
+        "assetId": 718387768,
+        "digest": "sha256:5306502b4fb5835fa167cfc42113dd6816149c247aabb5bc06df87715b9482df"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-06T20:21:50.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/materialcraft.json": {
+     "repo": "materialcraft",
+     "version": "0.2.0",
+     "tag": "v0.2.0",
+     "releaseId": 436924945,
+     "manifest": {
+      "assetId": 718349420,
+      "digest": "sha256:4849788a0131804f300f33c11b50dd3df8876b2525b650205eef3d9531f8824e"
+     },
+     "signature": {
+      "assetId": 718348372,
+      "digest": "sha256:90b68f696a0992d737fc2273850afa58c0f3e32827c2727ddcf5b0980063497b"
+     },
+     "packages": {
+      "materialcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/materialcraft/releases/download/v0.2.0/materialcraft-0.2.0-linux-x86_64.tar.gz",
+        "hash": "sha256-PHtsGkdV4gTObg6mgT8WIuscNsFaRdU7o3InNXgLJvY=",
+        "assetId": 718348737,
+        "digest": "sha256:3c7b6c1a4755e204ce6e0ea6813f1622eb1c36c15a45d53ba3722735780b26f6"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/materialcraft/releases/download/v0.2.0/materialcraft-0.2.0-linux-aarch64.tar.gz",
+        "hash": "sha256-+Ln9ixjYPcaRLt9OfXtrI3GYjBvKQ3k+ptpZFEi6XaU=",
+        "assetId": 718348528,
+        "digest": "sha256:f8b9fd8b18d83dc6912edf4e7d7b6b2371988c1bca43793ea6da591448ba5da5"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-06T20:21:54.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/materialcraft.json": {
+     "repo": "materialcraft",
+     "version": "0.2.0",
+     "tag": "v0.2.0",
+     "releaseId": 436924945,
+     "manifest": {
+      "assetId": 718349420,
+      "digest": "sha256:4849788a0131804f300f33c11b50dd3df8876b2525b650205eef3d9531f8824e"
+     },
+     "signature": {
+      "assetId": 718348372,
+      "digest": "sha256:90b68f696a0992d737fc2273850afa58c0f3e32827c2727ddcf5b0980063497b"
+     },
+     "packages": {
+      "materialcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/materialcraft/releases/download/v0.2.0/materialcraft-0.2.0-linux-x86_64.tar.gz",
+        "hash": "sha256-PHtsGkdV4gTObg6mgT8WIuscNsFaRdU7o3InNXgLJvY=",
+        "assetId": 718348737,
+        "digest": "sha256:3c7b6c1a4755e204ce6e0ea6813f1622eb1c36c15a45d53ba3722735780b26f6"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/materialcraft/releases/download/v0.2.0/materialcraft-0.2.0-linux-aarch64.tar.gz",
+        "hash": "sha256-+Ln9ixjYPcaRLt9OfXtrI3GYjBvKQ3k+ptpZFEi6XaU=",
+        "assetId": 718348528,
+        "digest": "sha256:f8b9fd8b18d83dc6912edf4e7d7b6b2371988c1bca43793ea6da591448ba5da5"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-06T20:21:54.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/artcraft.json": {
+     "repo": "artcraft",
+     "version": "0.41.1",
+     "tag": "artcraft-v0.41.1",
+     "releaseId": 437259848,
+     "manifest": {
+      "assetId": 719386062,
+      "digest": "sha256:5450801c2342f8ea05d9aa71cd31cb4b02462cebd9cab7abbe8884e17de6f075"
+     },
+     "signature": {
+      "assetId": 719386067,
+      "digest": "sha256:11d6e4c827592c407c5fb85b774fa196698e7b42e2bc791b6caa38825b13ef9f"
+     },
+     "packages": {
+      "artcraft-studio": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/artcraft/releases/download/artcraft-v0.41.1/artcraft-0.41.1-linux-x86_64.tar.gz",
+        "hash": "sha256-FJ+XSOozVTF3wCHhreR6GV+tJbiBEp1BeP5b2SKpTrQ=",
+        "assetId": 719386442,
+        "digest": "sha256:149f9748ea33553177c021e1ade47a195fad25b881129d4178fe5bd922a94eb4"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/artcraft/releases/download/artcraft-v0.41.1/artcraft-0.41.1-linux-aarch64.tar.gz",
+        "hash": "sha256-y3gOAuhyNJJ9M5yH3uA7Ik4WQTIHWL6BPTHUQtmmka4=",
+        "assetId": 719386210,
+        "digest": "sha256:cb780e02e87234927d339c87dee03b224e1641320758be813d31d442d9a691ae"
+       }
+      }
+     },
+     "licenses": {
+      "LICENSE-APACHE": {
+       "url": "https://raw.githubusercontent.com/storytold/artcraft/07ebde1454d4bc99f0d9add90618fb4d871f6b1d/LICENSE-APACHE",
+       "hash": "sha256-DVQuDIgE45qn836wDaWnYhSdxoLXgpRRKH4RuTjpRZQ="
+      },
+      "LICENSE-MIT": {
+       "url": "https://raw.githubusercontent.com/storytold/artcraft/07ebde1454d4bc99f0d9add90618fb4d871f6b1d/LICENSE-MIT",
+       "hash": "sha256-jOYIdTWFkg7Fth6PMksLIFyjReZjqShQ9O8LQkDD9Jw="
+      },
+      "NOTICE": {
+       "url": "https://raw.githubusercontent.com/storytold/artcraft/07ebde1454d4bc99f0d9add90618fb4d871f6b1d/NOTICE",
+       "hash": "sha256-81vQXIdhH9IHRvbDVM9PKypBU4JCH44CHkOMRycH8uo="
+      }
+     },
+     "released": {
+      "at": "2026-11-07T02:49:42.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/artcraft.json": {
+     "repo": "artcraft",
+     "version": "0.41.1",
+     "tag": "artcraft-v0.41.1",
+     "releaseId": 437259848,
+     "manifest": {
+      "assetId": 719386062,
+      "digest": "sha256:5450801c2342f8ea05d9aa71cd31cb4b02462cebd9cab7abbe8884e17de6f075"
+     },
+     "signature": {
+      "assetId": 719386067,
+      "digest": "sha256:11d6e4c827592c407c5fb85b774fa196698e7b42e2bc791b6caa38825b13ef9f"
+     },
+     "packages": {
+      "artcraft-studio": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/artcraft/releases/download/artcraft-v0.41.1/artcraft-0.41.1-linux-x86_64.tar.gz",
+        "hash": "sha256-FJ+XSOozVTF3wCHhreR6GV+tJbiBEp1BeP5b2SKpTrQ=",
+        "assetId": 719386442,
+        "digest": "sha256:149f9748ea33553177c021e1ade47a195fad25b881129d4178fe5bd922a94eb4"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/artcraft/releases/download/artcraft-v0.41.1/artcraft-0.41.1-linux-aarch64.tar.gz",
+        "hash": "sha256-y3gOAuhyNJJ9M5yH3uA7Ik4WQTIHWL6BPTHUQtmmka4=",
+        "assetId": 719386210,
+        "digest": "sha256:cb780e02e87234927d339c87dee03b224e1641320758be813d31d442d9a691ae"
+       }
+      }
+     },
+     "licenses": {
+      "LICENSE-APACHE": {
+       "url": "https://raw.githubusercontent.com/storytold/artcraft/07ebde1454d4bc99f0d9add90618fb4d871f6b1d/LICENSE-APACHE",
+       "hash": "sha256-DVQuDIgE45qn836wDaWnYhSdxoLXgpRRKH4RuTjpRZQ="
+      },
+      "LICENSE-MIT": {
+       "url": "https://raw.githubusercontent.com/storytold/artcraft/07ebde1454d4bc99f0d9add90618fb4d871f6b1d/LICENSE-MIT",
+       "hash": "sha256-jOYIdTWFkg7Fth6PMksLIFyjReZjqShQ9O8LQkDD9Jw="
+      },
+      "NOTICE": {
+       "url": "https://raw.githubusercontent.com/storytold/artcraft/07ebde1454d4bc99f0d9add90618fb4d871f6b1d/NOTICE",
+       "hash": "sha256-81vQXIdhH9IHRvbDVM9PKypBU4JCH44CHkOMRycH8uo="
+      }
+     },
+     "released": {
+      "at": "2026-11-07T02:49:42.000Z",
+      "kind": "published"
+     }
+    }
+   }
+  },
+  {
+   "commit": "07b19a171fb35474a79ed5205adaa20d0f78c1f8",
+   "at": "2026-11-09T11:56:38.000Z",
+   "message": "Update materialcraft 0.3.0\n\nArtcraft-Release: 2026.11.09.1\nArtcraft-Queue: 11\nArtcraft-Waited: 0\n",
+   "files": {
+    "versions/materialcraft.json": {
+     "repo": "materialcraft",
+     "version": "0.3.0",
+     "tag": "v0.3.0",
+     "releaseId": 439069610,
+     "manifest": {
+      "assetId": 727297437,
+      "digest": "sha256:1cbfa62b717f8a283754527e31aa417cd25327d325cd8fcd3354afda99cd6e5a"
+     },
+     "signature": {
+      "assetId": 727295570,
+      "digest": "sha256:5a8208d909b823c68a6292af24ce626cecb3e21ec854c1bc26e5f412b59edf00"
+     },
+     "packages": {
+      "materialcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/materialcraft/releases/download/v0.3.0/materialcraft-0.3.0-linux-x86_64.tar.gz",
+        "hash": "sha256-0UOdHwc+K6zY4YoSPXuMJMDEF0ORmzzK4yqTIYP3YoU=",
+        "assetId": 727296048,
+        "digest": "sha256:d1439d1f073e2bacd8e18a123d7b8c24c0c41743919b3ccae32a932183f76285"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/materialcraft/releases/download/v0.3.0/materialcraft-0.3.0-linux-aarch64.tar.gz",
+        "hash": "sha256-JkZ55KYmEqun8QJpn7Z2RsmTBgSSsvGP0/qoqjYY3VU=",
+        "assetId": 727295815,
+        "digest": "sha256:264679e4a62612aba7f102699fb67646c993060492b2f18fd3faa8aa3618dd55"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-09T11:49:44.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/materialcraft.json": {
+     "repo": "materialcraft",
+     "version": "0.3.0",
+     "tag": "v0.3.0",
+     "releaseId": 439069610,
+     "manifest": {
+      "assetId": 727297437,
+      "digest": "sha256:1cbfa62b717f8a283754527e31aa417cd25327d325cd8fcd3354afda99cd6e5a"
+     },
+     "signature": {
+      "assetId": 727295570,
+      "digest": "sha256:5a8208d909b823c68a6292af24ce626cecb3e21ec854c1bc26e5f412b59edf00"
+     },
+     "packages": {
+      "materialcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/materialcraft/releases/download/v0.3.0/materialcraft-0.3.0-linux-x86_64.tar.gz",
+        "hash": "sha256-0UOdHwc+K6zY4YoSPXuMJMDEF0ORmzzK4yqTIYP3YoU=",
+        "assetId": 727296048,
+        "digest": "sha256:d1439d1f073e2bacd8e18a123d7b8c24c0c41743919b3ccae32a932183f76285"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/materialcraft/releases/download/v0.3.0/materialcraft-0.3.0-linux-aarch64.tar.gz",
+        "hash": "sha256-JkZ55KYmEqun8QJpn7Z2RsmTBgSSsvGP0/qoqjYY3VU=",
+        "assetId": 727295815,
+        "digest": "sha256:264679e4a62612aba7f102699fb67646c993060492b2f18fd3faa8aa3618dd55"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-09T11:49:44.000Z",
+      "kind": "published"
+     }
+    }
+   }
+  },
+  {
+   "commit": "6f8fa31f1c5202ca6537bb1fce2c58fb1598b0a7",
+   "at": "2026-11-09T12:04:30.000Z",
+   "message": "Update lightcraft 0.20.0\n\nArtcraft-Release: 2026.11.09.2\nArtcraft-Queue: 44\nArtcraft-Waited: 0\n",
+   "files": {
+    "versions/lightcraft.json": {
+     "repo": "lightcraft",
+     "version": "0.20.0",
+     "tag": "v0.20.0",
+     "releaseId": 439076707,
+     "manifest": {
+      "assetId": 727315922,
+      "digest": "sha256:41bf9e2948677ccbb6a37a66faf21b00285e4008d40f9a0b1cef2d2fcbf82b5c"
+     },
+     "signature": {
+      "assetId": 727315928,
+      "digest": "sha256:209c5c884bcbb2dca6b71e8bfecb58dbf86fe9c3c3cd459d1f82340f0d6ac2ff"
+     },
+     "packages": {
+      "lightcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/lightcraft/releases/download/v0.20.0/lightcraft-0.20.0-linux-x86_64.tar.gz",
+        "hash": "sha256-jLXu2CWy3Z4PpCaAEp0+WqcY8HGW1nzF0FdB8OapzCU=",
+        "assetId": 727316688,
+        "digest": "sha256:8cb5eed825b2dd9e0fa42680129d3e5aa718f07196d67cc5d05741f0e6a9cc25"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/lightcraft/releases/download/v0.20.0/lightcraft-0.20.0-linux-aarch64.tar.gz",
+        "hash": "sha256-ktOf9OsgfkHa/kux7cVwigSGcrKpJQCoQL7nhp1QT4U=",
+        "assetId": 727316237,
+        "digest": "sha256:92d39ff4eb207e41dafe4bb1edc5708a048672b2a92500a840bee7869d504f85"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-09T11:57:03.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/lightcraft.json": {
+     "repo": "lightcraft",
+     "version": "0.20.0",
+     "tag": "v0.20.0",
+     "releaseId": 439076707,
+     "manifest": {
+      "assetId": 727315922,
+      "digest": "sha256:41bf9e2948677ccbb6a37a66faf21b00285e4008d40f9a0b1cef2d2fcbf82b5c"
+     },
+     "signature": {
+      "assetId": 727315928,
+      "digest": "sha256:209c5c884bcbb2dca6b71e8bfecb58dbf86fe9c3c3cd459d1f82340f0d6ac2ff"
+     },
+     "packages": {
+      "lightcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/lightcraft/releases/download/v0.20.0/lightcraft-0.20.0-linux-x86_64.tar.gz",
+        "hash": "sha256-jLXu2CWy3Z4PpCaAEp0+WqcY8HGW1nzF0FdB8OapzCU=",
+        "assetId": 727316688,
+        "digest": "sha256:8cb5eed825b2dd9e0fa42680129d3e5aa718f07196d67cc5d05741f0e6a9cc25"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/lightcraft/releases/download/v0.20.0/lightcraft-0.20.0-linux-aarch64.tar.gz",
+        "hash": "sha256-ktOf9OsgfkHa/kux7cVwigSGcrKpJQCoQL7nhp1QT4U=",
+        "assetId": 727316237,
+        "digest": "sha256:92d39ff4eb207e41dafe4bb1edc5708a048672b2a92500a840bee7869d504f85"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-09T11:57:03.000Z",
+      "kind": "published"
+     }
+    }
+   }
+  },
+  {
+   "commit": "0c65e87f930b7b93436d9ce07f4267a2bb9f4799",
+   "at": "2026-11-09T12:18:14.000Z",
+   "message": "Update pdfcraft 0.20.0\n\nArtcraft-Release: 2026.11.09.3\nArtcraft-Queue: 24\nArtcraft-Waited: 0\n",
+   "files": {
+    "versions/pdfcraft.json": {
+     "repo": "pdfcraft",
+     "version": "0.20.0",
+     "tag": "v0.20.0",
+     "releaseId": 439089389,
+     "manifest": {
+      "assetId": 727353812,
+      "digest": "sha256:1f02ed34136596e9d117c92a17e043e3cf07152e440c32e55e15286dc54ebf2d"
+     },
+     "signature": {
+      "assetId": 727353814,
+      "digest": "sha256:bf34f811249464c54052ea0553347e6ec7c541e8256438ae7c84fd5d6d4694e9"
+     },
+     "packages": {
+      "pdfcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.20.0/pdfcraft-0.20.0-linux-x86_64.tar.gz",
+        "hash": "sha256-Gg8px6auBJFhJiMdhDsuqDaiG42wny70FpUQFaQ36Lw=",
+        "assetId": 727354721,
+        "digest": "sha256:1a0f29c7a6ae04916126231d843b2ea836a21b8db09f2ef416951015a437e8bc"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.20.0/pdfcraft-0.20.0-linux-aarch64.tar.gz",
+        "hash": "sha256-PXlvqtW29RBGqIAMYolPftbKs/e8eFC/fntHxh2gfjk=",
+        "assetId": 727354240,
+        "digest": "sha256:3d796faad5b6f51046a8800c62894f7ed6cab3f7bc7850bf7e7b47c61da07e39"
+       }
+      },
+      "pdfcraft-cli": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.20.0/pdfcraft-cli-0.20.0-linux-x86_64.tar.gz",
+        "hash": "sha256-pbKWfQV6Egkfjdr14kemCLFmKO4Ml1LJwfrChhB9wjg=",
+        "assetId": 727355136,
+        "digest": "sha256:a5b2967d057a12091f8ddaf5e247a608b16628ee0c9752c9c1fac286107dc238"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.20.0/pdfcraft-cli-0.20.0-linux-aarch64.tar.gz",
+        "hash": "sha256-iuEZZnn42mDGvsfGHK+SkE5tov0KFZFH3VP3SAWZPTY=",
+        "assetId": 727355112,
+        "digest": "sha256:8ae1196679f8da60c6bec7c61caf92904e6da2fd0a159147dd53f74805993d36"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-09T12:10:51.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/pdfcraft.json": {
+     "repo": "pdfcraft",
+     "version": "0.20.0",
+     "tag": "v0.20.0",
+     "releaseId": 439089389,
+     "manifest": {
+      "assetId": 727353812,
+      "digest": "sha256:1f02ed34136596e9d117c92a17e043e3cf07152e440c32e55e15286dc54ebf2d"
+     },
+     "signature": {
+      "assetId": 727353814,
+      "digest": "sha256:bf34f811249464c54052ea0553347e6ec7c541e8256438ae7c84fd5d6d4694e9"
+     },
+     "packages": {
+      "pdfcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.20.0/pdfcraft-0.20.0-linux-x86_64.tar.gz",
+        "hash": "sha256-Gg8px6auBJFhJiMdhDsuqDaiG42wny70FpUQFaQ36Lw=",
+        "assetId": 727354721,
+        "digest": "sha256:1a0f29c7a6ae04916126231d843b2ea836a21b8db09f2ef416951015a437e8bc"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.20.0/pdfcraft-0.20.0-linux-aarch64.tar.gz",
+        "hash": "sha256-PXlvqtW29RBGqIAMYolPftbKs/e8eFC/fntHxh2gfjk=",
+        "assetId": 727354240,
+        "digest": "sha256:3d796faad5b6f51046a8800c62894f7ed6cab3f7bc7850bf7e7b47c61da07e39"
+       }
+      },
+      "pdfcraft-cli": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.20.0/pdfcraft-cli-0.20.0-linux-x86_64.tar.gz",
+        "hash": "sha256-pbKWfQV6Egkfjdr14kemCLFmKO4Ml1LJwfrChhB9wjg=",
+        "assetId": 727355136,
+        "digest": "sha256:a5b2967d057a12091f8ddaf5e247a608b16628ee0c9752c9c1fac286107dc238"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.20.0/pdfcraft-cli-0.20.0-linux-aarch64.tar.gz",
+        "hash": "sha256-iuEZZnn42mDGvsfGHK+SkE5tov0KFZFH3VP3SAWZPTY=",
+        "assetId": 727355112,
+        "digest": "sha256:8ae1196679f8da60c6bec7c61caf92904e6da2fd0a159147dd53f74805993d36"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-09T12:10:51.000Z",
+      "kind": "published"
+     }
+    }
+   }
+  },
+  {
+   "commit": "4c2245de9ec34593b71a88d57022c964580e42a7",
+   "at": "2026-11-09T12:26:11.000Z",
+   "message": "Update photocraft 0.22.0\n\nArtcraft-Release: 2026.11.09.4\nArtcraft-Queue: 19\nArtcraft-Waited: 0\n",
+   "files": {
+    "versions/photocraft.json": {
+     "repo": "photocraft",
+     "version": "0.22.0",
+     "tag": "v0.22.0",
+     "releaseId": 439097058,
+     "manifest": {
+      "assetId": 727378548,
+      "digest": "sha256:54b118024d0b5685b282c2a862213786a11f2d200d5405360bc2856f57caa99b"
+     },
+     "signature": {
+      "assetId": 727378542,
+      "digest": "sha256:4d374abaf0051f1ca747363c7b9efcadbd32e704d15a77d5736baac94b603d6f"
+     },
+     "packages": {
+      "photocraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/photocraft/releases/download/v0.22.0/photocraft-0.22.0-linux-x86_64.tar.gz",
+        "hash": "sha256-7t6vpGdd+9HyNR5r+kuC9URTaU6zbaG71cqLv19U8gI=",
+        "assetId": 727379533,
+        "digest": "sha256:eedeafa4675dfbd1f2351e6bfa4b82f54453694eb36da1bbd5ca8bbf5f54f202"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/photocraft/releases/download/v0.22.0/photocraft-0.22.0-linux-aarch64.tar.gz",
+        "hash": "sha256-EX1bptSlLL4tKEx4poLaQgBjp7RgDaszJUWyu3I5o2o=",
+        "assetId": 727378974,
+        "digest": "sha256:117d5ba6d4a52cbe2d284c78a682da420063a7b4600dab332545b2bb7239a36a"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-09T12:19:04.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/photocraft.json": {
+     "repo": "photocraft",
+     "version": "0.22.0",
+     "tag": "v0.22.0",
+     "releaseId": 439097058,
+     "manifest": {
+      "assetId": 727378548,
+      "digest": "sha256:54b118024d0b5685b282c2a862213786a11f2d200d5405360bc2856f57caa99b"
+     },
+     "signature": {
+      "assetId": 727378542,
+      "digest": "sha256:4d374abaf0051f1ca747363c7b9efcadbd32e704d15a77d5736baac94b603d6f"
+     },
+     "packages": {
+      "photocraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/photocraft/releases/download/v0.22.0/photocraft-0.22.0-linux-x86_64.tar.gz",
+        "hash": "sha256-7t6vpGdd+9HyNR5r+kuC9URTaU6zbaG71cqLv19U8gI=",
+        "assetId": 727379533,
+        "digest": "sha256:eedeafa4675dfbd1f2351e6bfa4b82f54453694eb36da1bbd5ca8bbf5f54f202"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/photocraft/releases/download/v0.22.0/photocraft-0.22.0-linux-aarch64.tar.gz",
+        "hash": "sha256-EX1bptSlLL4tKEx4poLaQgBjp7RgDaszJUWyu3I5o2o=",
+        "assetId": 727378974,
+        "digest": "sha256:117d5ba6d4a52cbe2d284c78a682da420063a7b4600dab332545b2bb7239a36a"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-09T12:19:04.000Z",
+      "kind": "published"
+     }
+    }
+   }
+  },
+  {
+   "commit": "530db37c41635f940c1aeeda5686a7ca87855f41",
+   "at": "2026-11-09T12:34:08.000Z",
+   "message": "Update figcraft 0.17.0\n\nArtcraft-Release: 2026.11.09.5\nArtcraft-Queue: 19\nArtcraft-Waited: 326\n",
+   "files": {
+    "versions/figcraft.json": {
+     "repo": "figcraft",
+     "version": "0.17.0",
+     "tag": "v0.17.0",
+     "releaseId": 439099054,
+     "manifest": {
+      "assetId": 727385979,
+      "digest": "sha256:fb6181f71b04475d9b443bfc7c2baadf22086f7a6146f523651c4d8e0d207839"
+     },
+     "signature": {
+      "assetId": 727385990,
+      "digest": "sha256:ac76aa0506d08781a304a603a27405cf8c955f6ac389328e6fea4ea8a8473a62"
+     },
+     "packages": {
+      "figcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.17.0/figcraft-0.17.0-linux-x86_64.tar.gz",
+        "hash": "sha256-68i/pNoCaGDP+CHSAk1vUXBKxpR4lp9bKWEdu5am5GQ=",
+        "assetId": 727386617,
+        "digest": "sha256:ebc8bfa4da026860cff821d2024d6f51704ac69478969f5b29611dbb96a6e464"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.17.0/figcraft-0.17.0-linux-aarch64.tar.gz",
+        "hash": "sha256-5yVTaMj4n44y2mODUAFhoL0+vXn8Uotk3Vn9QVqUWnU=",
+        "assetId": 727386239,
+        "digest": "sha256:e7255368c8f89f8e32da6383500161a0bd3ebd79fc528b64dd59fd415a945a75"
+       }
+      },
+      "figcraft-server": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.17.0/figcraft-server-0.17.0-linux-x86_64.tar.gz",
+        "hash": "sha256-PJZQMR5NBA/TL6i5BPrhrTIlPEg+nf69yBslp8G++9g=",
+        "assetId": 727386957,
+        "digest": "sha256:3c9650311e4d040fd32fa8b904fae1ad32253c483e9dfebdc81b25a7c1befbd8"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.17.0/figcraft-server-0.17.0-linux-aarch64.tar.gz",
+        "hash": "sha256-BLPpMwYPn+Qt6tZU/07sDGdsu9dRj5vWWW9iPwKiJ3o=",
+        "assetId": 727386899,
+        "digest": "sha256:04b3e933060f9fe42dead654ff4eec0c676cbbd7518f9bd6596f623f02a2277a"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-09T12:21:12.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/figcraft.json": {
+     "repo": "figcraft",
+     "version": "0.17.0",
+     "tag": "v0.17.0",
+     "releaseId": 439099054,
+     "manifest": {
+      "assetId": 727385979,
+      "digest": "sha256:fb6181f71b04475d9b443bfc7c2baadf22086f7a6146f523651c4d8e0d207839"
+     },
+     "signature": {
+      "assetId": 727385990,
+      "digest": "sha256:ac76aa0506d08781a304a603a27405cf8c955f6ac389328e6fea4ea8a8473a62"
+     },
+     "packages": {
+      "figcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.17.0/figcraft-0.17.0-linux-x86_64.tar.gz",
+        "hash": "sha256-68i/pNoCaGDP+CHSAk1vUXBKxpR4lp9bKWEdu5am5GQ=",
+        "assetId": 727386617,
+        "digest": "sha256:ebc8bfa4da026860cff821d2024d6f51704ac69478969f5b29611dbb96a6e464"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.17.0/figcraft-0.17.0-linux-aarch64.tar.gz",
+        "hash": "sha256-5yVTaMj4n44y2mODUAFhoL0+vXn8Uotk3Vn9QVqUWnU=",
+        "assetId": 727386239,
+        "digest": "sha256:e7255368c8f89f8e32da6383500161a0bd3ebd79fc528b64dd59fd415a945a75"
+       }
+      },
+      "figcraft-server": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.17.0/figcraft-server-0.17.0-linux-x86_64.tar.gz",
+        "hash": "sha256-PJZQMR5NBA/TL6i5BPrhrTIlPEg+nf69yBslp8G++9g=",
+        "assetId": 727386957,
+        "digest": "sha256:3c9650311e4d040fd32fa8b904fae1ad32253c483e9dfebdc81b25a7c1befbd8"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.17.0/figcraft-server-0.17.0-linux-aarch64.tar.gz",
+        "hash": "sha256-BLPpMwYPn+Qt6tZU/07sDGdsu9dRj5vWWW9iPwKiJ3o=",
+        "assetId": 727386899,
+        "digest": "sha256:04b3e933060f9fe42dead654ff4eec0c676cbbd7518f9bd6596f623f02a2277a"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-09T12:21:12.000Z",
+      "kind": "published"
+     }
+    }
+   }
+  },
+  {
+   "commit": "c2458af3c825e92be54277739b555fb39238fc22",
+   "at": "2026-11-11T17:20:03.000Z",
+   "message": "Update materialcraft 0.4.0\n\nArtcraft-Release: 2026.11.11.1\nArtcraft-Queue: 10\nArtcraft-Waited: 0\n",
+   "files": {
+    "versions/materialcraft.json": {
+     "repo": "materialcraft",
+     "version": "0.4.0",
+     "tag": "v0.4.0",
+     "releaseId": 441982061,
+     "manifest": {
+      "assetId": 736271874,
+      "digest": "sha256:08db5c4c2091e1f4d877c178be89dcfc965b1f2500b503610c67ce6d0e12a4b9"
+     },
+     "signature": {
+      "assetId": 736271878,
+      "digest": "sha256:7cdf8660017001568f0208cc3779af774b1b4799182d268ced9f74366d23a6de"
+     },
+     "packages": {
+      "materialcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/materialcraft/releases/download/v0.4.0/materialcraft-0.4.0-linux-x86_64.tar.gz",
+        "hash": "sha256-rGp0I4apLErb0UUtVTDwwkSQeP3J4HAzPoM+bSvfjPc=",
+        "assetId": 736272397,
+        "digest": "sha256:ac6a742386a92c4adbd1452d5530f0c2449078fdc9e070333e833e6d2bdf8cf7"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/materialcraft/releases/download/v0.4.0/materialcraft-0.4.0-linux-aarch64.tar.gz",
+        "hash": "sha256-wLswTfIG1orwhm1+Znm+uPDN/c2WibVOWQPRikOdOIo=",
+        "assetId": 736272105,
+        "digest": "sha256:c0bb304df206d68af0866d7e6679beb8f0cdfdcd9689b54e5903d18a439d388a"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-11T17:13:24.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/materialcraft.json": {
+     "repo": "materialcraft",
+     "version": "0.4.0",
+     "tag": "v0.4.0",
+     "releaseId": 441982061,
+     "manifest": {
+      "assetId": 736271874,
+      "digest": "sha256:08db5c4c2091e1f4d877c178be89dcfc965b1f2500b503610c67ce6d0e12a4b9"
+     },
+     "signature": {
+      "assetId": 736271878,
+      "digest": "sha256:7cdf8660017001568f0208cc3779af774b1b4799182d268ced9f74366d23a6de"
+     },
+     "packages": {
+      "materialcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/materialcraft/releases/download/v0.4.0/materialcraft-0.4.0-linux-x86_64.tar.gz",
+        "hash": "sha256-rGp0I4apLErb0UUtVTDwwkSQeP3J4HAzPoM+bSvfjPc=",
+        "assetId": 736272397,
+        "digest": "sha256:ac6a742386a92c4adbd1452d5530f0c2449078fdc9e070333e833e6d2bdf8cf7"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/materialcraft/releases/download/v0.4.0/materialcraft-0.4.0-linux-aarch64.tar.gz",
+        "hash": "sha256-wLswTfIG1orwhm1+Znm+uPDN/c2WibVOWQPRikOdOIo=",
+        "assetId": 736272105,
+        "digest": "sha256:c0bb304df206d68af0866d7e6679beb8f0cdfdcd9689b54e5903d18a439d388a"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-11T17:13:24.000Z",
+      "kind": "published"
+     }
+    }
+   }
+  },
+  {
+   "commit": "c9164fd64f884b7bad9fea5cfdb2c8ac58e394d2",
+   "at": "2026-11-11T17:47:06.000Z",
+   "message": "Update pdfcraft 0.21.0\n\nArtcraft-Release: 2026.11.11.2\nArtcraft-Queue: 21\nArtcraft-Waited: 0\n",
+   "files": {
+    "versions/pdfcraft.json": {
+     "repo": "pdfcraft",
+     "version": "0.21.0",
+     "tag": "v0.21.0",
+     "releaseId": 442006433,
+     "manifest": {
+      "assetId": 736341785,
+      "digest": "sha256:4031a6ea1f08f9a4288b4e1adbe081e63f444559632a00e745fedd2afd7182e5"
+     },
+     "signature": {
+      "assetId": 736341791,
+      "digest": "sha256:30f387247497043c74dd385575bc13272ca39fe52b739f127341035d01e30d5c"
+     },
+     "packages": {
+      "pdfcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.0/pdfcraft-0.21.0-linux-x86_64.tar.gz",
+        "hash": "sha256-eajHbiOtbmcd47hWpHaTavwAD4qn/v/xkNQ95i+jW6E=",
+        "assetId": 736342840,
+        "digest": "sha256:79a8c76e23ad6e671de3b856a476936afc000f8aa7fefff190d43de62fa35ba1"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.0/pdfcraft-0.21.0-linux-aarch64.tar.gz",
+        "hash": "sha256-HNeaGE1YqiOS+9wAdWDjk5h42W8SssBslvTzhfxhPQk=",
+        "assetId": 736342257,
+        "digest": "sha256:1cd79a184d58aa2392fbdc007560e3939878d96f12b2c06c96f4f385fc613d09"
+       }
+      },
+      "pdfcraft-cli": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.0/pdfcraft-cli-0.21.0-linux-x86_64.tar.gz",
+        "hash": "sha256-ZcXTIO7+nDKaCC83qTmR0Hy32ZLymo/ykzqDroGnCyE=",
+        "assetId": 736343155,
+        "digest": "sha256:65c5d320eefe9c329a082f37a93991d07cb7d992f29a8ff2933a83ae81a70b21"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.0/pdfcraft-cli-0.21.0-linux-aarch64.tar.gz",
+        "hash": "sha256-MYAJku9HLJYryfrVgskBdlsm4HvBxvxiujwDSUBAhY8=",
+        "assetId": 736343145,
+        "digest": "sha256:31800992ef472c962bc9fad582c901765b26e07bc1c6fc62ba3c03494040858f"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-11T17:39:29.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/pdfcraft.json": {
+     "repo": "pdfcraft",
+     "version": "0.21.0",
+     "tag": "v0.21.0",
+     "releaseId": 442006433,
+     "manifest": {
+      "assetId": 736341785,
+      "digest": "sha256:4031a6ea1f08f9a4288b4e1adbe081e63f444559632a00e745fedd2afd7182e5"
+     },
+     "signature": {
+      "assetId": 736341791,
+      "digest": "sha256:30f387247497043c74dd385575bc13272ca39fe52b739f127341035d01e30d5c"
+     },
+     "packages": {
+      "pdfcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.0/pdfcraft-0.21.0-linux-x86_64.tar.gz",
+        "hash": "sha256-eajHbiOtbmcd47hWpHaTavwAD4qn/v/xkNQ95i+jW6E=",
+        "assetId": 736342840,
+        "digest": "sha256:79a8c76e23ad6e671de3b856a476936afc000f8aa7fefff190d43de62fa35ba1"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.0/pdfcraft-0.21.0-linux-aarch64.tar.gz",
+        "hash": "sha256-HNeaGE1YqiOS+9wAdWDjk5h42W8SssBslvTzhfxhPQk=",
+        "assetId": 736342257,
+        "digest": "sha256:1cd79a184d58aa2392fbdc007560e3939878d96f12b2c06c96f4f385fc613d09"
+       }
+      },
+      "pdfcraft-cli": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.0/pdfcraft-cli-0.21.0-linux-x86_64.tar.gz",
+        "hash": "sha256-ZcXTIO7+nDKaCC83qTmR0Hy32ZLymo/ykzqDroGnCyE=",
+        "assetId": 736343155,
+        "digest": "sha256:65c5d320eefe9c329a082f37a93991d07cb7d992f29a8ff2933a83ae81a70b21"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.0/pdfcraft-cli-0.21.0-linux-aarch64.tar.gz",
+        "hash": "sha256-MYAJku9HLJYryfrVgskBdlsm4HvBxvxiujwDSUBAhY8=",
+        "assetId": 736343145,
+        "digest": "sha256:31800992ef472c962bc9fad582c901765b26e07bc1c6fc62ba3c03494040858f"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-11T17:39:29.000Z",
+      "kind": "published"
+     }
+    }
+   }
+  },
+  {
+   "commit": "a6b4744d94ad3f4e075477e91a43e48e89149c39",
+   "at": "2026-11-11T21:40:05.000Z",
+   "message": "Update lightcraft 0.21.0\n\nArtcraft-Release: 2026.11.11.3\nArtcraft-Queue: 10\nArtcraft-Waited: 0\n",
+   "files": {
+    "versions/lightcraft.json": {
+     "repo": "lightcraft",
+     "version": "0.21.0",
+     "tag": "v0.21.0",
+     "releaseId": 442202133,
+     "manifest": {
+      "assetId": 736947648,
+      "digest": "sha256:f84105abca4f3ff9d3c5f15b6f0f77d9f6464ff030893578b945dbaf33b23d83"
+     },
+     "signature": {
+      "assetId": 736947642,
+      "digest": "sha256:66b730a66df6fc323a3d3db4ae0b0ea8f2b2fcff3a4909a6a4d887cc15829f6b"
+     },
+     "packages": {
+      "lightcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/lightcraft/releases/download/v0.21.0/lightcraft-0.21.0-linux-x86_64.tar.gz",
+        "hash": "sha256-fn2lU96hACaKBY8TXHxK0fT7drTYJC4U9w8W7YkllYA=",
+        "assetId": 736948380,
+        "digest": "sha256:7e7da553dea100268a058f135c7c4ad1f4fb76b4d8242e14f70f16ed89259580"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/lightcraft/releases/download/v0.21.0/lightcraft-0.21.0-linux-aarch64.tar.gz",
+        "hash": "sha256-I0cddfSYFPpzTZSpkNHmxhRBrvBAPnuUVxsJ6fsY9Rs=",
+        "assetId": 736947955,
+        "digest": "sha256:23471d75f49814fa734d94a990d1e6c61441aef0403e7b94571b09e9fb18f51b"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-11T21:33:13.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/lightcraft.json": {
+     "repo": "lightcraft",
+     "version": "0.21.0",
+     "tag": "v0.21.0",
+     "releaseId": 442202133,
+     "manifest": {
+      "assetId": 736947648,
+      "digest": "sha256:f84105abca4f3ff9d3c5f15b6f0f77d9f6464ff030893578b945dbaf33b23d83"
+     },
+     "signature": {
+      "assetId": 736947642,
+      "digest": "sha256:66b730a66df6fc323a3d3db4ae0b0ea8f2b2fcff3a4909a6a4d887cc15829f6b"
+     },
+     "packages": {
+      "lightcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/lightcraft/releases/download/v0.21.0/lightcraft-0.21.0-linux-x86_64.tar.gz",
+        "hash": "sha256-fn2lU96hACaKBY8TXHxK0fT7drTYJC4U9w8W7YkllYA=",
+        "assetId": 736948380,
+        "digest": "sha256:7e7da553dea100268a058f135c7c4ad1f4fb76b4d8242e14f70f16ed89259580"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/lightcraft/releases/download/v0.21.0/lightcraft-0.21.0-linux-aarch64.tar.gz",
+        "hash": "sha256-I0cddfSYFPpzTZSpkNHmxhRBrvBAPnuUVxsJ6fsY9Rs=",
+        "assetId": 736947955,
+        "digest": "sha256:23471d75f49814fa734d94a990d1e6c61441aef0403e7b94571b09e9fb18f51b"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-11T21:33:13.000Z",
+      "kind": "published"
+     }
+    }
+   }
+  },
+  {
+   "commit": "1bc5a2b5cf15a5b0d69a4811b9f63ade94163929",
+   "at": "2026-11-11T22:06:28.000Z",
+   "message": "Update photocraft 0.23.0\n\nArtcraft-Release: 2026.11.11.4\nArtcraft-Queue: 31\nArtcraft-Waited: 0\n",
+   "files": {
+    "versions/photocraft.json": {
+     "repo": "photocraft",
+     "version": "0.23.0",
+     "tag": "v0.23.0",
+     "releaseId": 442232444,
+     "manifest": {
+      "assetId": 737043907,
+      "digest": "sha256:8eaf0613d88ed884633b98c16464eefae5d94a4529ce3b0927bbb9d25bb82896"
+     },
+     "signature": {
+      "assetId": 737043905,
+      "digest": "sha256:c7346033522331fc5651481403e289d0678c8c1ad99a2fea6eae6440512519c4"
+     },
+     "packages": {
+      "photocraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/photocraft/releases/download/v0.23.0/photocraft-0.23.0-linux-x86_64.tar.gz",
+        "hash": "sha256-mFjuI0hU98OQ8+q0c0rqUxAMyRLCyNzqoClCe3XdIvg=",
+        "assetId": 737044849,
+        "digest": "sha256:9858ee234854f7c390f3eab4734aea53100cc912c2c8dceaa029427b75dd22f8"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/photocraft/releases/download/v0.23.0/photocraft-0.23.0-linux-aarch64.tar.gz",
+        "hash": "sha256-LOiXgpLTFI4YUmtUC20M9eqbmkt4LTRcyk08A+i6dRw=",
+        "assetId": 737044327,
+        "digest": "sha256:2ce8978292d3148e18526b540b6d0cf5ea9b9a4b782d345cca4d3c03e8ba751c"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-11T21:59:33.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/photocraft.json": {
+     "repo": "photocraft",
+     "version": "0.23.0",
+     "tag": "v0.23.0",
+     "releaseId": 442232444,
+     "manifest": {
+      "assetId": 737043907,
+      "digest": "sha256:8eaf0613d88ed884633b98c16464eefae5d94a4529ce3b0927bbb9d25bb82896"
+     },
+     "signature": {
+      "assetId": 737043905,
+      "digest": "sha256:c7346033522331fc5651481403e289d0678c8c1ad99a2fea6eae6440512519c4"
+     },
+     "packages": {
+      "photocraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/photocraft/releases/download/v0.23.0/photocraft-0.23.0-linux-x86_64.tar.gz",
+        "hash": "sha256-mFjuI0hU98OQ8+q0c0rqUxAMyRLCyNzqoClCe3XdIvg=",
+        "assetId": 737044849,
+        "digest": "sha256:9858ee234854f7c390f3eab4734aea53100cc912c2c8dceaa029427b75dd22f8"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/photocraft/releases/download/v0.23.0/photocraft-0.23.0-linux-aarch64.tar.gz",
+        "hash": "sha256-LOiXgpLTFI4YUmtUC20M9eqbmkt4LTRcyk08A+i6dRw=",
+        "assetId": 737044327,
+        "digest": "sha256:2ce8978292d3148e18526b540b6d0cf5ea9b9a4b782d345cca4d3c03e8ba751c"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-11T21:59:33.000Z",
+      "kind": "published"
+     }
+    }
+   }
+  },
+  {
+   "commit": "c1807182f5bee4e6d3c3eca824456dc7637f4f76",
+   "at": "2026-11-11T22:48:00.000Z",
+   "message": "Update figcraft 0.18.0\n\nArtcraft-Release: 2026.11.11.5\nArtcraft-Queue: 8\nArtcraft-Waited: 0\n",
+   "files": {
+    "versions/figcraft.json": {
+     "repo": "figcraft",
+     "version": "0.18.0",
+     "tag": "v0.18.0",
+     "releaseId": 442266175,
+     "manifest": {
+      "assetId": 737158747,
+      "digest": "sha256:0568c2e377b5a1be5bc4ca795c71fe20b0e2025f80fcb8f05463d508cc4e6c48"
+     },
+     "signature": {
+      "assetId": 737158744,
+      "digest": "sha256:203c201b622dfbf521c7eb748a5f43d8585f9edb14cedbb7c193ecc2fe71a013"
+     },
+     "packages": {
+      "figcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.0/figcraft-0.18.0-linux-x86_64.tar.gz",
+        "hash": "sha256-jHZKpXlYqkY0w/0taHk6f4jQsyZtH0pIe3inB607JRM=",
+        "assetId": 737159288,
+        "digest": "sha256:8c764aa57958aa4634c3fd2d68793a7f88d0b3266d1f4a487b78a707ad3b2513"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.0/figcraft-0.18.0-linux-aarch64.tar.gz",
+        "hash": "sha256-u0/lG0Qkli3rF1AwzQVIWxI40TPdwJ8RfK7gaHB6LqY=",
+        "assetId": 737158990,
+        "digest": "sha256:bb4fe51b4424962deb175030cd05485b1238d133ddc09f117caee068707a2ea6"
+       }
+      },
+      "figcraft-server": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.0/figcraft-server-0.18.0-linux-x86_64.tar.gz",
+        "hash": "sha256-toFzp0JdQp47kt6WxLrD49MyizuB+e1J9w94qO/lohA=",
+        "assetId": 737159530,
+        "digest": "sha256:b68173a7425d429e3b92de96c4bac3e3d3328b3b81f9ed49f70f78a8efe5a210"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.0/figcraft-server-0.18.0-linux-aarch64.tar.gz",
+        "hash": "sha256-UFpESzjitO+6PjXxRp9MFcfsJHZh6EPJVGAd7IRTuP4=",
+        "assetId": 737159495,
+        "digest": "sha256:505a444b38e2b4efba3e35f1469f4c15c7ec247661e843c954601dec8453b8fe"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-11T22:40:28.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/figcraft.json": {
+     "repo": "figcraft",
+     "version": "0.18.0",
+     "tag": "v0.18.0",
+     "releaseId": 442266175,
+     "manifest": {
+      "assetId": 737158747,
+      "digest": "sha256:0568c2e377b5a1be5bc4ca795c71fe20b0e2025f80fcb8f05463d508cc4e6c48"
+     },
+     "signature": {
+      "assetId": 737158744,
+      "digest": "sha256:203c201b622dfbf521c7eb748a5f43d8585f9edb14cedbb7c193ecc2fe71a013"
+     },
+     "packages": {
+      "figcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.0/figcraft-0.18.0-linux-x86_64.tar.gz",
+        "hash": "sha256-jHZKpXlYqkY0w/0taHk6f4jQsyZtH0pIe3inB607JRM=",
+        "assetId": 737159288,
+        "digest": "sha256:8c764aa57958aa4634c3fd2d68793a7f88d0b3266d1f4a487b78a707ad3b2513"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.0/figcraft-0.18.0-linux-aarch64.tar.gz",
+        "hash": "sha256-u0/lG0Qkli3rF1AwzQVIWxI40TPdwJ8RfK7gaHB6LqY=",
+        "assetId": 737158990,
+        "digest": "sha256:bb4fe51b4424962deb175030cd05485b1238d133ddc09f117caee068707a2ea6"
+       }
+      },
+      "figcraft-server": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.0/figcraft-server-0.18.0-linux-x86_64.tar.gz",
+        "hash": "sha256-toFzp0JdQp47kt6WxLrD49MyizuB+e1J9w94qO/lohA=",
+        "assetId": 737159530,
+        "digest": "sha256:b68173a7425d429e3b92de96c4bac3e3d3328b3b81f9ed49f70f78a8efe5a210"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.0/figcraft-server-0.18.0-linux-aarch64.tar.gz",
+        "hash": "sha256-UFpESzjitO+6PjXxRp9MFcfsJHZh6EPJVGAd7IRTuP4=",
+        "assetId": 737159495,
+        "digest": "sha256:505a444b38e2b4efba3e35f1469f4c15c7ec247661e843c954601dec8453b8fe"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-11T22:40:28.000Z",
+      "kind": "published"
+     }
+    }
+   }
+  },
+  {
+   "commit": "dc3991f9292f0baee54f9d92a53e493d1354551f",
+   "at": "2026-11-12T00:59:37.000Z",
+   "message": "Update materialcraft 0.4.1\n\nArtcraft-Release: 2026.11.12.1\nArtcraft-Queue: 12\nArtcraft-Waited: 0\n",
+   "files": {
+    "versions/materialcraft.json": {
+     "repo": "materialcraft",
+     "version": "0.4.1",
+     "tag": "v0.4.1",
+     "releaseId": 442354537,
+     "manifest": {
+      "assetId": 737482616,
+      "digest": "sha256:a74af31b59a367e918acc45ae4e2a73aa8bda3a623d1545e9c70bb605aafa951"
+     },
+     "signature": {
+      "assetId": 737482611,
+      "digest": "sha256:f3551997cbec8c1df4e978d0f4fc117e6578f4c3ed70d3aa3fe9ad0de5832abe"
+     },
+     "packages": {
+      "materialcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/materialcraft/releases/download/v0.4.1/materialcraft-0.4.1-linux-x86_64.tar.gz",
+        "hash": "sha256-QxFfjT4v7o+fKbwHsDyYTC6PbQTg4ZWUOdc+xc32gw4=",
+        "assetId": 737483018,
+        "digest": "sha256:43115f8d3e2fee8f9f29bc07b03c984c2e8f6d04e0e1959439d73ec5cdf6830e"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/materialcraft/releases/download/v0.4.1/materialcraft-0.4.1-linux-aarch64.tar.gz",
+        "hash": "sha256-Q6N7akhN398FnJB/Pv9VPyDaJN0szUpaCI9dXLOLRBU=",
+        "assetId": 737482746,
+        "digest": "sha256:43a37b6a484ddfdf059c907f3eff553f20da24dd2ccd4a5a088f5d5cb38b4415"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-12T00:51:57.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/materialcraft.json": {
+     "repo": "materialcraft",
+     "version": "0.4.1",
+     "tag": "v0.4.1",
+     "releaseId": 442354537,
+     "manifest": {
+      "assetId": 737482616,
+      "digest": "sha256:a74af31b59a367e918acc45ae4e2a73aa8bda3a623d1545e9c70bb605aafa951"
+     },
+     "signature": {
+      "assetId": 737482611,
+      "digest": "sha256:f3551997cbec8c1df4e978d0f4fc117e6578f4c3ed70d3aa3fe9ad0de5832abe"
+     },
+     "packages": {
+      "materialcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/materialcraft/releases/download/v0.4.1/materialcraft-0.4.1-linux-x86_64.tar.gz",
+        "hash": "sha256-QxFfjT4v7o+fKbwHsDyYTC6PbQTg4ZWUOdc+xc32gw4=",
+        "assetId": 737483018,
+        "digest": "sha256:43115f8d3e2fee8f9f29bc07b03c984c2e8f6d04e0e1959439d73ec5cdf6830e"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/materialcraft/releases/download/v0.4.1/materialcraft-0.4.1-linux-aarch64.tar.gz",
+        "hash": "sha256-Q6N7akhN398FnJB/Pv9VPyDaJN0szUpaCI9dXLOLRBU=",
+        "assetId": 737482746,
+        "digest": "sha256:43a37b6a484ddfdf059c907f3eff553f20da24dd2ccd4a5a088f5d5cb38b4415"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-12T00:51:57.000Z",
+      "kind": "published"
+     }
+    }
+   }
+  },
+  {
+   "commit": "66746e3cf840a6dd46442a82a869cf14bb18c725",
+   "at": "2026-11-12T01:28:08.000Z",
+   "message": "Update figcraft 0.18.1\n\nArtcraft-Release: 2026.11.12.2\nArtcraft-Queue: 11\nArtcraft-Waited: 0\n",
+   "files": {
+    "versions/figcraft.json": {
+     "repo": "figcraft",
+     "version": "0.18.1",
+     "tag": "v0.18.1",
+     "releaseId": 442367292,
+     "manifest": {
+      "assetId": 737530380,
+      "digest": "sha256:75d33f6252e6c61916223cf4ef07c4f9f5a3293a1804749590f74b74a734edb8"
+     },
+     "signature": {
+      "assetId": 737530377,
+      "digest": "sha256:f3817e3fa0738aa3dc5d44ce90aa601423b90a39f7d295aa357a0f1144cbd483"
+     },
+     "packages": {
+      "figcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.1/figcraft-0.18.1-linux-x86_64.tar.gz",
+        "hash": "sha256-gnbSrFXG939686QRqbAEFdP+sLWWB6VFIzETQOZT/Bk=",
+        "assetId": 737531213,
+        "digest": "sha256:8276d2ac55c6f77f7af3a411a9b00415d3feb0b59607a54523311340e653fc19"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.1/figcraft-0.18.1-linux-aarch64.tar.gz",
+        "hash": "sha256-sn3uEL5dtQ3vA97jvkcLwvnOUIvhaQ51tHZTVNK4nIg=",
+        "assetId": 737530703,
+        "digest": "sha256:b27dee10be5db50def03dee3be470bc2f9ce508be1690e75b4765354d2b89c88"
+       }
+      },
+      "figcraft-server": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.1/figcraft-server-0.18.1-linux-x86_64.tar.gz",
+        "hash": "sha256-IVth5bHdW0tNGTUJt75UAQ47kp3Rm5o6hfsTV1Oc3Ng=",
+        "assetId": 737531552,
+        "digest": "sha256:215b61e5b1dd5b4b4d193509b7be54010e3b929dd19b9a3a85fb1357539cdcd8"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.1/figcraft-server-0.18.1-linux-aarch64.tar.gz",
+        "hash": "sha256-f5k5esPShFj7Wglw0113H7XDu1xB5kBVMxlmks4cvX0=",
+        "assetId": 737531526,
+        "digest": "sha256:7f99397ac3d28458fb5a0970d35d771fb5c3bb5c41e6405533196692ce1cbd7d"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-12T01:20:50.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/figcraft.json": {
+     "repo": "figcraft",
+     "version": "0.18.1",
+     "tag": "v0.18.1",
+     "releaseId": 442367292,
+     "manifest": {
+      "assetId": 737530380,
+      "digest": "sha256:75d33f6252e6c61916223cf4ef07c4f9f5a3293a1804749590f74b74a734edb8"
+     },
+     "signature": {
+      "assetId": 737530377,
+      "digest": "sha256:f3817e3fa0738aa3dc5d44ce90aa601423b90a39f7d295aa357a0f1144cbd483"
+     },
+     "packages": {
+      "figcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.1/figcraft-0.18.1-linux-x86_64.tar.gz",
+        "hash": "sha256-gnbSrFXG939686QRqbAEFdP+sLWWB6VFIzETQOZT/Bk=",
+        "assetId": 737531213,
+        "digest": "sha256:8276d2ac55c6f77f7af3a411a9b00415d3feb0b59607a54523311340e653fc19"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.1/figcraft-0.18.1-linux-aarch64.tar.gz",
+        "hash": "sha256-sn3uEL5dtQ3vA97jvkcLwvnOUIvhaQ51tHZTVNK4nIg=",
+        "assetId": 737530703,
+        "digest": "sha256:b27dee10be5db50def03dee3be470bc2f9ce508be1690e75b4765354d2b89c88"
+       }
+      },
+      "figcraft-server": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.1/figcraft-server-0.18.1-linux-x86_64.tar.gz",
+        "hash": "sha256-IVth5bHdW0tNGTUJt75UAQ47kp3Rm5o6hfsTV1Oc3Ng=",
+        "assetId": 737531552,
+        "digest": "sha256:215b61e5b1dd5b4b4d193509b7be54010e3b929dd19b9a3a85fb1357539cdcd8"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.1/figcraft-server-0.18.1-linux-aarch64.tar.gz",
+        "hash": "sha256-f5k5esPShFj7Wglw0113H7XDu1xB5kBVMxlmks4cvX0=",
+        "assetId": 737531526,
+        "digest": "sha256:7f99397ac3d28458fb5a0970d35d771fb5c3bb5c41e6405533196692ce1cbd7d"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-12T01:20:50.000Z",
+      "kind": "published"
+     }
+    }
+   }
+  },
+  {
+   "commit": "5e52ef0e3dcd18af010ab4e00790f2e809f42cd0",
+   "at": "2026-11-12T02:26:01.000Z",
+   "message": "Update pdfcraft 0.21.1\n\nArtcraft-Release: 2026.11.12.3\nArtcraft-Queue: 40\nArtcraft-Waited: 0\n",
+   "files": {
+    "versions/pdfcraft.json": {
+     "repo": "pdfcraft",
+     "version": "0.21.1",
+     "tag": "v0.21.1",
+     "releaseId": 442416291,
+     "manifest": {
+      "assetId": 737718280,
+      "digest": "sha256:1d698e33bdb3b1443979e984e7a3728b0d09b11790427fcc291cb2305edca5ea"
+     },
+     "signature": {
+      "assetId": 737718279,
+      "digest": "sha256:f32ec392bcc5f59c8db4c6efc1c3f68c9cac5cd425d611cfe6b0c00b9e8b5152"
+     },
+     "packages": {
+      "pdfcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.1/pdfcraft-0.21.1-linux-x86_64.tar.gz",
+        "hash": "sha256-wpGekETv/eMY5mgHrSohu7dKlVWzwLmfmtDEDPYc4l4=",
+        "assetId": 737718881,
+        "digest": "sha256:c2919e9044effde318e66807ad2a21bbb74a9555b3c0b99f9ad0c40cf61ce25e"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.1/pdfcraft-0.21.1-linux-aarch64.tar.gz",
+        "hash": "sha256-sI7+QWwdpFCwSz5OxfA4nXHXWA9DmPntoG0z0EcTx3A=",
+        "assetId": 737718574,
+        "digest": "sha256:b08efe416c1da450b04b3e4ec5f0389d71d7580f4398f9eda06d33d04713c770"
+       }
+      },
+      "pdfcraft-cli": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.1/pdfcraft-cli-0.21.1-linux-x86_64.tar.gz",
+        "hash": "sha256-qXsueJ0hQ2BCTxmBS8ZvPq9tBO9eQuRytG97ndzupcg=",
+        "assetId": 737719392,
+        "digest": "sha256:a97b2e789d214360424f19814bc66f3eaf6d04ef5e42e472b46f7b9ddceea5c8"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.1/pdfcraft-cli-0.21.1-linux-aarch64.tar.gz",
+        "hash": "sha256-5B/G11frbgtLb22RFaPvpTB4XAkvyaW+kUiTQW2myfM=",
+        "assetId": 737719339,
+        "digest": "sha256:e41fc6d757eb6e0b4b6f6d9115a3efa530785c092fc9a5be914893416da6c9f3"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-12T02:18:37.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/pdfcraft.json": {
+     "repo": "pdfcraft",
+     "version": "0.21.1",
+     "tag": "v0.21.1",
+     "releaseId": 442416291,
+     "manifest": {
+      "assetId": 737718280,
+      "digest": "sha256:1d698e33bdb3b1443979e984e7a3728b0d09b11790427fcc291cb2305edca5ea"
+     },
+     "signature": {
+      "assetId": 737718279,
+      "digest": "sha256:f32ec392bcc5f59c8db4c6efc1c3f68c9cac5cd425d611cfe6b0c00b9e8b5152"
+     },
+     "packages": {
+      "pdfcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.1/pdfcraft-0.21.1-linux-x86_64.tar.gz",
+        "hash": "sha256-wpGekETv/eMY5mgHrSohu7dKlVWzwLmfmtDEDPYc4l4=",
+        "assetId": 737718881,
+        "digest": "sha256:c2919e9044effde318e66807ad2a21bbb74a9555b3c0b99f9ad0c40cf61ce25e"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.1/pdfcraft-0.21.1-linux-aarch64.tar.gz",
+        "hash": "sha256-sI7+QWwdpFCwSz5OxfA4nXHXWA9DmPntoG0z0EcTx3A=",
+        "assetId": 737718574,
+        "digest": "sha256:b08efe416c1da450b04b3e4ec5f0389d71d7580f4398f9eda06d33d04713c770"
+       }
+      },
+      "pdfcraft-cli": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.1/pdfcraft-cli-0.21.1-linux-x86_64.tar.gz",
+        "hash": "sha256-qXsueJ0hQ2BCTxmBS8ZvPq9tBO9eQuRytG97ndzupcg=",
+        "assetId": 737719392,
+        "digest": "sha256:a97b2e789d214360424f19814bc66f3eaf6d04ef5e42e472b46f7b9ddceea5c8"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/pdfcraft/releases/download/v0.21.1/pdfcraft-cli-0.21.1-linux-aarch64.tar.gz",
+        "hash": "sha256-5B/G11frbgtLb22RFaPvpTB4XAkvyaW+kUiTQW2myfM=",
+        "assetId": 737719339,
+        "digest": "sha256:e41fc6d757eb6e0b4b6f6d9115a3efa530785c092fc9a5be914893416da6c9f3"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-12T02:18:37.000Z",
+      "kind": "published"
+     }
+    }
+   }
+  },
+  {
+   "commit": "918fe115313d0ae3ea46959cb0a1cd48dd10d9ee",
+   "at": "2026-11-12T05:15:24.000Z",
+   "message": "Update photocraft 0.23.1\n\nArtcraft-Release: 2026.11.12.4\nArtcraft-Queue: 34\nArtcraft-Waited: 0\n",
+   "files": {
+    "versions/photocraft.json": {
+     "repo": "photocraft",
+     "version": "0.23.1",
+     "tag": "v0.23.1",
+     "releaseId": 442467332,
+     "manifest": {
+      "assetId": 737932412,
+      "digest": "sha256:622c58e89cff28c32946d6acdba1a2a22e009c86813a8e094ef0391fe4b72b88"
+     },
+     "signature": {
+      "assetId": 737932409,
+      "digest": "sha256:e7f0c8b42029056d6fd27207a2829a3aae9dbd26d7a2b4a9f2b75b41214f294d"
+     },
+     "packages": {
+      "photocraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/photocraft/releases/download/v0.23.1/photocraft-0.23.1-linux-x86_64.tar.gz",
+        "hash": "sha256-Q4Ou9noHzDcK0lCm7WABUgXT5sRj+vP/Sw9nuBeMz8g=",
+        "assetId": 737933345,
+        "digest": "sha256:4383aef67a07cc370ad250a6ed60015205d3e6c463faf3ff4b0f67b8178ccfc8"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/photocraft/releases/download/v0.23.1/photocraft-0.23.1-linux-aarch64.tar.gz",
+        "hash": "sha256-/MgcOK5ixy+p9P0ew9GDlkk7omFmJ5LWmVzDWQXOcdI=",
+        "assetId": 737932825,
+        "digest": "sha256:fcc81c38ae62c72fa9f4fd1ec3d18396493ba261662792d6995cc35905ce71d2"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-12T05:07:51.000Z",
+      "kind": "published"
+     }
+    },
+    "versions/stable/photocraft.json": {
+     "repo": "photocraft",
+     "version": "0.23.1",
+     "tag": "v0.23.1",
+     "releaseId": 442467332,
+     "manifest": {
+      "assetId": 737932412,
+      "digest": "sha256:622c58e89cff28c32946d6acdba1a2a22e009c86813a8e094ef0391fe4b72b88"
+     },
+     "signature": {
+      "assetId": 737932409,
+      "digest": "sha256:e7f0c8b42029056d6fd27207a2829a3aae9dbd26d7a2b4a9f2b75b41214f294d"
+     },
+     "packages": {
+      "photocraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/photocraft/releases/download/v0.23.1/photocraft-0.23.1-linux-x86_64.tar.gz",
+        "hash": "sha256-Q4Ou9noHzDcK0lCm7WABUgXT5sRj+vP/Sw9nuBeMz8g=",
+        "assetId": 737933345,
+        "digest": "sha256:4383aef67a07cc370ad250a6ed60015205d3e6c463faf3ff4b0f67b8178ccfc8"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/photocraft/releases/download/v0.23.1/photocraft-0.23.1-linux-aarch64.tar.gz",
+        "hash": "sha256-/MgcOK5ixy+p9P0ew9GDlkk7omFmJ5LWmVzDWQXOcdI=",
+        "assetId": 737932825,
+        "digest": "sha256:fcc81c38ae62c72fa9f4fd1ec3d18396493ba261662792d6995cc35905ce71d2"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-12T05:07:51.000Z",
+      "kind": "published"
+     }
+    }
+   }
+  },
+  {
+   "commit": "fc6a4e8cea1d087e3c8af8fd543ec1a85c2ead77",
+   "at": "2026-11-12T05:22:42.000Z",
+   "message": "Update lightcraft 0.21.1\n\nArtcraft-Release: 2026.11.12.5\nArtcraft-Queue: 21\nArtcraft-Waited: 459\n",
+   "files": {
+    "versions/lightcraft.json": {
+     "repo": "lightcraft",
+     "version": "0.21.1",
+     "tag": "v0.21.1",
+     "releaseId": 442458936,
+     "manifest": {
+      "assetId": 737896304,
+      "digest": "sha256:ae822d2f689bd1ec616895f62e32852446a4149828e858a7d35f5a4fdbd63c41"
+     },
+     "signature": {
+      "assetId": 737896307,
+      "digest": "sha256:2156d03d05fded2edbd01e816dae4c230300c989c738cd0d90ccb2f79ca49eca"
+     },
+     "packages": {
+      "lightcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/lightcraft/releases/download/v0.21.1/lightcraft-0.21.1-linux-x86_64.tar.gz",
+        "hash": "sha256-sSPeFpFYCaeeZLpO467p4c3tbvI7c3wG+Bzcfi8obWI=",
+        "assetId": 737897211,
+        "digest": "sha256:b123de16915809a79e64ba4ee3aee9e1cded6ef23b737c06f81cdc7e2f286d62"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/lightcraft/releases/download/v0.21.1/lightcraft-0.21.1-linux-aarch64.tar.gz",
+        "hash": "sha256-roxVfvcCjL+u/hBcJ8MM75SQ0lwZmAPD8cvgcrw517Y=",
+        "assetId": 737896655,
+        "digest": "sha256:ae8c557ef7028cbfaefe105c27c30cef9490d25c199803c3f1cbe072bc39d7b6"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-12T05:08:23.000Z",
+      "kind": "published"
+     }
+    }
+   }
+  },
+  {
+   "commit": "0a6bf74df976aceec0675b3ddca15750acbf1d1b",
+   "at": "2026-11-21T08:09:00.000Z",
+   "message": "Mark figcraft-server unavailable\n\nIts pinned assets are gone upstream (#40).\n",
+   "files": {
+    "versions/figcraft.json": {
+     "repo": "figcraft",
+     "version": "0.18.1",
+     "tag": "v0.18.1",
+     "releaseId": 442367292,
+     "manifest": {
+      "assetId": 737530380,
+      "digest": "sha256:75d33f6252e6c61916223cf4ef07c4f9f5a3293a1804749590f74b74a734edb8"
+     },
+     "signature": {
+      "assetId": 737530377,
+      "digest": "sha256:f3817e3fa0738aa3dc5d44ce90aa601423b90a39f7d295aa357a0f1144cbd483"
+     },
+     "packages": {
+      "figcraft": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.1/figcraft-0.18.1-linux-x86_64.tar.gz",
+        "hash": "sha256-gnbSrFXG939686QRqbAEFdP+sLWWB6VFIzETQOZT/Bk=",
+        "assetId": 737531213,
+        "digest": "sha256:8276d2ac55c6f77f7af3a411a9b00415d3feb0b59607a54523311340e653fc19"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.1/figcraft-0.18.1-linux-aarch64.tar.gz",
+        "hash": "sha256-sn3uEL5dtQ3vA97jvkcLwvnOUIvhaQ51tHZTVNK4nIg=",
+        "assetId": 737530703,
+        "digest": "sha256:b27dee10be5db50def03dee3be470bc2f9ce508be1690e75b4765354d2b89c88"
+       }
+      },
+      "figcraft-server": {
+       "x86_64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.1/figcraft-server-0.18.1-linux-x86_64.tar.gz",
+        "hash": "sha256-IVth5bHdW0tNGTUJt75UAQ47kp3Rm5o6hfsTV1Oc3Ng=",
+        "assetId": 737531552,
+        "digest": "sha256:215b61e5b1dd5b4b4d193509b7be54010e3b929dd19b9a3a85fb1357539cdcd8"
+       },
+       "aarch64-linux": {
+        "url": "https://github.com/storytold/figcraft/releases/download/v0.18.1/figcraft-server-0.18.1-linux-aarch64.tar.gz",
+        "hash": "sha256-f5k5esPShFj7Wglw0113H7XDu1xB5kBVMxlmks4cvX0=",
+        "assetId": 737531526,
+        "digest": "sha256:7f99397ac3d28458fb5a0970d35d771fb5c3bb5c41e6405533196692ce1cbd7d"
+       }
+      }
+     },
+     "released": {
+      "at": "2026-11-12T01:20:50.000Z",
+      "kind": "published"
+     },
+     "unavailable": {
+      "since": "2026-11-21T08:02:00.000Z",
+      "issue": 40,
+      "packages": [
+       "figcraft-server"
+      ]
+     }
+    }
+   }
+  }
+ ]
+}

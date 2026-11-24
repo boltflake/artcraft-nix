@@ -1,0 +1,16 @@
+{
+  "audited": "artcraft-v0.41.1",
+  "source": "Studio's CSP (frontend/apps/artcraft/app/index.html) and a lookup log of Studio running, 2026-11-22",
+  "note": "Only `blocked` hosts go in /etc/hosts with hostFileBlockAnalytics; a wildcard can only be `disclosed`. A host becomes `blocked` only by a deliberate change through branch CI, which updates the README too.",
+  "hosts": [
+    { "host": "www.googletagmanager.com", "status": "blocked", "what": "Google Analytics' loader (gtag.js)" },
+    { "host": "www.clarity.ms", "status": "blocked", "what": "Microsoft Clarity's loader" },
+    { "host": "www.google-analytics.com", "status": "disclosed", "what": "Google Analytics' collection host, reached only through its loader" },
+    { "host": "*.clarity.ms", "status": "disclosed", "what": "Microsoft Clarity's collection hosts, lettered subdomains a hosts file can't match" },
+    { "host": "api.storyteller.ai", "status": "disclosed", "what": "Storyteller: the login check, model lists, image cost and the job poller" },
+    { "host": "fonts.googleapis.com", "status": "disclosed", "what": "Google Fonts' stylesheets" },
+    { "host": "fonts.gstatic.com", "status": "disclosed", "what": "Google Fonts' font files" },
+    { "host": "unpkg.com", "status": "disclosed", "what": "detect-gpu's benchmark data" },
+    { "host": "us.i.posthog.com", "status": "disclosed", "what": "PostHog, likely inert (no key in the Linux build; still to be settled)" }
+  ]
+}

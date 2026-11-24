@@ -1,0 +1,34 @@
+{
+  "repo": "anicraft",
+  "version": "0.2.1",
+  "tag": "v0.2.1",
+  "releaseId": 442375618,
+  "manifest": {
+    "assetId": 737566452,
+    "digest": "sha256:3090858a6b9aafe25fca71f83b6e15e2e59fbc1bd05a88535ab713630161f28d"
+  },
+  "signature": {
+    "assetId": 737566454,
+    "digest": "sha256:eb1ec4b8f63f7effc5e1af370f259613f81654473ebce9f0b02ce659223b32a4"
+  },
+  "packages": {
+    "anicraft": {
+      "x86_64-linux": {
+        "url": "https://github.com/storytold/anicraft/releases/download/v0.2.1/anicraft-0.2.1-linux-x86_64.tar.gz",
+        "hash": "sha256-o6h5W9aupLS8XKDybCJqByMw04/pP07fVSY2Dr9xVv0=",
+        "assetId": 737566690,
+        "digest": "sha256:a3a8795bd6aea4b4bc5ca0f26c226a072330d38fe93f4edf5526360ebf7156fd"
+      },
+      "aarch64-linux": {
+        "url": "https://github.com/storytold/anicraft/releases/download/v0.2.1/anicraft-0.2.1-linux-aarch64.tar.gz",
+        "hash": "sha256-q6KkOz2WthkFOG1zivnWNoCd4j3brh5sq7Rz7nnbKK0=",
+        "assetId": 737566561,
+        "digest": "sha256:aba2a43b3d96b61905386d738af9d636809de23ddbae1e6cabb473ee79db28ad"
+      }
+    }
+  },
+  "released": {
+    "at": "2026-11-12T01:41:19.000Z",
+    "kind": "published"
+  }
+}

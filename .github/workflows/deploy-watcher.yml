@@ -1,0 +1,123 @@
+# Deploy the release watcher (watcher/) on every push
+# to main that touches it or the shared modules it bundles. One deploy at a
+# time. Each deploy:
+#   1. checks out main as it is now (a re-run of an old run, or one that took
+#      a newer one's place in the queue, deploys today's watcher, though
+#      with the steps of the workflow file it started with: re-run the
+#      newest run) and runs the tests
+#   2. deploys with wrangler (from the pinned nixpkgs), recording the
+#      previous version ID and the new one (from wrangler's own output file,
+#      never read back from what's live, which someone else may have
+#      deployed meanwhile)
+#   3. polls /health 20 times, a minute apart (cron changes take 4–10
+#      minutes to start firing), for the new version written by a scheduled
+#      run that polled GitHub successfully
+#   4. otherwise rolls back to the previous version, but only if the new one
+#      is still current, and fails
+# Needs the repository variables CLOUDFLARE_ACCOUNT_ID, WATCHER_KV_ID and
+# WATCHER_URL, and the secrets CLOUDFLARE_API_TOKEN (edit this Worker only,
+# where Cloudflare can scope it so: MAINTAINING.md) and WATCHER_HEALTH_TOKEN.
+# The first deploy is by hand (the Worker must exist before its secrets can
+# be set), so a previous version always exists.
+name: deploy-watcher
+on:
+  push:
+    branches: [main]
+    paths: ["watcher/**", "shared/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-watcher
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    # Not before the first deploy by hand has set the repository up, and
+    # only from main: a dispatch on another branch must not deploy it.
+    if: github.ref == 'refs/heads/main' && vars.WATCHER_URL != '' && vars.CLOUDFLARE_ACCOUNT_ID != '' && vars.WATCHER_KV_ID != ''
+    runs-on: ubuntu-26.04
+    timeout-minutes: 40
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      WRANGLER_SEND_METRICS: "false"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Main as it is now, whatever commit started the run: a re-run of
+          # an old run, or a run that took a newer one's place in the queue,
+          # deploys today's watcher, never superseded code.
+          ref: main
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+      - name: Test
+        run: node --test tests/watcher.test.ts
+      - name: Wrangler from the pinned nixpkgs
+        run: echo "$(nix build --inputs-from . nixpkgs#wrangler --no-link --print-out-paths)/bin" >> "$GITHUB_PATH"
+      - name: Deploy
+        id: deploy
+        env:
+          KV_ID: ${{ vars.WATCHER_KV_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        working-directory: watcher
+        run: |
+          current() { wrangler deployments status --json | jq -er '(.versions // [])[0] | .version_id // .versionId'; }
+          sed -i "s/KV_NAMESPACE_ID/$KV_ID/" wrangler.jsonc
+          # Recorded before anything changes, so a failure after the deploy
+          # can still roll back.
+          previous=$(current) || { echo "::error::can't read the current version; not deploying"; exit 1; }
+          echo "previous=$previous" >> "$GITHUB_OUTPUT"
+          echo "deployed=true" >> "$GITHUB_OUTPUT"
+          # The version this deploy made, as wrangler reports it (ND-JSON).
+          out="$RUNNER_TEMP/wrangler-output.json"
+          rm -f "$out"
+          WRANGLER_OUTPUT_FILE_PATH="$out" wrangler deploy
+          new=$(jq -r 'select(.type == "deploy") | .version_id // empty' "$out" | tail -1)
+          [ -n "$new" ] && [ "$new" != "$previous" ] || { echo "::error::wrangler reported no new version (was $previous)"; exit 1; }
+          echo "new=$new" >> "$GITHUB_OUTPUT"
+          # Live now, unless someone deployed meanwhile: then it's theirs,
+          # and this run neither waits on nor rolls back anything.
+          for i in 1 2 3; do
+            live=$(current) && [ "$live" = "$new" ] && break
+            [ "$i" = 3 ] || sleep 10
+          done
+          [ "${live:-}" = "$new" ] || { echo "::error::$new isn't the live version (${live:-unknown} is); another deploy? check by hand"; exit 1; }
+      - name: Wait for the cron to run the new version
+        env:
+          URL: ${{ vars.WATCHER_URL }}
+          TOKEN: ${{ secrets.WATCHER_HEALTH_TOKEN }}
+          NEW: ${{ steps.deploy.outputs.new }}
+        run: |
+          for _ in $(seq 20); do
+            sleep 60
+            body=$(curl -sS --fail --max-time 20 -H "Authorization: Bearer $TOKEN" "$URL/health" || true)
+            # /health must be served by the new version, and the state written
+            # by a scheduled run of it whose sweep read GitHub with no query
+            # failing (polledBy), not just by one that ran.
+            if [ -n "$body" ] && jq -e --arg v "$NEW" '.deployed == $v and .state.deployed == $v and .state.polledBy == $v' <<< "$body" > /dev/null; then
+              echo "the cron runs $NEW"
+              exit 0
+            fi
+          done
+          echo "::error::the new version $NEW never reported from a scheduled run"
+          exit 1
+      - name: Roll back
+        if: failure() && steps.deploy.outputs.deployed == 'true'
+        env:
+          NEW: ${{ steps.deploy.outputs.new }}
+          PREVIOUS: ${{ steps.deploy.outputs.previous }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        working-directory: watcher
+        run: |
+          now=$(wrangler deployments status --json | jq -r '(.versions // [])[0] | .version_id // .versionId // empty')
+          # Only our own deploy is undone: the live version must be the one
+          # this run deployed, and known to be. Anything else is left for a
+          # person (wrangler deployments status, then wrangler rollback).
+          if [ -z "$NEW" ] || [ "$now" != "$NEW" ]; then
+            echo "::error::not rolling back: the current version is ${now:-unknown} (deployed ${NEW:-unknown}, previous $PREVIOUS); check by hand"
+            exit 1
+          fi
+          wrangler rollback "$PREVIOUS" --yes --message "deploy-watcher: $NEW never reported healthy"
+          exit 1

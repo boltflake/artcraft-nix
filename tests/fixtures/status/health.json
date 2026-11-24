@@ -1,0 +1,111 @@
+{
+ "deployed": "sample",
+ "state": {
+  "repos": {
+   "photocraft": {
+    "pinned": {
+     "tag": "v0.23.1",
+     "fingerprint": "sample",
+     "pulled": false
+    },
+    "eligible": {
+     "tag": "v0.23.2",
+     "version": "0.23.2",
+     "fingerprint": "sample",
+     "firstSeen": "2026-11-22T13:51:40.000Z"
+    },
+    "waiting": {},
+    "read": "2026-11-22T14:04:20.000Z"
+   },
+   "pdfcraft": {
+    "pinned": {
+     "tag": "v0.21.1",
+     "fingerprint": "sample",
+     "pulled": false
+    },
+    "eligible": {
+     "tag": "v0.21.1",
+     "version": "0.21.1",
+     "fingerprint": "sample",
+     "firstSeen": "2026-11-12T02:18:37.000Z"
+    },
+    "waiting": {},
+    "read": "2026-11-22T14:04:13.000Z"
+   },
+   "figcraft": {
+    "pinned": {
+     "tag": "v0.18.1",
+     "fingerprint": "sample",
+     "pulled": false
+    },
+    "eligible": {
+     "tag": "v0.18.2",
+     "version": "0.18.2",
+     "fingerprint": "sample",
+     "firstSeen": "2026-11-22T09:12:05.000Z"
+    },
+    "waiting": {},
+    "read": "2026-11-22T14:04:06.000Z"
+   },
+   "lightcraft": {
+    "pinned": {
+     "tag": "v0.21.1",
+     "fingerprint": "sample",
+     "pulled": false
+    },
+    "eligible": {
+     "tag": "v0.21.1",
+     "version": "0.21.1",
+     "fingerprint": "sample",
+     "firstSeen": "2026-11-12T05:08:23.000Z"
+    },
+    "waiting": {},
+    "read": "2026-11-22T14:03:59.000Z"
+   },
+   "materialcraft": {
+    "pinned": {
+     "tag": "v0.4.1",
+     "fingerprint": "sample",
+     "pulled": false
+    },
+    "eligible": {
+     "tag": "v0.4.1",
+     "version": "0.4.1",
+     "fingerprint": "sample",
+     "firstSeen": "2026-11-12T00:51:57.000Z"
+    },
+    "waiting": {
+     "v0.4.2": {
+      "firstSeen": "2026-11-22T11:40:12.000Z"
+     }
+    },
+    "read": "2026-11-22T14:03:52.000Z"
+   },
+   "artcraft": {
+    "pinned": {
+     "tag": "artcraft-v0.41.1",
+     "fingerprint": "sample",
+     "pulled": true
+    },
+    "eligible": {
+     "tag": "artcraft-v0.41.0",
+     "version": "0.41.0",
+     "fingerprint": "sample",
+     "firstSeen": "2026-11-22T12:30:00.000Z"
+    },
+    "waiting": {},
+    "read": "2026-11-22T14:03:45.000Z"
+   }
+  },
+  "pins": {
+   "oid": null,
+   "tags": {}
+  },
+  "poll": {},
+  "dispatch": {
+   "pending": false
+  },
+  "deployed": "sample",
+  "written": "2026-11-22T14:04:35.000Z"
+ }
+}
