@@ -499,6 +499,20 @@ test("health: stale KV writes, a stale repository, auth, and update-lag after an
   assert.equal(assess(null, "timeout", pins, new Set(), now)[0].kind, "watcher-stalled");
 });
 
+test("health: a timed send's auth error is watcher-auth without watcher-healthy beside it; stuck for 6 hours, watcher-stalled", () => {
+  const now = new Date("2026-11-22T12:00:00Z");
+  const repos = Object.fromEntries(SOURCES.map((s) => [s.repo, { read: "2026-11-22T11:59:00Z", error: null, eligible: { tag: "v1", version: "1.0.0", firstSeen: "2026-11-22T10:00:00Z" } }]));
+  const state = (timed: object) => ({ deployed: "v1", state: { written: "2026-11-22T11:55:00Z", deployed: "v1", poll: {}, pins: {}, dispatch: {}, repos, timed } });
+  const pins = Object.fromEntries(SOURCES.map((s) => [s.repo, { version: "1.0.0" } as any]));
+  const kinds = (timed: object) => [...new Set(assess(state(timed), null, pins, new Set(), now).map((o) => o.kind))].sort();
+  const auth = assess(state({ "health.yml": { error: { kind: "auth", message: "HTTP 401", since: "2026-11-22T11:00:00Z" } } }), null, pins, new Set(), now);
+  assert.deepEqual([...new Set(auth.map((o) => o.kind))].sort(), ["lag-ok", "watcher-auth"]);
+  assert.match(auth.find((o) => o.kind === "watcher-auth")!.detail, /health\.yml: HTTP 401/);
+  const stuck = assess(state({ "pages.yml": { error: { kind: "http", message: "HTTP 502", since: "2026-11-22T05:00:00Z" } } }), null, pins, new Set(), now);
+  assert.ok(stuck.some((o) => o.kind === "watcher-stalled" && /pages\.yml: failing for more than 6 hours/.test(o.detail)));
+  assert.deepEqual(kinds({ "pages.yml": { error: { kind: "rate-limit", message: "429", since: "2026-11-22T11:00:00Z" } } }), ["lag-ok", "watcher-healthy"]);
+});
+
 test("NixOS stable in branch CI: only failures the branch introduces count; incomplete counts", () => {
   const r = (failed: string[], complete = true) => ({ set: "b", system: "x", group: "stable" as const, complete, failed });
   assert.deepEqual(regressions(r(["a", "b"]), r(["a"])), ["b"]);

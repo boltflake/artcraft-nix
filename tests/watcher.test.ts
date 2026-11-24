@@ -4,7 +4,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { ASSET_BUDGET, backoffUntil, health, HEARTBEAT_MS, KEY, MAX_BACKOFF_MS, run, TAGS_PER_ROUND, WATCH_MAX, type Env, type KV, type State } from "../watcher/src/watcher.ts";
+import { ASSET_BUDGET, backoffUntil, disabledWorkflow, health, HEARTBEAT_MS, KEY, MAX_BACKOFF_MS, run, TAGS_PER_ROUND, TIMED, WATCH_MAX, type Env, type KV, type State } from "../watcher/src/watcher.ts";
 import { readHealth, STALE_MS, STUCK_MS } from "../watcher/src/health.ts";
 import { RECENT, RELEASE_PAGES, requiredNames, SOURCES, sourceOf } from "../shared/sources.ts";
 
@@ -65,6 +65,10 @@ function world() {
     dropCursor: 0,
     queries: [] as string[],
     dispatches: [] as any[],
+    /** Timed sends, by workflow file, with the minute each was sent (the
+     * minute set by day()). */
+    timed: { "pages.yml": [] as number[], "health.yml": [] as number[] } as Record<string, number[]>,
+    minute: 0,
   };
   const pinsOid = () => hex(JSON.stringify(w.pins)).slice(0, 40);
   function answer(query: string): any {
@@ -126,6 +130,12 @@ function world() {
     }
     if (url === DISPATCH) {
       w.dispatches.push(JSON.parse(init!.body as string));
+      return new Response(null, { status: 204 });
+    }
+    const timedSend = /\/actions\/workflows\/(pages\.yml|health\.yml)\/dispatches$/.exec(url);
+    if (timedSend) {
+      assert.deepEqual([init?.method, (init?.headers as any)?.Authorization, init?.body], ["POST", "Bearer t", JSON.stringify({ ref: "main" })]);
+      w.timed[timedSend[1]].push(w.minute);
       return new Response(null, { status: 204 });
     }
     return new Response("no", { status: 404 });
@@ -851,4 +861,351 @@ test("watcher: a deleted pin whose first lower release is incomplete: paging goe
   for (let k = 2; k < 6 && r.state.repos[p].eligible?.version !== "0.9.0"; k++) r = await run(env(kv), at(k), f);
   assert.equal(r.state.repos[p].eligible?.version, "0.9.0");
   assert.equal(r.state.repos[p].error, undefined);
+});
+
+// The timed sends (pages.yml, health.yml): about hourly, only in sweeps that
+// write anyway, so they add no KV writes.
+const PAGES = "https://api.github.com/repos/boltflake/artcraft-nix/actions/workflows/pages.yml/dispatches";
+const HEALTH = "https://api.github.com/repos/boltflake/artcraft-nix/actions/workflows/health.yml/dispatches";
+type World = ReturnType<typeof world>;
+/** Minute sweeps from FROM to TO (exclusive), as the Worker makes them:
+ * fresh invocations against the same KV. Returns the minutes that wrote. */
+async function day(kv: FakeKV, w: World["w"], f: World["f"], from: number, to: number, each?: (m: number) => void) {
+  const writes: number[] = [];
+  for (let m = from; m < to; m++) {
+    w.minute = m;
+    each?.(m);
+    const before = kv.writes;
+    await run(env(kv), at(m), f);
+    if (kv.writes > before) writes.push(m);
+  }
+  return writes;
+}
+const gaps = (xs: number[]) => xs.slice(1).map((x, i) => x - xs[i]);
+const timedOf = (kv: FakeKV) => saved(kv).timed as any;
+/** The same minutes with the timed sends turned off: what the watcher
+ * wrote before them, and when. */
+async function control(minutes: number, each?: (w: World["w"], m: number) => void) {
+  const kv = new FakeKV();
+  const { w, f } = world();
+  const names = TIMED.splice(0);
+  try {
+    const writes = await day(kv, w, f, 0, minutes, each && ((m) => each(w, m)));
+    assert.deepEqual([w.timed["pages.yml"], w.timed["health.yml"]], [[], []]);
+    return { total: kv.writes, writes };
+  } finally {
+    TIMED.push(...names);
+  }
+}
+
+test("timed: a healthy day sends pages and health together, 50 to 65 minutes apart, only in writing sweeps, at no extra writes", async () => {
+  const kv = new FakeKV();
+  const { w, f } = world();
+  const writes = await day(kv, w, f, 0, 24 * 60);
+  assert.deepEqual(w.timed["pages.yml"], w.timed["health.yml"]);
+  const sent = w.timed["pages.yml"];
+  assert.ok(sent.length >= 22 && sent.length <= 29, `${sent.length} sends`);
+  assert.equal(sent[0], 15, "a new key sends at its next writing run after its first write");
+  for (const g of gaps(sent)) assert.ok(g >= 50 && g <= 65, `gap ${g}`);
+  const plain = await control(24 * 60);
+  assert.deepEqual([kv.writes, writes], [plain.total, plain.writes]);
+  for (const m of sent) assert.ok(plain.writes.includes(m), `sent at ${m}, a minute that writes anyway`);
+});
+
+test("timed: change-driven writes don't bring a send forward or add writes", async () => {
+  const kv = new FakeKV();
+  const { w, f } = world();
+  // A new photocraft release every 7 minutes: change-driven writes all day.
+  const bump = (ww: World["w"], m: number) => { if (m % 7 === 3) ww.repos.photocraft!.unshift(release("photocraft", `1.${m}.0`)); };
+  const writes = await day(kv, w, f, 0, 6 * 60, (m) => bump(w, m));
+  assert.deepEqual(w.timed["pages.yml"], w.timed["health.yml"]);
+  assert.ok(w.timed["pages.yml"].length >= 5, `${w.timed["pages.yml"]}`);
+  for (const g of gaps(w.timed["pages.yml"])) assert.ok(g >= 50 && g <= 65, `gap ${g}`);
+  const plain = await control(6 * 60, bump);
+  assert.deepEqual([kv.writes, writes], [plain.total, plain.writes]);
+});
+
+test("timed: the update dispatch goes first, and neither touches the other's state", async () => {
+  const kv = new FakeKV();
+  const { w, f } = world();
+  await day(kv, w, f, 0, 15);
+  // At 15 a new release and the timed sends (failing), in one sweep.
+  w.repos.photocraft!.unshift(release("photocraft", "1.1.0"));
+  w.override.set(PAGES, () => new Response("down", { status: 502 }));
+  w.override.set(HEALTH, () => new Response("down", { status: 502 }));
+  const calls: string[] = [];
+  const spy = (async (url: string, init?: RequestInit) => { if (url.endsWith("/dispatches")) calls.push(url.split("/").at(-2)!); return f(url, init); }) as World["f"];
+  await day(kv, w, spy, 15, 16);
+  assert.deepEqual(calls, ["update.yml", ...TIMED]);
+  // A pending update dispatch with its error and back-off: the timed
+  // failures at 30, 45 and 60 leave it as it was.
+  const st = saved(kv);
+  const pending = { pending: true, error: { kind: "http" as const, message: "x", since: at(1).toISOString() }, retryAt: at(70).toISOString(), retryMs: 55 * 60_000 };
+  st.dispatch = pending;
+  kv.data.set(KEY, JSON.stringify(st));
+  const before = calls.length;
+  await day(kv, w, spy, 16, 70);
+  assert.ok(calls.slice(before).filter((c) => c === "pages.yml").length >= 3);
+  assert.deepEqual(saved(kv).dispatch, pending);
+  // The update dispatch then succeeds and leaves the timed errors as they were.
+  const timedBefore = timedOf(kv);
+  assert.equal(timedBefore["pages.yml"].error.kind, "http");
+  await day(kv, w, f, 70, 71);
+  assert.deepEqual([saved(kv).dispatch, timedOf(kv)], [{ pending: false }, timedBefore]);
+});
+
+test("timed: one failing doesn't hold the other back; a failure keeps its `since` and is retried at each writing sweep", async () => {
+  for (const [bad, good] of [["health.yml", "pages.yml"], ["pages.yml", "health.yml"]]) {
+    const kv = new FakeKV();
+    const { w, f } = world();
+    const url = bad === "pages.yml" ? PAGES : HEALTH;
+    let failing = true;
+    let kind = 502;
+    const tries: number[] = [];
+    w.override.set(url, () => { tries.push(w.minute); return failing ? new Response("down", { status: kind }) : (w.timed[bad].push(w.minute), new Response(null, { status: 204 })); });
+    await day(kv, w, f, 0, 30);
+    const s1 = timedOf(kv)[bad];
+    assert.deepEqual([s1.error.kind, s1.error.since, s1.sent], ["http", at(15).toISOString(), undefined]);
+    kind = 401; // the kind changes; `since` stays
+    const writes = await day(kv, w, f, 30, 125);
+    const s2 = timedOf(kv)[bad];
+    assert.deepEqual([s2.error.kind, s2.error.since], ["auth", at(15).toISOString()]);
+    assert.deepEqual(tries, [15, ...writes], "tried at every writing sweep, and only then");
+    assert.deepEqual(w.timed[good], [15, 75], `${good} keeps its cadence`);
+    failing = false;
+    await day(kv, w, f, 125, 140);
+    assert.deepEqual(w.timed[bad], [135]);
+    assert.deepEqual(timedOf(kv)[bad], { sent: at(135).toISOString() });
+  }
+});
+
+test("timed: a rate limit holds back the other send; with no retry time it backs off a heartbeat from the sweep's time", async () => {
+  const kv = new FakeKV();
+  const { w, f } = world();
+  await day(kv, w, f, 0, 15);
+  let asked = 0;
+  w.override.set(PAGES, () => { asked++; return new Response("slow", { status: 429 }); });
+  await day(kv, w, f, 15, 16);
+  assert.deepEqual(w.timed["health.yml"], [], "health not sent behind a rate limit");
+  assert.deepEqual([timedOf(kv)["pages.yml"].retryAt, timedOf(kv)["health.yml"].retryAt], [at(30).toISOString(), at(30).toISOString()]);
+  w.override.set(PAGES, () => { asked++; w.timed["pages.yml"].push(w.minute); return new Response(null, { status: 204 }); });
+  await day(kv, w, f, 16, 31);
+  assert.deepEqual([asked, w.timed["pages.yml"], w.timed["health.yml"]], [2, [30], [30]], "both at the next heartbeat");
+  // A change at 20 writes before the back-off ends: nothing is sent then;
+  // both go at the next writing run after it.
+  const kv2 = new FakeKV();
+  const { w: w2, f: f2 } = world();
+  await day(kv2, w2, f2, 0, 15);
+  w2.override.set(PAGES, () => new Response("slow", { status: 429 }));
+  await day(kv2, w2, f2, 15, 16);
+  w2.override.delete(PAGES);
+  const wrote = await day(kv2, w2, f2, 16, 40, (m) => { if (m === 20) w2.repos.photocraft!.unshift(release("photocraft", "1.2.0")); });
+  assert.ok(wrote.includes(20));
+  assert.deepEqual([w2.timed["pages.yml"], w2.timed["health.yml"]], [[35], [35]]);
+});
+
+test("timed: a rate limit's back-off reaches the other workflow whatever its own state, keeping a later one; Retry-After is capped", async () => {
+  const kv = new FakeKV();
+  const { w, f } = world();
+  await day(kv, w, f, 0, 1);
+  const st = saved(kv);
+  st.timed = { "pages.yml": {}, "health.yml": { retryAt: at(15).toISOString() } };
+  kv.data.set(KEY, JSON.stringify(st));
+  w.override.set(PAGES, () => new Response("slow", { status: 429, headers: { "retry-after": "3600" } }));
+  await day(kv, w, f, 1, 16);
+  assert.deepEqual([timedOf(kv)["pages.yml"].retryAt, timedOf(kv)["health.yml"].retryAt], [at(75).toISOString(), at(75).toISOString()]);
+  w.override.delete(PAGES);
+  await day(kv, w, f, 16, 76);
+  assert.deepEqual([w.timed["pages.yml"], w.timed["health.yml"]], [[75], [75]]);
+  const kv2 = new FakeKV();
+  const { w: w2, f: f2 } = world();
+  await day(kv2, w2, f2, 0, 1);
+  const st2 = saved(kv2);
+  st2.timed = { "pages.yml": {}, "health.yml": { retryAt: at(40).toISOString() } };
+  kv2.data.set(KEY, JSON.stringify(st2));
+  w2.override.set(PAGES, () => new Response("slow", { status: 429, headers: { "retry-after": "60" } }));
+  await day(kv2, w2, f2, 1, 16);
+  assert.deepEqual([timedOf(kv2)["pages.yml"].retryAt, timedOf(kv2)["health.yml"].retryAt], [at(16).toISOString(), at(40).toISOString()]);
+  w2.override.set(PAGES, () => new Response("slow", { status: 429, headers: { "retry-after": "86400" } }));
+  await day(kv2, w2, f2, 16, 31);
+  assert.equal(timedOf(kv2)["pages.yml"].retryAt, at(90).toISOString());
+});
+
+test("timed: a day of failures and rate limits adds no writes", async () => {
+  const kv = new FakeKV();
+  const { w, f } = world();
+  const tries = { pages: 0, health: 0 };
+  w.override.set(PAGES, () => { tries.pages++; return new Response("down", { status: 503 }); });
+  w.override.set(HEALTH, () => { tries.health++; return w.minute % 90 < 45 ? new Response("slow", { status: 429 }) : new Response("slow", { status: 403, headers: { "retry-after": "120" } }); });
+  const writes = await day(kv, w, f, 0, 24 * 60);
+  assert.ok(tries.pages > 20 && tries.health > 5, JSON.stringify(tries));
+  const plain = await control(24 * 60);
+  assert.deepEqual([kv.writes, writes], [plain.total, plain.writes]);
+});
+
+test("timed: upstream failing, or polling backed off, doesn't stop the sends", async () => {
+  const kv = new FakeKV();
+  const { w, f } = world();
+  await day(kv, w, f, 0, 1);
+  w.override.set(GRAPHQL, () => new Response("down", { status: 502 }));
+  await day(kv, w, f, 1, 80);
+  assert.deepEqual([w.timed["pages.yml"], w.timed["health.yml"]], [[15, 75], [15, 75]]);
+  // GraphQL rate limited for an hour: the sweep skips polling, still sends.
+  w.override.set(GRAPHQL, () => new Response("slow", { status: 429, headers: { "retry-after": "3600" } }));
+  await day(kv, w, f, 80, 81);
+  assert.ok(Date.parse(saved(kv).poll.retryAt!) > at(81).getTime());
+  const asked = w.queries.length;
+  await day(kv, w, f, 81, 136);
+  assert.equal(w.queries.length, asked, "polling skipped");
+  // The back-off was saved at 80, so the heartbeats fell on 95, 110, 125.
+  assert.deepEqual([w.timed["pages.yml"], w.timed["health.yml"]], [[15, 75, 125], [15, 75, 125]]);
+});
+
+test("timed: writes failing stop the sends after a short burst; a new key whose writes fail never sends; a failed read sends nothing", async () => {
+  const kv = new FakeKV();
+  const { w, f } = world();
+  await day(kv, w, f, 0, 50); // sent at 15; last write at 45
+  kv.failWrites = true;
+  await day(kv, w, f, 50, 24 * 60);
+  for (const name of TIMED) assert.deepEqual(w.timed[name].filter((m) => m >= 50), [65], name);
+  // Writes failing from 61, after the write at 60: the send due at 75
+  // goes, is lost with its write, and goes again each minute until
+  // `written` (60) is 20 minutes old.
+  const kv2 = new FakeKV();
+  const { w: w2, f: f2 } = world();
+  await day(kv2, w2, f2, 0, 61);
+  kv2.failWrites = true;
+  await day(kv2, w2, f2, 61, 300);
+  for (const name of TIMED) assert.deepEqual(w2.timed[name].filter((m) => m >= 61), [75, 76, 77, 78, 79, 80], name);
+  const kv3 = new FakeKV();
+  const { w: w3, f: f3 } = world();
+  kv3.failWrites = true;
+  await day(kv3, w3, f3, 0, 120);
+  assert.deepEqual([w3.timed["pages.yml"], w3.timed["health.yml"]], [[], []]);
+  const kv4 = new FakeKV();
+  const { w: w4, f: f4 } = world();
+  await day(kv4, w4, f4, 0, 15);
+  kv4.failReads = true;
+  await day(kv4, w4, f4, 15, 120);
+  assert.deepEqual([w4.timed["pages.yml"], w4.timed["health.yml"]], [[], []]);
+});
+
+test("timed: after a gap in the Worker's runs the first write sends nothing, the next heartbeat does", async () => {
+  const kv = new FakeKV();
+  const { w, f } = world();
+  await day(kv, w, f, 0, 16);
+  await day(kv, w, f, 100, 116);
+  assert.deepEqual([w.timed["pages.yml"], w.timed["health.yml"]], [[15, 115], [15, 115]]);
+});
+
+test("timed: an upgrade from a state without the sends (simulated by turning them off) keeps the state and sends both at its next writing run", async () => {
+  // 40 minutes of a watcher without the timed sends: its state has no
+  // `timed` field.
+  const kv = new FakeKV();
+  const { w, f } = world();
+  const names = TIMED.splice(0);
+  try {
+    await day(kv, w, f, 0, 40);
+  } finally {
+    TIMED.push(...names);
+  }
+  // (This seam leaves an empty `timed`; an older version leaves none.)
+  const old = saved(kv);
+  delete old.timed;
+  kv.data.set(KEY, JSON.stringify(old));
+  // The new version: its first writing run (the heartbeat at 45) sends both.
+  await day(kv, w, f, 40, 46);
+  for (const [repo, r] of Object.entries(old.repos)) assert.equal(saved(kv).repos[repo].eligible?.firstSeen, r.eligible?.firstSeen, repo);
+  assert.deepEqual([w.timed["pages.yml"], w.timed["health.yml"]], [[45], [45]]);
+});
+
+test("timed: pages sent, then health rate limited in the same run: pages keeps its send and gets the back-off", async () => {
+  const kv = new FakeKV();
+  const { w, f } = world();
+  await day(kv, w, f, 0, 15);
+  w.override.set(HEALTH, () => new Response("slow", { status: 429, headers: { "retry-after": "3600" } }));
+  await day(kv, w, f, 15, 16);
+  assert.deepEqual(timedOf(kv)["pages.yml"], { sent: at(15).toISOString(), retryAt: at(75).toISOString() });
+  assert.deepEqual(w.timed["pages.yml"], [15]);
+});
+
+test("timed: nothing is sent while the update dispatch is rate limited; a later failure of another kind drops a spent back-off", async () => {
+  const kv = new FakeKV();
+  const { w, f } = world();
+  await day(kv, w, f, 0, 15);
+  // The update dispatch is rate limited for an hour; the timed sends wait.
+  const st = saved(kv);
+  st.dispatch = { pending: true, error: { kind: "rate-limit", message: "429", since: at(10).toISOString() }, retryAt: at(70).toISOString() };
+  kv.data.set(KEY, JSON.stringify(st));
+  await day(kv, w, f, 15, 70);
+  assert.deepEqual([w.timed["pages.yml"], w.timed["health.yml"]], [[], []]);
+  await day(kv, w, f, 70, 71);
+  assert.deepEqual([w.timed["pages.yml"], w.timed["health.yml"]], [[70], [70]], "once it is over, at the run its dispatch writes");
+  // The update dispatch rate limited in this very run, with no retry time:
+  // the timed sends due with it wait too.
+  const kv3 = new FakeKV();
+  const { w: w3, f: f3 } = world();
+  await day(kv3, w3, f3, 0, 15);
+  w3.override.set(DISPATCH, () => new Response("slow", { status: 429 }));
+  await day(kv3, w3, f3, 15, 16, () => { w3.repos.photocraft!.unshift(release("photocraft", "1.3.0")); });
+  assert.deepEqual([w3.timed["pages.yml"], w3.timed["health.yml"]], [[], []]);
+  // A rate limit, then a 502: the spent retry time goes with it.
+  const kv2 = new FakeKV();
+  const { w: w2, f: f2 } = world();
+  await day(kv2, w2, f2, 0, 15);
+  w2.override.set(PAGES, () => w2.minute === 15 ? new Response("slow", { status: 429 }) : new Response("down", { status: 502 }));
+  await day(kv2, w2, f2, 15, 31);
+  assert.deepEqual([timedOf(kv2)["pages.yml"].error.kind, timedOf(kv2)["pages.yml"].retryAt], ["http", undefined]);
+});
+
+test("timed: a dispatch to a disabled workflow is an http error naming it, not auth", async () => {
+  const kv = new FakeKV();
+  const { w, f } = world();
+  await day(kv, w, f, 0, 15);
+  w.override.set(PAGES, () => Response.json({ message: "Workflow is disabled" }, { status: 403 }));
+  w.override.set(HEALTH, () => Response.json({ message: "Cannot trigger a 'workflow_dispatch' on a disabled workflow" }, { status: 422 }));
+  await day(kv, w, f, 15, 16);
+  const s = timedOf(kv);
+  assert.deepEqual([s["pages.yml"].error.kind, s["health.yml"].error.kind], ["http", "http"]);
+  assert.match(s["pages.yml"].error.message, /HTTP 403: Workflow is disabled/);
+  assert.match(s["health.yml"].error.message, /HTTP 422: Cannot trigger a 'workflow_dispatch' on a disabled workflow/);
+  for (const res of [() => Response.json({ message: "Resource not accessible by personal access token" }, { status: 403 }), () => new Response("", { status: 403 }), () => new Response("<html>", { status: 403 })]) {
+    const kv2 = new FakeKV();
+    const { w: w2, f: f2 } = world();
+    await day(kv2, w2, f2, 0, 15);
+    w2.override.set(PAGES, res);
+    await day(kv2, w2, f2, 15, 16);
+    assert.equal(timedOf(kv2)["pages.yml"].error.kind, "auth");
+  }
+  assert.equal(disabledWorkflow("Workflow dispatch is disabled for this token"), false);
+  assert.equal(disabledWorkflow("Cannot dispatch a disabled workflow"), true);
+});
+
+test("timed: /health's reading names a timed send's auth error and a stuck one; an old reply still reads", () => {
+  const body = (timed: object | undefined) => ({ deployed: "v1", state: { repos: {}, poll: {}, pins: { tags: {} }, dispatch: { pending: false }, written: t0.toISOString(), deployed: "v1", ...(timed ? { timed } : {}) } });
+  const auth = readHealth(body({ "health.yml": { error: { kind: "auth", message: "HTTP 401", since: t0.toISOString() } } }), t0)!;
+  assert.deepEqual(auth.auth, ["health.yml: HTTP 401"]);
+  const stuck = readHealth(body({ "pages.yml": { error: { kind: "http", message: "HTTP 502", since: t0.toISOString() } } }), new Date(t0.getTime() + STUCK_MS + 60_000))!;
+  assert.ok(stuck.stuck.includes("pages.yml"));
+  const old = readHealth(body(undefined), t0)!;
+  assert.deepEqual([old.auth, old.stuck], [[], []]);
+});
+
+test("timed: a rate limit on either holds back the other even when it isn't due", async () => {
+  for (const [limitedOne, other] of [["health.yml", "pages.yml"], ["pages.yml", "health.yml"]]) {
+    // LIMITEDONE fails once at 15 and is sent at 30; OTHER is sent at 15
+    // and 75. At 90 LIMITEDONE is due and rate limited for an hour (to
+    // 150); OTHER, due again at 125, waits for 150 too.
+    const kv = new FakeKV();
+    const { w, f } = world();
+    const url = limitedOne === "pages.yml" ? PAGES : HEALTH;
+    w.override.set(url, () => w.minute === 15 ? new Response("down", { status: 502 })
+      : w.minute === 90 ? new Response("slow", { status: 429, headers: { "retry-after": "3600" } })
+      : (w.timed[limitedOne].push(w.minute), new Response(null, { status: 204 })));
+    await day(kv, w, f, 0, 91);
+    assert.deepEqual([w.timed[limitedOne], w.timed[other]], [[30], [15, 75]]);
+    assert.deepEqual([timedOf(kv)[limitedOne].retryAt, timedOf(kv)[other].retryAt], [at(150).toISOString(), at(150).toISOString()]);
+    await day(kv, w, f, 91, 151);
+    assert.deepEqual([w.timed[limitedOne], w.timed[other]], [[30, 150], [15, 75, 150]]);
+  }
 });

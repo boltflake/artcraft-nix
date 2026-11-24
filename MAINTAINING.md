@@ -41,9 +41,12 @@ git checkout wrangler.jsonc
 ```
 
 `GITHUB_TOKEN` is a fine-grained token for this repository only, with
-Actions read and write (for `workflow_dispatch`) and Contents read (the
-watcher reads the pins on `main`), with a one-year expiry. `HEALTH_TOKEN` is
-any long random string. Then set, in the repository:
+Actions read and write (for `workflow_dispatch`: the update run on each
+change, and `pages.yml` and `health.yml` about hourly, since GitHub's own
+schedule drops runs; those ride on the watcher's existing KV writes and add
+none) and Contents read (the watcher reads the pins on `main`), with a
+one-year expiry. `HEALTH_TOKEN` is any long random string. Then set, in
+the repository:
 
 - the secret `WATCHER_HEALTH_TOKEN` to the same `HEALTH_TOKEN`;
 - the variable `WATCHER_URL` to the `workers.dev` address `wrangler deploy`
@@ -121,7 +124,7 @@ required asset's ID and digest): a repaired upload is a new input.
 | `stable-unfetchable` | A download the stable snapshot pins is gone | As `unavailable` | Every snapshot download answers |
 | `studio-hosts` | Studio's page names a host the committed list doesn't, or extraction failed | Review the host; add it to `shared/studio-hosts.json` as `disclosed` through branch CI. Marking one `blocked` changes what the option blocks: a deliberate change, so update the README with it | The list records it (or extraction works again) |
 | `tag-mismatch` / `latest-mismatch` | A release tag on another commit than its trailer names, a release-name tag no commit on `main` names, or the Latest marker can't be placed | Look into it by hand; a tag is never moved | Reconcile finds it right |
-| `watcher-stalled` / `watcher-auth` / `update-lag` | From the hourly backstop: the watcher's writes or polling are stale, its token is refused, or a release waits on `main` for over an hour | Rotate the token (`wrangler secret put GITHUB_TOKEN`), or look at the watcher | Three healthy checks in a row; the release lands |
+| `watcher-stalled` / `watcher-auth` / `update-lag` | From the hourly backstop: `watcher-stalled` when the watcher's writes or polling are stale, or something it does (a read, the update dispatch, or the hourly start of `pages.yml` or `health.yml`) has failed for over 6 hours, a disabled `pages.yml` included (a disabled `health.yml` can't report itself, and once the update run re-enables it, the next successful send can clear the error before health reads it; after a rollback to a watcher version without the hourly starts, a start error saved before it stays in `/health` until the next deploy); `watcher-auth` when its token is refused; `update-lag` when a release waits on `main` for over an hour | For `watcher-auth`, rotate the token (`wrangler secret put GITHUB_TOKEN`); otherwise look at the watcher | Three healthy checks in a row; the release lands |
 | `tooling-outdated` | A newer runner image, Node LTS line, or actionlint knowing the runner labels | An ordinary change | The weekly check finds it current |
 
 ## How a run works

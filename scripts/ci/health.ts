@@ -7,8 +7,10 @@
 // it couldn't be fetched. Prints {observations}:
 //   watcher-stalled  KV writes stale (writes failing, or the watcher
 //                    stopped), a repository's polling stale, or a failure
-//                    stuck for 6 hours; closed by watcher-healthy
-//   watcher-auth     GitHub refuses the watcher's token
+//                    stuck for 6 hours (a timed send's included)
+//   watcher-auth     GitHub refuses the watcher's token (reading, the update
+//                    dispatch, or the hourly start of pages.yml or health.yml)
+//   watcher-healthy  neither of those (three in a row close them)
 //   update-lag       a repository's eligible release seen by the watcher an
 //                    hour ago or more and still not on main (per repository;
 //                    held releases excepted: they have issues of their own)
@@ -32,7 +34,10 @@ export function assess(body: any, error: string | null, pins: Record<string, Pin
   for (const [repo, r] of Object.entries(h.repos)) if (r.stale) problems.push(`${repo}: last read in full ${r.read ?? "never"}${r.error ? ` (${r.error.kind}: ${r.error.message})` : ""}`);
   for (const s of h.stuck) problems.push(`${s}: failing for more than 6 hours`);
   if (h.auth.length) out.push(obs("watcher-auth", null, null, h.auth.join("\n")));
-  out.push(problems.length ? obs("watcher-stalled", null, null, problems.join("\n")) : obs("watcher-healthy", null));
+  if (problems.length) out.push(obs("watcher-stalled", null, null, problems.join("\n")));
+  // Healthy only with no auth error either, as in t3code-nix: a reading
+  // with an auth error isn't a healthy one.
+  if (!problems.length && !h.auth.length) out.push(obs("watcher-healthy", null));
   // update-lag from the state: only when the writes are fresh, and per
   // repository only from a fresh read without an error (a stale or failing
   // repository is watcher-stalled's business, and says nothing either way).

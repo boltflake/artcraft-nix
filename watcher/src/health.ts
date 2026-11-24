@@ -27,9 +27,11 @@ export interface HealthReading {
   writesStale: boolean;
   /** Polling freshness, per repository in SOURCES. */
   repos: Record<string, { read: string | null; stale: boolean; error: { kind: string; message: string; since: string } | null }>;
-  /** GitHub refusing the token (the sweep's query or the dispatch). */
+  /** GitHub refusing the token (the sweep's query, the dispatch, or a
+   * timed send). */
   auth: string[];
-  /** Failures older than STUCK_MS: the sweep, the pins, the dispatch, or a repository. */
+  /** Failures older than STUCK_MS: the sweep, the pins, the dispatch, a
+   * timed send (named by its workflow file), or a repository. */
   stuck: string[];
 }
 
@@ -51,6 +53,7 @@ export function readHealth(body: any, now: Date): HealthReading | null {
     ...(s.poll.error ? [["poll", s.poll.error] as const] : []),
     ...(s.pins.error ? [["pins", s.pins.error] as const] : []),
     ...(s.dispatch.error ? [["dispatch", s.dispatch.error] as const] : []),
+    ...Object.entries(s.timed ?? {}).flatMap(([name, x]) => (x?.error ? [[name, x.error] as const] : [])),
     ...Object.entries(repos).flatMap(([repo, r]) => (r.error ? [[repo, r.error] as const] : [])),
   ];
   return {
@@ -59,7 +62,7 @@ export function readHealth(body: any, now: Date): HealthReading | null {
     written: s.written ?? null,
     writesStale: old(s.written, STALE_MS),
     repos,
-    auth: failing.filter(([name, e]) => e.kind === "auth" && (name === "poll" || name === "dispatch")).map(([name, e]) => `${name}: ${e.message}`).sort(),
+    auth: failing.filter(([name, e]) => e.kind === "auth" && (name === "poll" || name === "dispatch" || name in (s.timed ?? {}))).map(([name, e]) => `${name}: ${e.message}`).sort(),
     stuck: failing.filter(([, e]) => old(e.since, STUCK_MS)).map(([name]) => name).sort(),
   };
 }

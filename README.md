@@ -266,7 +266,9 @@ Each Craft App also installs its `-cli` (for example `photocraft-cli`).
 A desktop package installs the app's binaries, desktop file, icons,
 metainfo, MIME types and licences, so you get a menu entry and file
 associations. The current versions are on the
-[status page](https://boltflake.github.io/artcraft-nix/).
+[status page](https://boltflake.github.io/artcraft-nix/), rebuilt about
+hourly; it says "Out of date" when its last check against upstream is
+over two hours old.
 
 Every package is upstream's own Linux build, installed as shipped. The only
 changes are the ones NixOS needs, and each package file starts with a

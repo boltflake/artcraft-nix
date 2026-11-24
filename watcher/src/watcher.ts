@@ -34,7 +34,8 @@
 // sent, the deployed version or the version that last polled, or the pin
 // moving), plus a 15-minute heartbeat. Errors and recoveries wait for the
 // heartbeat, so writes stay near 100 to 150 a day (the free plan allows
-// 1,000 for the account, shared with t3code-nix's ~200).
+// 1,000 for the account, shared with t3code-nix's ~200). The timed sends
+// (below) add none.
 //
 // A back-off that would skip the next minute's sweep is saved at once (each
 // cron run is a fresh isolate: one only in memory would be forgotten and
@@ -53,6 +54,10 @@
 // KV is eventually consistent: a sweep can read the key a little old. Then
 // it may see a change again, dispatch once more (harmless) and give it a
 // firstSeen up to that delay later.
+//
+// It also starts pages.yml and health.yml about hourly (sendTimed), as
+// GitHub's schedule trigger drops runs: only in a sweep that writes anyway,
+// so they add no KV writes, and only after a write that was saved recently.
 //
 // Pure apart from the injected fetch, KV and clock, so tests run it in Node.
 import {
@@ -117,8 +122,10 @@ export class SourceError extends Error {
 const asError = (e: any, kind: ErrorKind = "parse") => (e instanceof SourceError ? e : new SourceError(kind, String(e?.message ?? e)));
 
 /** One request with a timeout, sorted into an error kind on failure. A 403
- * with rate-limit headers is a rate limit, not an auth error. */
-export async function request(f: Fetch, url: string, now: number, init: RequestInit = {}): Promise<Response> {
+ * with rate-limit headers is a rate limit, not an auth error. `timed`: a
+ * timed workflow dispatch (sendTimed), whose refusal for a disabled
+ * workflow is an http error (see disabledWorkflow). */
+export async function request(f: Fetch, url: string, now: number, init: RequestInit = {}, timed = false): Promise<Response> {
   let res: Response;
   try {
     res = await f(url, { ...init, headers: { "User-Agent": UA, ...init.headers }, signal: AbortSignal.timeout(TIMEOUT_MS) });
@@ -129,7 +136,17 @@ export async function request(f: Fetch, url: string, now: number, init: RequestI
   const after = res.headers.get("retry-after");
   const reset = res.headers.get("x-ratelimit-reset");
   const limited = res.status === 429 || (res.status === 403 && (after !== null || res.headers.get("x-ratelimit-remaining") === "0"));
-  await res.body?.cancel();
+  if (timed && !limited && (res.status === 403 || res.status === 422)) {
+    let message = "";
+    try {
+      message = String((await res.json())?.message ?? "");
+    } catch {
+      // Unreadable: classified by its status below.
+    }
+    if (disabledWorkflow(message)) throw new SourceError("http", `${url}: HTTP ${res.status}: ${message.slice(0, 200)}`);
+  } else {
+    await res.body?.cancel();
+  }
   if (limited) {
     // Retry-After is seconds or an HTTP date; GitHub also sends the reset time.
     const date = after && !/^\d+$/.test(after) ? Date.parse(after) : NaN;
@@ -140,6 +157,15 @@ export async function request(f: Fetch, url: string, now: number, init: RequestI
   }
   throw new SourceError(res.status === 401 || res.status === 403 ? "auth" : "http", `${url}: HTTP ${res.status}`);
 }
+
+/** Whether a refused dispatch's message says the workflow is disabled: not
+ * the token's fault, so an http error, not auth (whose fix, a new token,
+ * would be wrong). GitHub documents no status or wording for this, so the
+ * match is on the message (seen in the wild: "Cannot trigger a
+ * 'workflow_dispatch' on a disabled workflow"); anything else keeps its
+ * status's kind. */
+export const disabledWorkflow = (message: string) =>
+  /\b(workflow (is )?disabled|disabled workflow)\b/i.test(message);
 
 /** One GraphQL query: its data, and the top-level aliases GitHub couldn't
  * find (a renamed or deleted repository), which leave the rest good. Any
@@ -204,7 +230,12 @@ export interface State {
   polledBy?: string | null;
   /** When the key was last written: KV write health (the heartbeat). */
   written: string | null;
+  /** The timed sends, by workflow file (sendTimed). Not under `dispatch`,
+   * which a successful update dispatch replaces. */
+  timed?: Record<string, Timed>;
 }
+/** A timed workflow: its last successful send, and its failure and back-off. */
+export interface Timed { sent?: string; error?: Failure; retryAt?: string }
 const empty = (): State => ({ repos: {}, pins: { oid: null, tags: {} }, poll: {}, dispatch: { pending: false }, deployed: null, polledBy: null, written: null });
 
 export function load(raw: string | null): State {
@@ -374,6 +405,60 @@ function readAssets(w: Work, data: any, aliases: [string, string][]): void {
     }
     w.assets.set(tag, assetsFromGraphql(node.release));
     if (node?.release) w.flags.set(tag, Boolean(node.release.isDraft) || Boolean(node.release.isPrerelease));
+  }
+}
+
+/** The workflows the watcher starts about hourly, as GitHub's schedule
+ * trigger drops runs (pages.yml and health.yml keep theirs as a fallback). */
+export const TIMED: string[] = ["pages.yml", "health.yml"];
+/** A timed workflow is due this long after its last successful send. */
+export const TIMED_EVERY_MS = 50 * 60_000;
+/** No timed sends while the key's last write is older than this, or there
+ * is none: writes may be failing (the account's quota, an outage), when a
+ * send couldn't be saved and would repeat every minute; or the Worker
+ * wasn't running for a while, which costs one heartbeat. A new key sends at
+ * its next writing run after the first write. */
+export const TIMED_STALE_MS = 20 * 60_000;
+
+/** The timed sends, in a sweep that writes anyway, so they cost no KV
+ * writes: each due workflow is dispatched on main. A failure keeps the
+ * workflow due for the next writing sweep; a rate limit (with no retry
+ * time: one heartbeat, from the sweep's time) holds back every timed
+ * workflow, due or not, as they share the token. Nothing is sent while the
+ * update dispatch is rate limited, for the same reason. Back-offs here
+ * don't double as the update dispatch's do: they're saved with the write
+ * they ride on. */
+async function sendTimed(state: State, env: Env, t: number, iso: string, f: Fetch): Promise<void> {
+  const timed = (state.timed ??= {});
+  let limited: number | null = null;
+  for (const name of TIMED) {
+    if (limited !== null) break;
+    const s = (timed[name] ??= {});
+    const since = t - Date.parse(s.sent ?? "");
+    if (since >= 0 && since < TIMED_EVERY_MS) continue;
+    if (later(s.retryAt, t)) continue;
+    try {
+      const res = await request(f, `https://api.github.com/repos/${env.REPO}/actions/workflows/${name}/dispatches`, t, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${env.GITHUB_TOKEN}`, Accept: "application/vnd.github+json", "Content-Type": "application/json" },
+        body: JSON.stringify({ ref: "main" }),
+      }, true);
+      await res.body?.cancel();
+      timed[name] = { sent: iso };
+    } catch (e: any) {
+      const err = asError(e, "network");
+      if (s.error?.kind !== err.kind) s.error = { kind: err.kind, message: err.message.slice(0, 300), since: s.error?.since ?? iso };
+      if (err.kind === "rate-limit") limited = err.retryAt ?? t + HEARTBEAT_MS;
+      else delete s.retryAt;
+    }
+  }
+  // A rate limit holds back every timed workflow, due or not, sent before
+  // it in this run or after; a later back-off of its own is kept.
+  if (limited !== null) {
+    for (const name of TIMED) {
+      const s = (timed[name] ??= {});
+      if (!(later(s.retryAt, t) && Date.parse(s.retryAt!) > limited)) s.retryAt = new Date(limited).toISOString();
+    }
   }
 }
 
@@ -601,6 +686,7 @@ export async function run(env: Env, now: Date, f: Fetch = fetch): Promise<{ stat
   if (changed || readFailed) state.dispatch.pending = true;
   const d = state.dispatch;
   let dispatched = false;
+  let dispatchLimitedNow = false;
   if (d.pending && !later(d.retryAt, t)) {
     try {
       const res = await request(f, `https://api.github.com/repos/${env.REPO}/actions/workflows/update.yml/dispatches`, t, {
@@ -615,6 +701,7 @@ export async function run(env: Env, now: Date, f: Fetch = fetch): Promise<{ stat
     } catch (e: any) {
       const err = asError(e, "network");
       if (d.error?.kind !== err.kind) d.error = { kind: err.kind, message: err.message, since: d.error?.since ?? iso };
+      if (err.kind === "rate-limit") dispatchLimitedNow = true;
       backOff(d, saved.dispatch, err);
     }
   }
@@ -629,6 +716,11 @@ export async function run(env: Env, now: Date, f: Fetch = fetch): Promise<{ stat
   }
   if (!(t - Date.parse(state.written ?? "") < HEARTBEAT_MS)) write = true;
   if (readFailed || !write) return { state, written: false, dispatched };
+  // Riding on this write, after one saved no more than TIMED_STALE_MS ago.
+  // Not while the update dispatch is rate limited (in this run, or by a
+  // saved back-off): they share the token.
+  const dispatchLimited = dispatchLimitedNow || (state.dispatch.error?.kind === "rate-limit" && later(state.dispatch.retryAt, t));
+  if (t - Date.parse(state.written ?? "") <= TIMED_STALE_MS && !dispatchLimited) await sendTimed(state, env, t, iso, f);
   state.written = iso;
   try {
     await env.STATE.put(KEY, JSON.stringify(state));
