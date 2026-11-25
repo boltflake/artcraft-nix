@@ -8,7 +8,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
-import { badge, build, dataId, decide, fixtureHistory, gitHistory, medianDelivery, readFixtures, rows, stableView, stays, TARGET_S, trailersOf, type History } from "../scripts/status.ts";
+import { badge, build, dataId, decide, digest, fixtureHistory, gitHistory, medianDelivery, readFixtures, rows, stableView, stays, TARGET_S, trailersOf, type History } from "../scripts/status.ts";
 import type { Pin } from "../scripts/lib/util.ts";
 import { CATEGORIES, PACKAGE_ORDER, TITLES } from "../scripts/lib/titles.ts";
 import { SOURCES } from "../shared/sources.ts";
@@ -242,6 +242,24 @@ test("build: deterministic, every file in the digest, live.json the page's id an
     assert.ok(ra.live);
     for (const file of ["index.html", "status.json", "live.json"]) assert.equal(readFileSync(join(a, file), "utf8"), readFileSync(join(b, file), "utf8"), file);
     const status = JSON.parse(readFileSync(join(a, "status.json"), "utf8"));
+    // The link preview's image, byte for byte (a PNG, 1200x630).
+    const png = readFileSync(join(a, "social-card.png"));
+    assert.deepEqual(png, readFileSync(new URL("../docs/social-card.png", import.meta.url)));
+    assert.deepEqual([...png.subarray(0, 8)], [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+    assert.deepEqual([png.readUInt32BE(16), png.readUInt32BE(20)], [1200, 630]);
+    // The digest status.json carries is over every file written, the image
+    // included.
+    {
+      const { digest: carried, ...written } = status;
+      const read = (f: string) => (f.endsWith(".png") ? readFileSync(join(a, f)) : readFileSync(join(a, f), "utf8"));
+      const names = readdirSync(a, { recursive: true, withFileTypes: true }).filter((e) => e.isFile()).map((e) => join(e.parentPath, e.name).slice(a.length + 1)).filter((n) => n !== "status.json");
+      assert.ok(names.includes("social-card.png"));
+      assert.equal(digest(Object.fromEntries(names.map((n) => [n, read(n)])), written), carried);
+      // A binary file counts by its bytes; bytes that aren't UTF-8 stay
+      // distinct (a text round trip would make both U+FFFD).
+      assert.equal(digest({ x: Buffer.from("bc") }, {}), digest({ x: "bc" }, {}));
+      assert.notEqual(digest({ x: Buffer.from([0xff]) }, {}), digest({ x: Buffer.from([0xfe]) }, {}));
+    }
     const liveJson = JSON.parse(readFileSync(join(a, "live.json"), "utf8"));
     assert.deepEqual(liveJson, { id: status.id, checked: status.live.checked });
     const { digest: _d, ...rest } = status;
@@ -288,9 +306,12 @@ test("the offline build: status-page.ts and status.ts write the site from fixtur
     try {
       const said = JSON.parse(execFileSync(process.execPath, [join(ROOT, script), "--fixtures", FIXTURES, "--out", out], { encoding: "utf8" }));
       assert.deepEqual([said.live, said.error], [true, null], script);
-      for (const f of ["index.html", "status.json", "live.json", "badges/photocraft.json", "badges/figcraft-server.json", "badges/pdfcraft-cli.json"]) assert.ok(existsSync(join(out, f)), `${script}: ${f}`);
+      for (const f of ["index.html", "status.json", "live.json", "social-card.png", "badges/photocraft.json", "badges/figcraft-server.json", "badges/pdfcraft-cli.json"]) assert.ok(existsSync(join(out, f)), `${script}: ${f}`);
       const page = readFileSync(join(out, "index.html"), "utf8");
       assert.ok(page.includes("PhotoCraft") && !page.includes('class="demo"'));
+      // The preview's image is one the build wrote.
+      const image = page.match(/<meta property="og:image" content="https:\/\/[^/]+\/[^/]+\/([^"]+)">/)![1];
+      assert.ok(existsSync(join(out, image)), `${script}: ${image}`);
     } finally {
       rmSync(out, { recursive: true, force: true });
     }
@@ -310,12 +331,13 @@ test("fixtures: the check's covers every state; the demo is marked, and docs/sta
     assert.ok(status.delivery.all);
     const d = readFixtures(DEMO);
     assert.ok(d.demo && d.demo.sample.length > 0);
-    rmSync(out, { recursive: true, force: true });
-    mkdirSync(out);
+    // Rebuilt in place as the demo: the site's preview image goes.
+    assert.ok(existsSync(join(out, "social-card.png")));
     build(out, d.history, d.repo, d.reads, d.now, d.demo);
     const demoStatus = JSON.parse(readFileSync(join(out, "status.json"), "utf8"));
     assert.deepEqual([...new Set(Object.values<any>(demoStatus.live.states).map((s) => s.state))].sort(), ["current", "found", "held", "not-checked", "testing", "unavailable", "waiting"]);
     assert.equal(readFileSync(join(out, "index.html"), "utf8"), readFileSync(join(ROOT, "docs", "status-demo.html"), "utf8"), "regenerate with node tests/fixtures/status-demo/make.ts");
+    assert.ok(!existsSync(join(out, "social-card.png")), "a demo has no preview image");
   } finally {
     rmSync(out, { recursive: true, force: true });
   }

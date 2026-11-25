@@ -12,7 +12,8 @@
 // git, and the watcher's /health reply and the live job's reads
 // (status-reads.ts) when given. The second reads all of that from fixture
 // files, with no git and no network (see readFixtures). Both write
-// OUT_DIR/index.html, OUT_DIR/status.json, OUT_DIR/live.json and
+// OUT_DIR/index.html, OUT_DIR/status.json, OUT_DIR/live.json,
+// OUT_DIR/social-card.png (the link preview's image; not for a demo) and
 // OUT_DIR/badges/<package>.json, and print {digest, live, error, deploy,
 // fail} as JSON: `live` false when the reads were missing or unusable, with
 // why, and whether to deploy against the live site's status.json (--site;
@@ -39,7 +40,7 @@ import { join } from "node:path";
 import { parseArgs } from "node:util";
 import { compareVersions, releasePage } from "../shared/sources.ts";
 import type { Pin } from "./lib/util.ts";
-import { html, KIND, median, type DemoInfo } from "./status-page.ts";
+import { html, KIND, median, PREVIEW, type DemoInfo } from "./status-page.ts";
 import { liveView, REPO, type OpenIssue, type Run } from "./status-live.ts";
 
 export { REPO };
@@ -413,10 +414,10 @@ export function badge(row: Row): { schemaVersion: 1; label: string; message: str
 
 /** SHA-256 over every file but status.json, sorted by name, each as
  * name\0length\0bytes, then status.json without its digest, the same way. */
-export function digest(files: Record<string, string>, status: unknown): string {
+export function digest(files: Record<string, string | Buffer>, status: unknown): string {
   const h = createHash("sha256");
-  const add = (name: string, text: string) => {
-    const bytes = Buffer.from(text, "utf8");
+  const add = (name: string, text: string | Buffer) => {
+    const bytes = typeof text === "string" ? Buffer.from(text, "utf8") : text;
     h.update(`${name}\0${bytes.length}\0`);
     h.update(bytes);
   };
@@ -451,7 +452,10 @@ export function build(out: string, h: History, repo = REPO, reads: LiveReads | n
   const stable = stableView(h, reads?.issues ?? null);
   const base = { packages: list, live, stable, delivery: medianDelivery(all) };
   const id = dataId(base);
-  const files: Record<string, string> = { "index.html": html(list, repo, live, id, stable, base.delivery, demo) };
+  const files: Record<string, string | Buffer> = { "index.html": html(list, repo, live, id, stable, base.delivery, demo) };
+  // The link preview's image, from this checkout like the page's code
+  // (scripts/social-card.sh renders it); a demo has no preview.
+  if (!demo) files[PREVIEW.image] = readFileSync(new URL("../docs/social-card.png", import.meta.url));
   for (const r of list) files[`badges/${r.name}.json`] = `${JSON.stringify(badge(r))}\n`;
   // All an open tab checks for (see status-page.ts SCRIPT): the page's id and
   // the check time, in a few bytes instead of the whole status.json.
@@ -461,6 +465,8 @@ export function build(out: string, h: History, repo = REPO, reads: LiveReads | n
   // Badges of packages that are gone mustn't survive a rebuild in place.
   rmSync(join(out, "badges"), { recursive: true, force: true });
   mkdirSync(join(out, "badges"), { recursive: true });
+  // Nor a preview image a demo doesn't have.
+  rmSync(join(out, PREVIEW.image), { force: true });
   for (const [name, text] of Object.entries(files)) writeFileSync(join(out, name), text);
   writeFileSync(join(out, "status.json"), `${JSON.stringify({ ...status, digest: d }, null, 2)}\n`);
   return { digest: d, live: live !== null };

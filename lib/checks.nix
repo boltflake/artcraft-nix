@@ -965,6 +965,8 @@ let
     cp ${../README.md} $out/README.md
     # The status page's demo, which its tests compare with its fixtures.
     mkdir $out/docs && cp ${../docs/status-demo.html} $out/docs/status-demo.html
+    # status.ts copies the link preview's image into the site.
+    cp ${../docs/social-card.png} $out/docs/social-card.png
     cp -r ${
       builtins.path {
         name = "versions";
@@ -985,7 +987,7 @@ let
   # The TypeScript tests (node --test), offline, with GitHub, KV, the clock
   # and a signing key stubbed by fixtures; then the workflows and composite
   # actions, linted: actionlint (with shellcheck on run: scripts), zizmor
-  # offline, and shellcheck on scripts/ci/*.sh.
+  # offline, and shellcheck on scripts/**/*.sh.
   unit =
     runCommand "unit"
       {
@@ -1015,7 +1017,7 @@ let
         mapfile -t actions <<< "$found"
         actionlint -config-file .github/actionlint.yaml "''${workflows[@]}"
         zizmor "''${workflows[@]}" "''${actions[@]}" .github/dependabot.yml
-        found=$(find scripts/ci -name '*.sh')
+        found=$(find scripts -name '*.sh')
         if [ -n "$found" ]; then
           mapfile -t shells <<< "$found"
           shellcheck "''${shells[@]}"
@@ -1118,10 +1120,13 @@ let
   status-page = runCommand "status-page" { nativeBuildInputs = [ nodejs_26 ]; } ''
     cp -r ${sources}/. . && chmod -R u+w .
     node scripts/status-page.ts --fixtures tests/fixtures/status --out $TMPDIR/site
-    for f in index.html status.json live.json badges/photocraft.json; do
+    for f in index.html status.json live.json social-card.png badges/photocraft.json; do
       [ -s $TMPDIR/site/$f ] || { echo "the status page has no $f"; exit 1; }
     done
     grep -q 'PhotoCraft' $TMPDIR/site/index.html
+    # The link preview's image is one the build wrote.
+    image=$(grep -o '<meta property="og:image" content="https://[^/]*/[^/]*/[^"]*"' $TMPDIR/site/index.html | sed 's|.*content="https://[^/]*/[^/]*/||; s|"$||')
+    [ -n "$image" ] && [ -s "$TMPDIR/site/$image" ] || { echo "og:image names no file the build wrote: $image"; exit 1; }
     touch $out
   '';
 in

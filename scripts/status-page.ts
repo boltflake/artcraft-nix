@@ -456,6 +456,40 @@ function demoBanner(demo: DemoInfo): string {
 `;
 }
 
+/** The site's address on GitHub Pages, from the repository's owner/name. */
+export const siteUrl = (repo: string) => {
+  const [owner, name] = repo.split("/");
+  return `https://${owner.toLowerCase()}.github.io/${name}/`;
+};
+
+/** The words of the link preview (Open Graph and X's card), with
+ * docs/social-card.png as its image; previews need absolute addresses. */
+export const PREVIEW = {
+  title: "Package status · artcraft-nix",
+  description: "All ArtCraft applications, packaged for Nix within minutes: each package's version, and how soon after upstream's release it reached main.",
+  image: "social-card.png",
+  alt: "artcraft-nix, Package status: All ArtCraft applications, packaged for Nix within minutes",
+};
+
+/** The link preview's tags. A demo build has none: it isn't the site. */
+const previewTags = (repo: string) => {
+  const site = siteUrl(repo);
+  return `<meta name="description" content="${escape(PREVIEW.description)}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="artcraft-nix">
+<meta property="og:title" content="${escape(PREVIEW.title)}">
+<meta property="og:description" content="${escape(PREVIEW.description)}">
+<meta property="og:url" content="${escape(site)}">
+<meta property="og:image" content="${escape(site + PREVIEW.image)}">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${escape(PREVIEW.alt)}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image:alt" content="${escape(PREVIEW.alt)}">
+`;
+};
+
 export function html(list: Row[], repo: string, live: Live | null = null, id = "", stable: StableView | null = null, delivery: DeliveryFigure | null = null,
   demo: DemoInfo | null = null, target = 9 * 60): string {
   const by = new Map(list.map((r) => [r.name, r]));
@@ -477,8 +511,8 @@ export function html(list: Row[], repo: string, live: Live | null = null, id = "
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src '${SCRIPT_HASH}'; connect-src 'self'; base-uri 'none'; form-action 'none'">
 <meta name="color-scheme" content="light dark">
-<title>${demo ? "Demo: " : ""}Package status · artcraft-nix</title>
-<style>${minifyCss(STYLE)}</style>
+<title>${demo ? "Demo: " : ""}${escape(PREVIEW.title)}</title>
+${demo ? "" : previewTags(repo)}<style>${minifyCss(STYLE)}</style>
 </head>
 <body>
 <svg class="defs" aria-hidden="true" focusable="false"><defs><pattern id="hatch" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect class="hatch-bg" width="3" height="3"/><rect class="hatch-line" width="1.2" height="3"/></pattern></defs></svg>
