@@ -4,14 +4,15 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { appParts, packageOf, testPart, TEST_PARTS } from "../scripts/lib/parts.ts";
-import { inScope, PACKAGES, runSuite, type Nix } from "../scripts/ci/test.ts";
+import { BRANCH_ONLY, inScope, PACKAGES, runSuite, type Nix } from "../scripts/ci/test.ts";
 import { merge } from "../scripts/ci/merge-parts.ts";
 import { decide, load, outcome, plan, verdict } from "../scripts/ci/narrow.ts";
 import * as narrowMod from "../scripts/ci/narrow.ts";
+import { SCHEDULED } from "../scripts/ci/reconcile.ts";
 import { apply, heldReleases, incompleteReason, metaOf } from "../scripts/ci/issues.ts";
 import { assess } from "../scripts/ci/health.ts";
 import { regressions } from "../scripts/ci/stable.ts";
@@ -20,7 +21,7 @@ import { Fake } from "./fake-gh.ts";
 
 const ALL_CHECKS = [
   ...PACKAGES.flatMap((p) => [`${p}-version`, `${p}-libs`, `${p}-files`, `${p}-smoke`, `${p}-smoke-run`]),
-  "anicraft-smoke-gl", "pdfcraft-cli-job", "aggregate", "module-eval", "default-build", "unit", "nix-format", "as-shipped",
+  "anicraft-smoke-gl", "pdfcraft-cli-job", "aggregate", "module-eval", "default-build", "unit", "nix-format", "nix-lint", "as-shipped",
 ];
 
 test("parts: every app's checks together, Studio alone, default-build alone, flake-wide in `flake`; apps spread by size", () => {
@@ -41,15 +42,21 @@ test("parts: every app's checks together, Studio alone, default-build alone, fla
   assert.deepEqual(appParts(), parts, "deterministic");
 });
 
-test("scoping: an input alone runs its repository's checks, the flake-wide ones and any whose derivation differs; nix-format in branch CI only", () => {
+test("scoping: an input alone runs its repository's checks, the flake-wide ones and any whose derivation differs; nix-format and nix-lint in branch CI only", () => {
   const pdf = inScope("pdfcraft", ALL_CHECKS);
   assert.ok(pdf.includes("pdfcraft-smoke") && pdf.includes("pdfcraft-cli-job") && pdf.includes("aggregate"));
   assert.ok(!pdf.includes("photocraft-smoke"));
   assert.ok(!pdf.some((c) => c.endsWith("-run")));
   assert.ok(inScope("pdfcraft", ALL_CHECKS, (c) => c === "photocraft-files").includes("photocraft-files"));
   assert.equal(inScope("nixpkgs", ALL_CHECKS).length, inScope("main", ALL_CHECKS).length);
-  assert.ok(!inScope("candidate", ALL_CHECKS).includes("nix-format"));
-  assert.ok(inScope("branch", ALL_CHECKS).includes("nix-format"));
+  assert.deepEqual([...BRANCH_ONLY].sort(), ["nix-format", "nix-lint"]);
+  // Every branch-only name is a real check (lib/checks.nix defines it).
+  const checksNix = readFileSync(join(import.meta.dirname, "..", "lib", "checks.nix"), "utf8");
+  for (const name of BRANCH_ONLY) assert.match(checksNix, new RegExp(`\\n  ${name} =\\n`), `${name} is a check`);
+  for (const c of ["nix-format", "nix-lint"]) {
+    assert.ok(!inScope("candidate", ALL_CHECKS).includes(c));
+    assert.ok(inScope("branch", ALL_CHECKS).includes(c));
+  }
 });
 
 test("runSuite: a build cut short (a timeout) leaves what it didn't build incomplete, never failed", () => {
@@ -745,4 +752,31 @@ test("status: a pin the watcher saw pulled (a prerelease again) counts as gone",
   const u = upstream({ deployed: "v", state: { written: "2026-11-22T11:58:00Z", deployed: "v", poll: {}, pins: {}, dispatch: {}, repos } }, now)!;
   assert.deepEqual([...u.pinGone.keys()].sort(), ["gridcraft", "photocraft"]);
   assert.equal(u.pinGone.get("photocraft"), "v1.0.0", "with the tag it was seen for");
+});
+
+// Each workflow as parsed YAML (yq, in the unit check's inputs), so a test
+// reads its jobs and steps however they're written.
+function workflows(): [string, any][] {
+  const dir = join(import.meta.dirname, "..", ".github", "workflows");
+  const files = readdirSync(dir).filter((f) => /\.ya?ml$/.test(f)).sort();
+  assert.ok(files.length > 0, "workflows found");
+  return files.map((f) => {
+    let json: string;
+    try {
+      json = execFileSync("yq", ["-o=json", ".", join(dir, f)], { encoding: "utf8" });
+    } catch (e: any) {
+      throw new Error(`yq couldn't read ${f} (the unit check has it): ${e.message}`);
+    }
+    try {
+      return [f, JSON.parse(json)];
+    } catch (e: any) {
+      throw new Error(`${f}: not one YAML document: ${e.message}`);
+    }
+  });
+}
+
+test("workflows: every scheduled workflow is in reconcile's SCHEDULED", () => {
+  const scheduled = workflows().filter(([, wf]) => wf?.on?.schedule).map(([f]) => f);
+  assert.ok(scheduled.length > 0);
+  assert.deepEqual(SCHEDULED.map(([w]) => w).sort(), scheduled.sort());
 });

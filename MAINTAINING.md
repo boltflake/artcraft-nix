@@ -77,6 +77,12 @@ commit), so the first real run has almost nothing to catch up on. The status
 page deploys only once `PAGES` is `true`, with the Pages source set to
 "GitHub Actions".
 
+**Security settings.** Turn on, in the repository's Settings under "Advanced
+Security": secret scanning with push protection, private vulnerability
+reporting (SECURITY.md's link), and CodeQL's default setup for
+JavaScript/TypeScript and Python only. Its Actions language is left off:
+zizmor, in the unit check, already lints the workflows and fails the change.
+
 ## The trusted signing key
 
 `keys/release-signing-key.asc` and `keys/trusted.json` hold upstream's

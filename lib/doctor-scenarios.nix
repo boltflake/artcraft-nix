@@ -3,9 +3,7 @@
 # stub commands on PATH (flatpak, dbus-send, zenity, gsettings), and the
 # copies of an app it needs; then checks the exit status and what's said.
 {
-  lib,
   runCommand,
-  writeShellScript,
   stdenv,
   doctor,
 }:

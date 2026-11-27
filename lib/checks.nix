@@ -11,7 +11,6 @@
   pkgs,
   path,
   self,
-  stableSrc,
   packages,
 }:
 let
@@ -31,7 +30,6 @@ let
       + extra
       + (if failed == [ ] then "touch $out\n" else "exit 1\n")
     );
-  fails = v: !(builtins.tryEval (builtins.deepSeq v v)).success;
   available = n: packages ? ${n} && !(packages.${n}.meta.unavailable or false);
   releasePackages = builtins.filter available names.all;
   desktopAvailable = builtins.filter available names.desktop;
@@ -151,7 +149,7 @@ let
         && drv plain.suite == drv packages.default;
       "its NixOS module installs the apps" =
         let
-          some = lib.findFirst (n: available n) null names.desktop;
+          some = lib.findFirst available null names.desktop;
         in
         some != null && builtins.elem packages.${some}.drvPath (map drv nixos.environment.systemPackages);
       "its overlay works" = drv overlaid.artcraft-nix.gridcraft == drv packages.gridcraft;
@@ -250,6 +248,33 @@ let
       ''
         find $src -name '*.nix' -print0 | xargs -0 nixfmt --check \
           || { echo "run \`nix fmt\` and commit the result"; exit 1; }
+        touch $out
+      '';
+
+  # statix (anti-patterns; its settings are statix.toml) and deadnix (unused
+  # bindings and arguments) find nothing in any .nix file, hidden folders'
+  # included. Branch CI only, like nix-format: a nixpkgs bump with stricter
+  # linters never fails on it.
+  nix-lint =
+    runCommand "nix-lint"
+      {
+        nativeBuildInputs = [
+          pkgs.statix
+          pkgs.deadnix
+        ];
+        src = lib.fileset.toSource {
+          root = ../.;
+          fileset = lib.fileset.unions [
+            ../statix.toml
+            (lib.fileset.fileFilter (f: f.hasExt "nix") ../.)
+          ];
+        };
+      }
+      ''
+        cd $src
+        statix check --config statix.toml . \
+          || { echo "fix these (\`statix fix\` does most)"; exit 1; }
+        deadnix --fail --hidden . || { echo "remove the unused bindings (\`deadnix --edit\`)"; exit 1; }
         touch $out
       '';
 
@@ -999,6 +1024,7 @@ let
           pkgs.zizmor
           pkgs.shellcheck
           pkgs.jq
+          pkgs.yq-go # the workflows as parsed YAML, for tests/ci.test.ts
         ];
       }
       ''
@@ -1114,7 +1140,7 @@ let
 
   # The doctor's scenarios: fixture machines, from a clean NixOS to a
   # confused one (scripts in tests/doctor/).
-  doctor-scenarios = pkgs.callPackage ./doctor-scenarios.nix { doctor = packages.doctor; };
+  doctor-scenarios = pkgs.callPackage ./doctor-scenarios.nix { inherit (packages) doctor; };
 
   # The status page, built offline from fixtures.
   status-page = runCommand "status-page" { nativeBuildInputs = [ nodejs_26 ]; } ''
@@ -1150,5 +1176,5 @@ in
     unavailable-message
     ;
   # Branch CI only (scripts/ci/test.ts), as in t3code-nix.
-  inherit nix-format;
+  inherit nix-format nix-lint;
 }

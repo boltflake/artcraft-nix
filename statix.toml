@@ -1,0 +1,4 @@
+# statix (the nix-lint check, lib/checks.nix). repeated_keys is off: the
+# module checks set options one dotted line each (programs.artcraft.enable,
+# networking.hosts."0.0.0.0"), as the NixOS manual writes them.
+disabled = ["repeated_keys"]

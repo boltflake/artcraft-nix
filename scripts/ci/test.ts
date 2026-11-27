@@ -10,7 +10,7 @@
 // verdict coming from NixOS stable's group, run in a leg of its own). Within one run every other check's derivation should be the same
 // as in "main alone"; to be sure, the base commit's checks are evaluated too,
 // and any check whose derivation differs from main's is run as well.
-// nix-format runs in branch CI only.
+// nix-format and nix-lint run in branch CI only.
 //
 // Writes OUT_DIR/result-SET-SYSTEM[-PART].json: {set, system, part, tree,
 // complete, checked, failed, incomplete, drvs, present}, and
@@ -26,7 +26,7 @@ import { SOURCES } from "../../shared/sources.ts";
 import { packageOf, partArg, testPart, TEST_PARTS } from "../lib/parts.ts";
 import { tryRun, writeJson } from "../lib/util.ts";
 
-export const BRANCH_ONLY = new Set(["nix-format"]);
+export const BRANCH_ONLY = new Set(["nix-format", "nix-lint"]);
 /** The flake's package names, from its pins (shared/sources.ts). */
 export const PACKAGES = SOURCES.flatMap((s) => Object.keys(s.packages));
 

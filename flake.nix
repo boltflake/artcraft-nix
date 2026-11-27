@@ -151,7 +151,7 @@
         packageChecks pkgs self.packages.${system}
         // lib.filterAttrs (_: lib.isDerivation) (
           pkgs.callPackage ./lib/checks.nix {
-            inherit self stableSrc;
+            inherit self;
             packages = self.packages.${system};
           }
         )

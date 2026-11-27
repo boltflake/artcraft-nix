@@ -24,7 +24,7 @@
 let
   names = import ./packages.nix;
   inherit (names.entries) apps;
-  mesa = pkgs.mesa;
+  inherit (pkgs) mesa;
   available = n: packages ? ${n} && !(packages.${n}.meta.unavailable or false);
 
   # The libraries each dlopen package provides, by soname (acceptance matrix).

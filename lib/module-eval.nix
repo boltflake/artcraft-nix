@@ -160,12 +160,12 @@ let
       installedNames (on {
         programs.artcraft.apps = [ "photocraft" ];
       }) == [ ];
-    "a typo in apps fails evaluation" = fails (
-      (on {
-        programs.artcraft.enable = true;
-        programs.artcraft.apps = [ "photocraf" ];
-      }).environment.systemPackages
-    );
+    "a typo in apps fails evaluation" =
+      fails
+        (on {
+          programs.artcraft.enable = true;
+          programs.artcraft.apps = [ "photocraf" ];
+        }).environment.systemPackages;
     "the packages come from the ${setName} set" =
       let
         c = on {

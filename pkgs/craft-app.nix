@@ -53,7 +53,7 @@ let
 in
 if marker != null then
   versions.unavailableDrv {
-    bins = entry.bins;
+    inherit (entry) bins;
     pname = name;
     inherit (pin) version;
     inherit marker;
