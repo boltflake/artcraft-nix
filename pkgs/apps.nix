@@ -111,6 +111,11 @@ in
     };
     anicraft = app "anicraft" {
       summary = "Draw and animate 2D vector art on a timeline";
+      extraFiles = completions "anicraft";
+      # A marker that makes a portable copy keep its settings in a data/
+      # folder beside the program (since 0.3.0); left out, AniCraft uses
+      # ~/.config/anicraft.
+      dropped = [ "anicraft-portable" ];
       # It opens its own sample scene, and --screenshot writes that frame;
       # --renderer forces the backend, for the Vulkan and GL smokes.
       smoke = {

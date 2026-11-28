@@ -1,34 +1,34 @@
 {
   "repo": "anicraft",
-  "version": "0.2.1",
-  "tag": "v0.2.1",
-  "releaseId": 442375618,
+  "version": "0.3.0",
+  "tag": "v0.3.0",
+  "releaseId": 461415442,
   "manifest": {
-    "assetId": 737566452,
-    "digest": "sha256:3090858a6b9aafe25fca71f83b6e15e2e59fbc1bd05a88535ab713630161f28d"
+    "assetId": 803859668,
+    "digest": "sha256:a878cc7e039e5c23c185ab1321ea89eb05105fcf34015c21e79eed3a64563d5d"
   },
   "signature": {
-    "assetId": 737566454,
-    "digest": "sha256:eb1ec4b8f63f7effc5e1af370f259613f81654473ebce9f0b02ce659223b32a4"
+    "assetId": 803859657,
+    "digest": "sha256:ec40abefcee22044755ef197f1dee0cc4a8623cdd06b6e5c4ab054599ab3c8e1"
   },
   "packages": {
     "anicraft": {
       "x86_64-linux": {
-        "url": "https://github.com/storytold/anicraft/releases/download/v0.2.1/anicraft-0.2.1-linux-x86_64.tar.gz",
-        "hash": "sha256-o6h5W9aupLS8XKDybCJqByMw04/pP07fVSY2Dr9xVv0=",
-        "assetId": 737566690,
-        "digest": "sha256:a3a8795bd6aea4b4bc5ca0f26c226a072330d38fe93f4edf5526360ebf7156fd"
+        "url": "https://github.com/storytold/anicraft/releases/download/v0.3.0/anicraft-0.3.0-linux-x86_64.tar.gz",
+        "hash": "sha256-yDt4wSk783kgrv6L3KREPPHVP+xFBJmHL8f+UkPrEU0=",
+        "assetId": 803860059,
+        "digest": "sha256:c83b78c1293bf37920aefe8bdca4443cf1d53fec450499872fc7fe5243eb114d"
       },
       "aarch64-linux": {
-        "url": "https://github.com/storytold/anicraft/releases/download/v0.2.1/anicraft-0.2.1-linux-aarch64.tar.gz",
-        "hash": "sha256-q6KkOz2WthkFOG1zivnWNoCd4j3brh5sq7Rz7nnbKK0=",
-        "assetId": 737566561,
-        "digest": "sha256:aba2a43b3d96b61905386d738af9d636809de23ddbae1e6cabb473ee79db28ad"
+        "url": "https://github.com/storytold/anicraft/releases/download/v0.3.0/anicraft-0.3.0-linux-aarch64.tar.gz",
+        "hash": "sha256-MkS9iyb/2WYCVZUkqfOgaHd6D0Ic6HDVxX3VeKbTDoI=",
+        "assetId": 803859826,
+        "digest": "sha256:3244bd8b26ffd96602559524a9f3a068777a0f421ce870d5c57dd578a6d30e82"
       }
     }
   },
   "released": {
-    "at": "2026-11-12T01:41:19.000Z",
+    "at": "2026-11-28T08:56:06.000Z",
     "kind": "published"
   }
 }

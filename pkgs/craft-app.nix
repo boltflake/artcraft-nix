@@ -16,7 +16,7 @@
 #      the other two ask the update prompt to say how Nix updates it
 #      (storytold/craft-libs#2975; versions without it ignore them).
 #   3. Archive files outside bin/ and share/ (the entry's `dropped`, such as
-#      FilmCraft's install.sh) are left out.
+#      FilmCraft's install.sh and AniCraft's anicraft-portable) are left out.
 {
   lib,
   stdenv,
